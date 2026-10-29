@@ -1,0 +1,82 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../config/_dims" as *;
+@use "../../../../sass/kernel/" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+$table-custom-classes : ".bg-primary-color, .w-50, .radius-all-normal, .p-3";
+$table-head-th-custom-classes : ".bg-on-primary-color, .secondary-color, .py-2, .px-2, .txt-size-normal";
+$table-head-border-radius : map.get($border-radius, normal);   
+$table-body-td-custom-classes : ".txt-align-start, .title-text-color, .py-2, .pl-2, .txt-size-normal";
+$table-scroll-max-height:300px;
+$table-striped-custom-classes : ".bg-on-primary-color";
+$table-striped-on : even;
+$table-thead-sticky-space: 10px;
+
+.scroll-table {
+    max-height: $table-scroll-max-height;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 !important;       
+    @extend .overflow-scroll, #{$table-custom-classes}; 
+    @extend #{$table-custom-classes}; 
+    
+    .table{
+        @extend .w-100;
+
+        thead{
+            top: $table-thead-sticky-space;
+            @extend .position-sticky;
+        }
+    }
+}
+.pagination-table{
+    padding: 0 !important;       
+    @extend #{$table-custom-classes}; 
+
+    .table{
+        @extend .w-100;
+    }
+}
+
+.table { 
+    @extend #{$table-custom-classes};
+    border-spacing: 0;
+    min-width: max-content;
+
+    &.striped-table { 
+        tbody {
+            & tr:nth-child(#{$table-striped-on}) {
+                @extend #{$table-striped-custom-classes};
+            }
+        }
+    }
+
+    thead {
+        th {
+            @extend #{$table-head-th-custom-classes};
+            text-align: start;  
+        }
+        & th:first-child {
+            border-top-left-radius: $table-head-border-radius;
+            border-bottom-left-radius: $table-head-border-radius;
+        }
+        & th:last-child {
+            border-top-right-radius: $table-head-border-radius;
+            border-bottom-right-radius: $table-head-border-radius;
+        }
+    }
+
+    tbody {
+        td {
+            @extend #{$table-body-td-custom-classes};
+        }
+        & td:first-child {
+            border-top-left-radius: $table-head-border-radius;
+            border-bottom-left-radius: $table-head-border-radius;
+        }
+        & td:last-child {
+            border-top-right-radius: $table-head-border-radius;
+            border-bottom-right-radius: $table-head-border-radius;
+        }
+    }
+}

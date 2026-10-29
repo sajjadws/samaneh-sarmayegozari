@@ -1,0 +1,54 @@
+@use "../../../../sass/kernel" as *;
+@use "../../../../sass/config/_typography" as *;
+
+$progress-custom-classes:".radius-all-full, .bg-disabled-light-color";
+$progress-bar-custom-classes:".bg-primary-color, .p-1, .txt-size-small, .secondary-color";
+
+.progress {
+    @extend .w-100, .d-flex, .flex-row, .overflow-hidden, #{$progress-custom-classes};
+}
+
+.progress-bar {
+    width: var(--percentage);
+    user-select: none;
+    @extend .d-flex, .align-items-center, .justify-content-center, .overflow-hidden, #{$progress-bar-custom-classes};
+
+    &[style*="--content-place"] {
+        justify-content: var(--content-place);
+    }
+
+    &.progress-animation {
+        animation: progress-animation var(--progress-animation-duration) forwards ease-in-out;
+        animation-delay: var(--progress-animation-delay, 0s);
+        @extend .w-0, .pl-0, .pr-0;
+    }
+}
+
+.progress-striped {
+    background-image: repeating-linear-gradient(45deg , rgba(255,255,255,0.15) 0 , rgba(255,255,255,0.15) 10px , transparent 10px , transparent 20px);
+    background-size: 57px;
+    background-clip: border-box;
+}
+
+.progress-animation-striped {
+    animation: progress-bar-stripes 2s linear infinite;
+}
+
+.progress-bar.progress-animation.progress-animation-striped{
+    animation: progress-bar-stripes 2s linear infinite, progress-animation var(--progress-animation-duration) var(--progress-animation-delay, 0s) forwards ease-in-out;
+}
+
+@keyframes progress-bar-stripes {
+    0% {
+        background-position-x: 0;
+    }
+    100% {
+        background-position-x: 57px;
+    }
+}
+
+@keyframes progress-animation {
+    100% {
+        width: var(--percentage);
+    }
+} 

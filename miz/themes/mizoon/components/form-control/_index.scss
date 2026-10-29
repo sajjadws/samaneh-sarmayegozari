@@ -1,0 +1,44 @@
+@use "sass:string";
+@use "../button" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+
+$form-field-custom-classes:".position-relative";
+$form-control-custom-classes:".text-fields-color, .bg-fields-color, .p-2, .bw-1, .border-color, .border-style-solid, .radius-all-normal, .#{$conf-font-prefix}-size-subtitle";
+$from-control-color-custom-classes:".p-1, .aspect-ratio-1x1, .h-10";
+$from-control-disabled-custom-classes: ".opacity-7";
+
+.form-field{
+    @extend .d-flex, .gap-1, #{$form-field-custom-classes};
+
+
+    &[class*="flex-row"]{ 
+        @extend .justify-content-start , .align-items-center;
+    }
+
+    .form-control{
+        @extend #{$form-control-custom-classes};
+
+        &:focus {
+            outline: none;
+            box-shadow: none;
+        }
+        &[type="file"]::file-selector-button{
+            border:none;
+            @extend .btn, .btn-secondary, .bw-1, .border-style-solid, .border-color;
+        }
+    }
+    textarea.form-control{
+        resize: vertical;
+    }
+    .form-control:disabled{
+        @extend #{$from-control-disabled-custom-classes};
+
+        &::placeholder{
+            opacity: 1;
+        }
+    }
+    .form-control[type="color"]{
+        @extend #{$from-control-color-custom-classes};
+    }
+}

@@ -1,0 +1,67 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+
+.table-container {
+	overflow-x: auto;
+	@extend .position-relative, .w-100;
+}
+
+.miz-table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	caption-side: bottom;
+	@extend .w-100, .txt-size-normal, .lh-5;
+}
+
+.table-header tr {
+	border-bottom-width: 1px;
+	@extend .bb-style-solid, .border-color;
+}
+
+.table-body tr:last-child {
+	@extend .border-b-none;
+}
+
+.table-footer {
+	border-top-width: 1px;
+	@extend .bt-style-solid, .border-color, .bg-secondary-light-color, .font-weight-medium;
+}
+
+.table-footer > tr:last-child {
+	@extend .border-b-none;
+}
+
+.table-row {
+	border-bottom-width: 1px;
+	transition: background-color 150ms ease;
+	@extend .bb-style-solid, .border-color;
+}
+
+.table-row:hover,
+.table-row:has([aria-expanded="true"]),
+.table-row[data-state="selected"] {
+	@extend .bg-secondary-light-color;
+}
+
+.table-head {
+	height: 2.5rem;
+	vertical-align: middle;
+	@extend .p-1, .txt-align-start, .font-weight-medium, .txt-white-space-nowrap;
+}
+
+.table-cell {
+	vertical-align: middle;
+	@extend .p-1, .txt-white-space-nowrap;
+}
+
+.table-head:has([role="checkbox"]),
+.table-cell:has([role="checkbox"]) {
+	@extend .pie-0;
+}
+
+.table-caption {
+	color: var(--secondary-text);
+	@extend .mt-2, .txt-size-normal;
+}

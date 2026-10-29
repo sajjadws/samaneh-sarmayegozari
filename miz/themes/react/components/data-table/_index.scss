@@ -1,0 +1,46 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+
+.data-table {
+	@extend .overflow-hidden, .bw-1, .border-style-solid, .border-color, .bg-card-color, .text-color, .radius-all-normal;
+}
+
+.data-table-heading {
+	@extend .d-flex, .align-items-center, .justify-content-space-between, .p-3;
+}
+
+.data-table-title {
+	@extend .m-0, .txt-size-normal, .font-weight-bold;
+}
+
+.data-table-count {
+	color: var(--secondary-text);
+	@extend .mt-1, .mb-0, .txt-size-subtitle;
+}
+
+.data-table-content {
+	@extend .txt-align-center;
+}
+
+.data-table-content .table-head {
+	border-top-width: 1px;
+	border-bottom-width: 1px;
+	color: var(--secondary-text);
+	@extend .py-2, .px-3, .bt-style-solid, .bb-style-solid, .border-color, .txt-size-subtitle, .font-weight-bold;
+}
+
+.data-table-content .table-cell {
+	@extend .p-2, .text-color, .txt-size-subtitle;
+}
+
+.data-table-content .data-table-number {
+	width: 1%;
+	@extend .txt-white-space-nowrap;
+}
+
+.data-table-content .data-table-empty {
+	height: 6rem;
+	@extend .txt-align-center;
+}

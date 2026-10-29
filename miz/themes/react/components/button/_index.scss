@@ -1,0 +1,275 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* =========================
+    Base Button
+========================= */
+
+.btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    border-color: transparent;
+    background-clip: padding-box;
+    outline: none;
+    transition: all 150ms ease;
+    -webkit-tap-highlight-color: transparent;
+    @extend .align-items-center, .justify-content-center, .gap-1, .bw-1, .border-style-solid, .radius-all-normal, .txt-size-normal, .font-weight-medium, .txt-white-space-nowrap, .cursor-pointer, .user-select-none, .py-1, .px-2;
+}
+
+.btn:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 50%, transparent);
+}
+
+.btn:active:not([aria-haspopup]) {
+    transform: translateY(1px);
+}
+
+.btn:disabled,
+.btn[disabled] {
+    pointer-events: none;
+    @extend .opacity-5;
+}
+
+.btn[aria-invalid="true"] {
+    border-color: var(--danger-regular);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 20%, transparent);
+}
+
+/* SVG icons */
+
+.btn svg {
+    pointer-events: none;
+    flex-shrink: 0;
+}
+
+.btn svg:not([class*="size-"]) {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* =========================
+    Variants
+========================= */
+
+/* Default */
+
+.btn-default {
+    color: var(--on-primary);
+    @extend .bg-primary-color;
+}
+
+.btn-default:hover {
+    background-color: color-mix(in srgb, var(--primary) 80%, transparent);
+}
+
+/* Outline */
+
+.btn-outline {
+    @extend .border-color, .bg-color;
+}
+
+.btn-outline:hover,
+.btn-outline[aria-expanded="true"] {
+    @extend .bg-secondary-light-color, .text-color;
+}
+
+/* Secondary */
+
+.btn-secondary {
+    @extend .bg-secondary-color, .on-secondary-color;
+}
+
+.btn-secondary:hover {
+    background-color: color-mix(in oklch, var(--secondary), var(--text) 5%);
+}
+
+.btn-secondary[aria-expanded="true"] {
+    @extend .bg-secondary-color, .on-secondary-color;
+}
+
+/* Ghost */
+
+.btn-ghost:hover,
+.btn-ghost[aria-expanded="true"] {
+    background-color: var(--secondary-light);
+    color: var(--text);
+    @extend .bg-secondary-color, .text-color;
+}
+
+/* Destructive */
+
+.btn-destructive {
+    background-color: color-mix(in srgb, var(--danger-regular) 10%, transparent);
+    @extend .danger-regular-color;
+}
+
+.btn-destructive:hover {
+    background-color: color-mix(in srgb, var(--danger-regular) 20%, transparent);
+}
+
+.btn-destructive:focus-visible {
+    border-color: color-mix(in srgb, var(--danger-regular) 40%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 20%, transparent);
+}
+
+/* Link */
+
+.btn-link {
+    text-underline-offset: 4px;
+    @extend .primary-color;
+}
+
+.btn-link:hover {
+    @extend .txt-decoration-underline;
+}
+
+/* =========================
+    Sizes
+========================= */
+
+.btn-size-default {
+    height: 2rem;
+    @extend .px-1;
+}
+
+.btn-size-xs {
+    height: 1.5rem;
+    @extend .gap-1, .px-1, .radius-all-normal, .txt-size-subtitle;
+}
+
+.btn-size-sm {
+    height: 1.75rem;
+    @extend .gap-1, .px-1, .radius-all-normal, .txt-size-subtitle;
+}
+
+.btn-size-lg {
+    height: 2.25rem;
+    @extend .px-1;
+}
+
+.btn-size-icon {
+    width: 2rem;
+    height: 2rem;
+    @extend .p-0;
+}
+
+.btn-size-icon-xs {
+    width: 1.5rem;
+    height: 1.5rem;
+    @extend .p-0, .radius-all-normal;
+}
+
+.btn-size-icon-sm {
+    width: 1.75rem;
+    height: 1.75rem;
+    @extend .p-0, .radius-all-normal;
+}
+
+.btn-size-icon-lg {
+    width: 2.25rem;
+    height: 2.25rem;
+    @extend .p-0;
+}
+
+/* =========================
+    Small SVG sizes
+========================= */
+
+// .btn-size-xs svg:not([class*="size-"]) {
+//     width: 0.75rem;
+//     height: 0.75rem;
+// }
+
+// .btn-size-sm svg:not([class*="size-"]) {
+//     width: 0.875rem;
+//     height: 0.875rem;
+// }
+
+// .btn-size-icon-xs svg:not([class*="size-"]) {
+//     width: 0.75rem;
+//     height: 0.75rem;
+// }
+
+$btn-sizes: (
+    "xs": 0.75rem,
+    "sm": 0.875rem,
+    "default": 1rem,
+    "lg": 1.125rem
+);
+
+@each $size, $icon-size in $btn-sizes {
+    .btn-size-#{$size} svg:not([class*="size-"]) {
+        width: $icon-size;
+        height: $icon-size;
+    }
+
+    .btn-size-icon-#{$size} svg:not([class*="size-"]) {
+        width: $icon-size;
+        height: $icon-size;
+    }
+}
+
+/* =========================
+    Icon positioning
+========================= */
+
+.btn [data-icon="inline-start"],
+.btn-size-xs [data-icon="inline-start"],
+.btn-size-sm [data-icon="inline-start"] {
+    margin-inline-start: -0.125rem;
+}
+
+.btn [data-icon="inline-end"],
+.btn-size-xs [data-icon="inline-end"],
+.btn-size-sm [data-icon="inline-end"] {
+    margin-inline-end: -0.125rem;
+}
+
+/* =========================
+    Button groups
+========================= */
+
+[data-slot="button-group"] .btn-size-xs,
+[data-slot="button-group"] .btn-size-sm {
+    @extend .radius-all-normal;
+}
+
+// /* =========================
+//     Dark mode
+// ========================= */
+
+// .dark .btn-outline {
+//     border-color: var(--border-fields);
+//     background-color: color-mix(in srgb, var(--fields) 30%, transparent);
+// }
+
+// .dark .btn-outline:hover,
+// .dark .btn-outline[aria-expanded="true"] {
+//     background-color: color-mix(in srgb, var(--fields) 50%, transparent);
+// }
+
+// .dark .btn-ghost:hover,
+// .dark .btn-ghost[aria-expanded="true"] {
+//     background-color: color-mix(in srgb, var(--secondary-light) 50%, transparent);
+// }
+
+// .dark .btn-destructive {
+//     background-color: color-mix(in srgb, var(--danger-regular) 20%, transparent);
+// }
+
+// .dark .btn-destructive:hover {
+//     background-color: color-mix(in srgb, var(--danger-regular) 30%, transparent);
+// }
+
+// .dark .btn-destructive:focus-visible {
+//     box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 40%, transparent);
+// }
+
+// .dark .btn[aria-invalid="true"] {
+//     border-color: color-mix(in srgb, var(--danger-regular) 50%, transparent);
+//     box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 40%, transparent);
+// }

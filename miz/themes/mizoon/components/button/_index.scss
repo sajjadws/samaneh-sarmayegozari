@@ -1,0 +1,177 @@
+@use "../../../../sass/kernel/responsive/functions/_responsive" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use "sass:list";
+@use "sass:map";
+@use "sass:string";
+
+$btn-transition: 0.2s linear;
+$btn-outline-transition: 0.2s linear;
+$btn-has-icon-and-span:".gap-1";
+$btn-not-has-span:".p-1";
+$btn-custom-classes:".py-1, .px-2";
+$btn-outline-custom-classes:".border-style-solid, .bw-1, .py-1, .px-2";
+
+$btn:(
+    primary:(
+        background:get-color(primary), 
+        color:get-color(on-primary), 
+        background-hover:get-color(primary-dark), 
+        color-hover:get-color(on-primary)
+    ),
+    secondary:(
+        background:get-color(secondary), 
+        color:get-color(on-secondary), 
+        background-hover:get-color(secondary-dark), 
+        color-hover:get-color(on-secondary)
+    ),
+    success:(
+        background:get-color(success-regular), 
+        color:get-color(white), 
+        background-hover:get-color(success-dark), 
+        color-hover:get-color(white)
+    ),
+    danger:(
+        background:get-color(danger-regular), 
+        color:get-color(white), 
+        background-hover:get-color(danger-dark), 
+        color-hover:get-color(white)
+    ),
+    warning:(
+        background:get-color(warning-regular), 
+        color:get-color(white), 
+        background-hover:get-color(warning-dark), 
+        color-hover:get-color(white)
+    ),
+    info:(
+        background:get-color(information-regular), 
+        color:get-color(white), 
+        background-hover:get-color(information-dark), 
+        color-hover:get-color(white)
+    ),
+    link:(
+        background:get-color(transparent), 
+        color:get-color(information-light), 
+        background-hover:get-color(transparent), 
+        color-hover:get-color(information-dark)
+    ),
+    blur:(
+        background:color-mix(in srgb, var(--card) 40%, transparent), 
+        color:color-mix(in srgb , var(--secondary) 60% , transparent), 
+        background-hover:get-color(transparent), 
+        color-hover:get-color(secondary)
+    )
+);
+
+$btn-outline:(
+    primary:(
+        border:get-color(primary), 
+        color:get-color(primary),
+        border-hover:get-color(primary),
+        color-hover:get-color(on-primary),
+        background-hover:get-color(primary), 
+    ),
+    secondary:(
+        border:get-color(secondary), 
+        color:get-color(secondary), 
+        border-hover:get-color(secondary),
+        color-hover:get-color(on-secondary),
+        background-hover:get-color(secondary), 
+    ),
+    success:(
+        border:get-color(success-regular), 
+        color:get-color(success-regular), 
+        border-hover:get-color(success-regular),
+        color-hover:get-color(white),
+        background-hover:get-color(success-regular), 
+    ),
+    danger:(
+        border:get-color(danger-regular), 
+        color:get-color(danger-regular), 
+        border-hover:get-color(danger-regular),
+        color-hover:get-color(white),
+        background-hover:get-color(danger-regular), 
+    ),
+    warning:(
+        border:get-color(warning-regular), 
+        color:get-color(warning-regular), 
+        border-hover:get-color(warning-regular),
+        color-hover:get-color(white),
+        background-hover:get-color(warning-regular), 
+    ),
+    info:(
+        border:get-color(information-regular), 
+        color:get-color(information-regular), 
+        border-hover:get-color(information-regular),
+        color-hover:get-color(white),
+        background-hover:get-color(information-regular), 
+    ),
+    link:(
+        border:get-color(transparent), 
+        color:get-color(information-light), 
+        border-hover:get-color(transparent), 
+        color-hover:get-color(information-light),
+        background-hover:get-color(transparent), 
+    ),
+);
+
+.btn{
+    @extend .radius-all-small, .cursor-pointer, .border-box;
+    user-select: none;
+    &:has(i){
+        &:not(:has(span)){
+            @extend .d-flex , #{$btn-not-has-span};
+        }
+    }
+    &:has(i + span){
+        @extend .d-flex, #{$btn-has-icon-and-span};
+    }
+    
+}
+
+
+@for $i from 1 through list.length($btn){
+    $btn-list-item:list.nth($btn , $i);
+    $btn-class:list.nth($btn-list-item , 1);
+    $btn-color:map.get(list.nth($btn-list-item , 2) , color);
+    $btn-bg-color:map.get(list.nth($btn-list-item , 2) , background);
+    $btn-bg-color-hover:map.get(list.nth($btn-list-item , 2) , background-hover);
+    $btn-color-hover:map.get(list.nth($btn-list-item , 2) , color-hover);
+
+    .btn-#{$btn-class}{
+        color: $btn-color;
+        background-color: $btn-bg-color;
+        transition: $btn-transition;
+        @extend #{$btn-custom-classes};
+    }
+    .btn-#{$btn-class}:hover{
+        background-color: $btn-bg-color-hover;
+        color: $btn-color-hover;
+    }
+}
+
+
+
+@for $i from 1 through list.length($btn-outline){
+    $btn-outline-list-item:list.nth($btn-outline , $i);
+    $btn-outline-class:list.nth($btn-outline-list-item , 1);
+    $btn-outline-color:map.get(list.nth($btn-outline-list-item , 2) , color);
+    $btn-outline-border:map.get(list.nth($btn-outline-list-item , 2) , border);
+    $btn-outline-bg-color-hover:map.get(list.nth($btn-outline-list-item , 2) , background-hover);
+    $btn-outline-color-hover:map.get(list.nth($btn-outline-list-item , 2) , color-hover);
+    $btn-outline-border-hover:map.get(list.nth($btn-outline-list-item , 2) , border-hover);
+
+    .btn-outline-#{$btn-outline-class}{
+        color: $btn-outline-color;
+        border-color: $btn-outline-border;
+        background-color:transparent;
+        transition: $btn-outline-transition;
+        @extend #{$btn-outline-custom-classes};
+    }
+    .btn-outline-#{$btn-outline-class}:hover{
+        background-color: $btn-outline-bg-color-hover;
+        color: $btn-outline-color-hover;
+        border-color: $btn-outline-border-hover;
+    }
+}

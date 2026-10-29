@@ -1,0 +1,37 @@
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "sass:list";
+
+$badge-size: 4px;
+
+.badge-wrapper{
+    @extend .position-relative, .cursor-pointer;
+
+    & .badge{
+        padding:$badge-size;
+        text-transform: uppercase;
+        @extend .#{$conf-font-prefix}-align-center, .d-flex, .flex-row, .justify-content-center, .align-items-center, .position-absolute;
+
+        &:has(i){
+            padding:$badge-size !important;
+            @extend .aspect-ratio-1x1;
+        }
+    }
+    & .badge.top-0.left-0{
+        transform: translate(-50% , -50%);
+    }
+    & .badge.top-0.right-0{
+        transform: translate(50% , -50%);
+    }
+    & .badge.bottom-0.left-0{
+        transform: translate(-50% , 50%);
+    }
+    & .badge.bottom-0.right-0{
+        transform: translate(50% , 50%);
+    }
+    & .badge-inside{
+        @extend .badge;
+        position: unset !important;
+        transform: unset !important;
+    }
+}

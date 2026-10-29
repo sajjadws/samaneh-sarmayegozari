@@ -1,0 +1,114 @@
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+
+$list-group-custom-classes: ".d-flex, .justify-content-center, .align-items-center";
+$list-group-transition:0.2s linear;
+$list-group-item-custom-classes: ".bw-1, .border-color, .border-style-solid, .w-100, .p-1, .text-color";
+$list-group-item-active-custom-classes: ".bg-primary-color, .on-primary-color";
+$list-group-item-disabled-custom-classes: ".bg-primary-color, .on-primary-color";
+$list-group-list-item-marker-custom-classes: ".text-color";
+$list-group-flush-list-item-active-custom-classes: ".on-primary-color";
+$list-group-flush-list-item-marker-custom-classes: ".text-color";
+
+.list-group{
+    @extend #{$list-group-custom-classes};
+
+    & .list-group-item{
+        transition: $list-group-transition;
+        @extend .border-box;
+        @extend .d-flex, .justify-content-start, .align-items-center, #{$list-group-item-custom-classes};
+
+        &.active{
+            @extend #{$list-group-item-active-custom-classes};
+        }
+        &:disabled{
+            user-select:none;
+            cursor: default;
+            @extend #{$list-group-item-disabled-custom-classes};
+        }
+    }
+    &.flex-column{
+        & .list-group-item{
+            &:not(:first-child){
+                @extend .border-t-none;
+            }
+            &:first-child{
+                @extend .radius-tr-small, .radius-tl-small;
+            }
+            &:last-child{
+                @extend .radius-br-small, .radius-bl-small;
+            }
+        }
+    }
+    &:not(.flex-column){
+        @extend .flex-row;
+
+        & .list-group-item{
+            &:not(:first-child){
+                @extend .border-l-none;
+            }
+            &:first-child{
+                @extend .radius-tl-small, .radius-bl-small;
+            }
+            &:last-child{
+                @extend .radius-tr-small, .radius-br-small;
+            }
+        }
+    }
+}
+
+ol.list-group{
+    & li , & .list-group-item{
+        @extend .d-flex, .gap-1;
+
+        &.active{
+            @extend #{$list-group-item-active-custom-classes};
+        }
+        &:disabled{
+            user-select:none;
+            cursor: default;
+            @extend #{$list-group-item-disabled-custom-classes};
+        }
+    }
+    & li{
+        list-style: decimal;
+
+        &.active::marker{
+            @extend #{$list-group-list-item-marker-custom-classes};
+        }
+    }
+}
+
+.list-group-flush{
+    & .list-group-item{
+        @extend .d-flex, .gap-1, .bw-1, .border-color, .border-style-solid, .w-100, .p-1, .text-color, .border-t-none, .border-l-none, .border-r-none;
+
+        &:last-child{
+            @extend .border-b-none;
+        }
+        & a{
+            @extend .text-color;
+        }
+        &:disabled{
+            user-select:none;
+            cursor: default;
+            @extend #{$list-group-item-disabled-custom-classes};
+        }
+    }
+    & li.list-group-item{
+        list-style: decimal;
+
+        &.active{
+            @extend #{$list-group-flush-list-item-active-custom-classes};
+
+            &::marker{
+                @extend #{$list-group-flush-list-item-marker-custom-classes};
+            }
+        }
+        &:disabled{
+            user-select:none;
+            cursor: default;
+            @extend #{$list-group-item-disabled-custom-classes};
+        }
+    }
+}

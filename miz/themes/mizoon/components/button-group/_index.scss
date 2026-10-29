@@ -1,0 +1,35 @@
+@use "../../../../sass/kernel" as *;
+@use "../../../../sass/config/_typography" as *;
+
+$btn-group-custom-classes:"";
+$btn-group-btn-custom-classes:".border-style-solid, .bw-1, .border-color";
+
+.btn-group{
+    @extend .d-flex, #{$btn-group-custom-classes};
+
+    .btn{
+        @extend .d-flex, .justify-content-center, .align-items-center, #{$btn-group-btn-custom-classes};
+    }
+    &[class*="flex-column"] .btn{
+        &:not(:first-child,:last-child){
+            @extend .radius-all-none;
+        }
+        &:first-child{
+            @extend .radius-ee-none, .radius-es-none, .border-b-none;
+        }
+        &:last-child{
+            @extend .radius-se-none, .radius-ss-none, .border-t-none;
+        }
+    }
+    &:not([class*="flex-"]) .btn{
+        &:not(:first-child,:last-child){
+            @extend .radius-all-none;
+        }
+        &:first-child{
+            @extend .radius-ee-none, .radius-se-none, .border-ie-none;
+        }
+        &:last-child{
+            @extend .radius-es-none, .radius-ss-none, .border-is-none;
+        }
+    }
+}

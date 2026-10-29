@@ -1,0 +1,29 @@
+@use "../../../../sass/kernel" as *;
+
+$range-custom-classes:".bg-on-secondary-color, .radius-all-full, .cursor-pointer";
+$range-disabled-custom-classes:".bg-disabled-regular-color";
+$range-thumb-width: 15px;
+$range-thumb-height: 15px;
+
+.range{
+    height:var(--range-height);
+    @extend .w-100, #{$range-custom-classes};
+
+    &:disabled{
+        @extend #{$range-disabled-custom-classes};
+    }
+    &::-moz-range-thumb{
+        width: $range-thumb-width;
+        height: $range-thumb-height;
+        background-color: get-color(secondary-color);
+        border-width: 0;
+        border-radius: 50%;
+    }
+    &::-webkit-slider-thumb{
+        width: $range-thumb-width;
+        height: $range-thumb-height;
+        background-color: get-color(secondary-color);
+        border-width: 0;
+        border-radius: 50%;
+    }
+}

@@ -1,0 +1,59 @@
+@use "../../../../sass/kernel" as *;
+
+$breadcrumb-items-custom-classes: ".on-secondary-color";
+$breadcrumb-items-active-custom-classes:".primary-color";
+$breadcrumb-items-after-custom-classes: ".mie-1";
+
+.breadcrumb{
+    @extend .w-fit-content;
+
+    & > *{
+        @extend .d-flex, .flex-row, .flex-wrap, .justify-content-center, .align-items-center;
+    }
+
+    &[data-breadcrumb-content-image], &[data-breadcrumb-content]{
+        & li, & .breadcrumb-item{
+            @extend .d-flex, .flex-row, .gap-1, .justify-content-center, .align-items-center, #{$breadcrumb-items-custom-classes};
+            
+            & a{
+                @extend #{$breadcrumb-items-custom-classes};
+            }
+
+            &::after{
+                content: var(--content);
+                @extend .d-inline-block, #{$breadcrumb-items-after-custom-classes};
+            }
+
+            &:last-child::after{
+                --content:none;
+            }
+
+            &.active{
+                @extend #{$breadcrumb-items-active-custom-classes};
+
+                & a{
+                    @extend #{$breadcrumb-items-active-custom-classes};
+                }
+            }
+        }
+    }
+    &[data-breadcrumb-content-image]{
+        & li, & .breadcrumb-item{
+            &::after{
+                content: '';
+                width: var(--content-image-size);
+                background-image: var(--content-image);
+                background-size: contain;
+                background-position: center;
+                background-repeat: no-repeat;
+                @extend .aspect-ratio-1x1;
+            }
+            &:last-child::after{
+                content: none;
+            }
+        }
+    }
+}
+.breadcrumb-wrapper{
+    @extend .d-flex, .flex-row, .align-items-center;
+}

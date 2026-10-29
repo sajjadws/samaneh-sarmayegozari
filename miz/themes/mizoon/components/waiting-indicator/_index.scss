@@ -1,0 +1,144 @@
+@use "../../../../sass/kernel/" as *;
+
+$loader-spinner-fade-bg-color:"primary";
+$loader-bars-bg-color:"primary";
+$loader-multi-border-color:"primary";
+$loader-spinner-border-top-color:"primary";
+$loader-spinner-border-color:"on-primary";
+$loader-liquid-bg-color:"primary";
+
+.loader-spinner-border {
+  // border-color: get-color(primary);
+  width: var(--loader-spinner-border-size);
+  animation:
+  spinner-border-1 0.8s infinite linear alternate,
+  spinner-border-2 1.6s infinite linear;
+  @extend .d-flex, .aspect-ratio-1x1, .radius-all-full, .border-style-solid;
+}
+.loader-grow{
+  animation: grow .75s linear infinite;
+  width: var(--loader-grow-size);
+  @extend .d-flex, .aspect-ratio-1x1, .radius-all-full;
+}
+.loader-spinner-fade{
+  width: var(--loader-spinner-fade-size);
+  @extend .aspect-ratio-1x1, .radius-all-full;
+  background: 
+    radial-gradient(farthest-side,#{get-color($loader-spinner-fade-bg-color)} 94%,transparent) top/8px 8px no-repeat,
+    conic-gradient(transparent 30%,#{get-color($loader-spinner-fade-bg-color)});
+  -webkit-mask: radial-gradient(farthest-side,transparent calc(100% - 8px),#000 0);
+  mask: radial-gradient(farthest-side,transparent calc(100% - 8px),#000 0);
+  animation: spinner-fade 1s infinite linear;
+}
+.loader-bars{
+  width: var(--loader-bars-size);
+  aspect-ratio: .75;
+  --color-bars: no-repeat linear-gradient(#{get-color($loader-bars-bg-color)} 0 0);
+  background: 
+    var(--color-bars) 0%   50%,
+    var(--color-bars) 50%  50%,
+    var(--color-bars) 100% 50%;
+  background-size: 20% 50%;
+  animation: bars 1s infinite linear;
+}
+.loader-multi {
+  width: var(--loader-multi-size);
+  border-color: transparent;
+  border-right-color: get-color($loader-multi-border-color);
+  animation: multi 1s infinite linear;
+  @extend .radius-all-full, .bw-4, .border-style-solid, .d-grid, .aspect-ratio-1x1;
+
+  &::before, &::after {    
+    content: "";
+    grid-area: 1/1;
+    margin: 2px;
+    border: inherit;
+    animation: multi 2s infinite;
+    @extend .radius-all-full;
+  }
+  &::after {
+    margin: 8px;
+    animation-duration: 3s;
+  }
+}
+.loader-spinner {
+  width: var(--loader-spinner-size);
+  border-color:get-color($loader-spinner-border-color);
+  border-top-color: get-color($loader-spinner-border-top-color);
+  animation: spin 1s ease-in-out infinite;
+  -webkit-animation: spin 1s ease-in-out infinite;
+  @extend .aspect-ratio-1x1, .bw-3, .radius-all-full, .border-style-solid, .d-inline-block;
+}
+.loader-liquid {
+  width: var(--loader-liquid-size);
+  filter:contrast(2);
+  @extend .aspect-ratio-1x1, .d-grid;
+
+  &::before,
+  &::after {
+    content:"";
+    grid-area: 1/1;
+    animation: liquid 3s infinite linear;
+    background-color:get-color($loader-liquid-bg-color);
+    @extend .radius-all-full;
+  }
+  &::after{
+    animation-delay: -.8s;
+  }
+}
+@keyframes spinner-border-1{
+  0%    {clip-path: polygon(50% 50%,0       0,  50%   0%,  50%    0%, 50%    0%, 50%    0%, 50%    0% )}
+  12.5% {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100%   0%, 100%   0%, 100%   0% )}
+  25%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 100% 100%, 100% 100% )}
+  50%   {clip-path: polygon(50% 50%,0       0,  50%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+  62.5% {clip-path: polygon(50% 50%,100%    0, 100%   0%,  100%   0%, 100% 100%, 50%  100%, 0%   100% )}
+  75%   {clip-path: polygon(50% 50%,100% 100%, 100% 100%,  100% 100%, 100% 100%, 50%  100%, 0%   100% )}
+  100%  {clip-path: polygon(50% 50%,50%  100%,  50% 100%,   50% 100%,  50% 100%, 50%  100%, 0%   100% )}
+}
+@keyframes spinner-border-2{ 
+ 0%    {transform:scaleY(1)  rotate(0deg)}
+ 49.99%{transform:scaleY(1)  rotate(135deg)}
+ 50%   {transform:scaleY(-1) rotate(0deg)}
+ 100%  {transform:scaleY(-1) rotate(-135deg)}
+}
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@keyframes liquid{
+  12.5% {border-radius: 37% 63% 70% 30% / 30% 62% 38% 70%}
+  25%   {border-radius: 84% 16% 15% 85% / 55% 79% 21% 45%}
+  37.5% {border-radius: 73% 27% 74% 26% / 64% 32% 68% 36%}
+  50%   {border-radius: 73% 27% 18% 82% / 52% 32% 68% 48%}
+  62.5% {border-radius: 33% 67% 18% 82% / 52% 75% 25% 48%}
+  75%   {border-radius: 12% 88% 69% 31% / 10% 66% 34% 90%}
+  87.5% {border-radius: 50% 50% 70% 30% / 52% 62% 38% 48%}
+}
+@keyframes bars {
+  20% {background-position: 0% 0%  ,50% 50% ,100% 50% }
+  40% {background-position: 0% 100%,50% 0%  ,100% 50% }
+  60% {background-position: 0% 50% ,50% 100%,100% 0%  }
+  80% {background-position: 0% 50% ,50% 50% ,100% 100%}
+}
+@keyframes grow {
+  0%{
+    opacity: 0;
+    transform: scale(0);
+  }
+  60%{
+    opacity: 1;
+    transform: scale(1);
+  }
+  100%{
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+@keyframes multi{ 
+  100%{transform: rotate(1turn)}
+}
+@keyframes spinner-fade{ 
+  100%{transform: rotate(1turn)}
+}

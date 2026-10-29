@@ -1,0 +1,84 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+
+.card {
+    --card-spacing: 1rem;
+    gap: var(--card-spacing);
+    padding-block: var(--card-spacing);
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--text) 10%, transparent);
+    @extend .d-flex, .flex-column, .overflow-hidden, .bg-card-color, .text-color, .txt-size-subtitle, .radius-all-normal;
+}
+
+.card:has([data-slot="card-footer"]) {
+    padding-bottom: 0;
+}
+
+.card:has(> img:first-child) {
+    padding-top: 0;
+}
+
+.card[data-size="sm"] {
+    --card-spacing: 0.75rem;
+}
+
+.card > img:first-child {
+    @extend .radius-tl-normal, .radius-tr-normal;
+}
+
+.card > img:last-child {
+    @extend .radius-bl-normal, .radius-br-normal;
+}
+
+.card-header {
+    grid-auto-rows: min-content;
+    container-name: card-header;
+    container-type: inline-size;
+    padding-inline: var(--card-spacing);
+    @extend .d-grid, .align-items-start, .gap-1, .radius-tl-normal, .radius-tr-normal;
+}
+
+.card-header:has(> [data-slot="card-action"]) {
+    grid-template-columns: 1fr auto;
+}
+
+.card-header:has(> [data-slot="card-description"]) {
+    grid-template-rows: auto auto;
+}
+
+.card-header:has(.border-b),
+.border-b .card-header {
+    padding-bottom: var(--card-spacing);
+}
+
+.card-title {
+    line-height: 1.375;
+    @extend .txt-size-normal, .font-weight-medium;
+}
+
+.card[data-size="sm"] .card-title {
+    @extend .txt-size-subtitle;
+}
+
+.card-description {
+    color: var(--secondary-text);
+    @extend .txt-size-subtitle;
+}
+
+.card-action {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    @extend .align-self-start, .justify-self-end;
+}
+
+.card-content {
+    padding-inline: var(--card-spacing);
+}
+
+.card-footer {
+    padding: var(--card-spacing);
+    border-top: 1px solid color-mix(in srgb, var(--text) 20%, transparent);
+    background-color: color-mix(in srgb, var(--secondary-light) 50%, transparent);
+    @extend .d-flex, .align-items-center, .radius-bl-normal, .radius-br-normal;
+}
