@@ -1,0 +1,181 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+
+
+
+/* =====================================
+   1. DropdownMenuContent
+   استایل محتوای اصلی منوی کشویی
+===================================== */
+
+.dropdown-menu-content {
+  z-index: 50;
+  max-height: var(--available-height);
+  width: var(--anchor-width);
+  transform-origin: var(--transform-origin);
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: none;
+}
+
+/* مخفی شدن محتوای منو هنگام بسته شدن */
+.dropdown-menu-content[data-closed] {
+  overflow: hidden;
+}
+
+
+/* =====================================
+   2. DropdownMenuContent
+   استایل Positioner
+===================================== */
+
+.dropdown-menu-positioner {
+  z-index: 50;
+  isolation: isolate;
+  outline: none;
+}
+
+
+/* =====================================
+   3. DropdownMenuItem
+   استایل آیتم‌های منو
+===================================== */
+
+.dropdown-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  outline: none;
+  user-select: none;
+}
+
+/* آیتم غیرفعال */
+.dropdown-menu-item[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* آیکون داخل آیتم */
+.dropdown-menu-item svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+
+/* =====================================
+   4. DropdownMenuSubTrigger
+   استایل بازکننده زیرمنو
+===================================== */
+
+.dropdown-submenu-trigger {
+  display: flex;
+  align-items: center;
+  cursor: default;
+  outline: none;
+  user-select: none;
+  background-color: aqua;
+}
+
+/* زمانی که زیرمنو باز است */
+.dropdown-submenu-trigger[data-popup-open] {
+  background-color: var(--accent);
+  color: var(--accent-foreground);
+}
+
+/* آیکون بازکننده زیرمنو */
+.dropdown-submenu-trigger svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+
+/* =====================================
+   5. DropdownMenuCheckboxItem
+   استایل آیتم چک‌باکس
+===================================== */
+
+.dropdown-checkbox-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  outline: none;
+  user-select: none;
+}
+
+/* چک‌باکس غیرفعال */
+.dropdown-checkbox-item[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* آیکون چک‌باکس */
+.dropdown-checkbox-item svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* محل قرارگیری علامت تیک */
+.dropdown-checkbox-indicator {
+  pointer-events: none;
+}
+
+
+/* =====================================
+   6. DropdownMenuRadioItem
+   استایل آیتم رادیویی
+===================================== */
+
+.dropdown-radio-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  cursor: default;
+  outline: none;
+  user-select: none;
+}
+
+/* رادیو غیرفعال */
+.dropdown-radio-item[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* آیکون رادیو */
+.dropdown-radio-item svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+
+/* =====================================
+   7. DropdownMenuSeparator
+   خط جداکننده آیتم‌ها
+===================================== */
+
+.dropdown-menu-separator {
+  /* استایل دلخواه خط جداکننده */
+}
+
+
+/* =====================================
+   8. DropdownMenuSubContent
+   محتوای زیرمنو
+===================================== */
+
+.dropdown-submenu-content {
+  width: auto;
+}
+
+
+/* =====================================
+   9. DropdownMenuShortcut
+   نمایش میانبر صفحه کلید
+===================================== */
+
+.dropdown-menu-shortcut {
+  display: inline-block;
+}
