@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build-miz": "concurrently \"sass --no-source-map --style=compressed miz/_index.scss:public/assets/css/miz.min.css\" \"node miz/pkg/miz-controller.js --build\" \"sass --no-source-map --style=compressed sass/style.scss:public/assets/css/style.min.css\"",
+    "build-miz": "concurrently \"sass --no-source-map --style=compressed miz/_index.scss:public/css/miz.min.css\" \"node miz/pkg/miz-controller.js --build\" \"sass --no-source-map --style=compressed sass/style.scss:public/css/style.min.css\"",
     "build-module": "node modules.js"
   },
   "dependencies": {
@@ -48,11 +48,10 @@
   "devDependencies": {
     "@tailwindcss/turbopack": "^4",
     "babel-plugin-react-compiler": "1.0.0",
+    "concurrently": "^9.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
-    "tailwindcss": "^4",
     "sass": "^1.77.8",
-		"concurrently": "^9.0.0",
-		"terser": "^5.28.1"
+    "terser": "^5.28.1"
   }
 }
