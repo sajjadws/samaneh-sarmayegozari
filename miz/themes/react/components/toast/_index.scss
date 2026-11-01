@@ -1,0 +1,316 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =========================================
+   1. ToastViewport
+   محل نمایش اعلان‌ها در صفحه
+========================================= */
+
+.toast-viewport {
+  left: 1rem;
+  right: 1rem;
+  bottom: 1rem;
+  width: auto;
+  max-width: 24rem;
+  margin-left: auto;
+  margin-right: auto;
+  outline: none;
+  pointer-events: none;
+
+  @extend .position-fixed, .z-index-10;
+}
+
+/* نمایش اعلان در سمت راست در صفحه‌های بزرگ */
+@media (min-width: 640px) {
+  .toast-viewport {
+    right: 1rem;
+    left: auto;
+   
+    @extend .w-100, .ml-0, .mr-0;
+  }
+}
+
+
+/* =========================================
+   2. Toast
+   بدنه اصلی اعلان
+========================================= */
+
+.toast-item {
+  height: var(--toast-height);
+  transform-origin: bottom;
+  border: 1px solid var(--border);
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+              0 4px 6px -4px rgb(0 0 0 / 0.1);
+  will-change: transform;
+  outline: none;
+  /* متغیرهای مدیریت موقعیت اعلان‌ها */
+  --toast-gap: 0.75rem;
+  --toast-current-height: var(
+    --toast-frontmost-height,
+    var(--toast-height)
+  );
+  --toast-offset-y: calc(
+    var(--toast-offset-y-original, 0px) * -1 +
+    var(--toast-index) * var(--toast-gap) * -1 +
+    var(--toast-swipe-movement-y)
+  );
+  --toast-peek: 0.75rem;
+  --toast-scale: max(
+    0,
+    calc(1 - var(--toast-index) * 0.1)
+  );
+  --toast-shrink: calc(1 - var(--toast-scale));
+
+  height: var(--toast-current-height);
+
+  transform:
+    translateX(var(--toast-swipe-movement-x))
+    translateY(
+      calc(
+        var(--toast-swipe-movement-y) -
+        var(--toast-index) * var(--toast-peek) -
+        var(--toast-shrink) * var(--toast-current-height)
+      )
+    )
+    scale(var(--toast-scale));
+
+  transition:
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 500ms,
+    height 150ms;
+
+    @extend .position-absolute, .right-0, .bottom-0, .z-index-10, .w-100, .user-select-none;
+
+}
+
+/* فاصله بین اعلان‌های روی هم */
+.toast-item::after {
+  content: "";
+  height: calc(var(--toast-gap) + 1px);
+  @extend .position-absolute, .top-100, .left-0, .w-100;
+}
+
+/* هنگام فوکوس با کیبورد */
+.toast-item:focus-visible {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 3px rgb(var(--ring) / 0.5);
+}
+
+/* اعلان‌هایی که محدود شده‌اند */
+.toast-item[data-limited] {
+  @extend .opacity-0;
+}
+
+/* حالت شروع نمایش اعلان */
+.toast-item[data-starting-style] {
+  transform: translateY(150%);
+}
+
+/* حالت باز شدن اعلان */
+.toast-item[data-expanded] {
+  height: var(--toast-height);
+  transform:
+    translateX(var(--toast-swipe-movement-x))
+    translateY(var(--toast-offset-y));
+}
+
+/* حالت بسته شدن عادی */
+.toast-item[data-ending-style]:not([data-limited]):not([data-swipe-direction]) {
+  transform: translateY(150%);
+}
+
+
+/* =========================================
+   3. Toast
+   انیمیشن خروج هنگام حرکت به پایین
+========================================= */
+
+.toast-item[data-ending-style][data-swipe-direction="down"] {
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) + 150%)
+  );
+}
+
+/* انیمیشن خروج هنگام حرکت به چپ */
+.toast-item[data-ending-style][data-swipe-direction="left"] {
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) - 150%))
+    translateY(var(--toast-offset-y));
+}
+
+/* انیمیشن خروج هنگام حرکت به راست */
+.toast-item[data-ending-style][data-swipe-direction="right"] {
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) + 150%))
+    translateY(var(--toast-offset-y));
+}
+
+/* انیمیشن خروج هنگام حرکت به بالا */
+.toast-item[data-ending-style][data-swipe-direction="up"] {
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) - 150%)
+  );
+}
+
+/* حالت باز بودن هنگام خروج به پایین */
+.toast-item[data-expanded][data-ending-style][data-swipe-direction="down"] {
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) + 150%)
+  );
+}
+
+/* حالت باز بودن هنگام خروج به چپ */
+.toast-item[data-expanded][data-ending-style][data-swipe-direction="left"] {
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) - 150%))
+    translateY(var(--toast-offset-y));
+}
+
+/* حالت باز بودن هنگام خروج به راست */
+.toast-item[data-expanded][data-ending-style][data-swipe-direction="right"] {
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) + 150%))
+    translateY(var(--toast-offset-y));
+}
+
+/* حالت باز بودن هنگام خروج به بالا */
+.toast-item[data-expanded][data-ending-style][data-swipe-direction="up"] {
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) - 150%)
+  );
+}
+
+
+/* =========================================
+   4. ToastContent
+   محتوای داخلی اعلان
+========================================= */
+
+.toast-content {
+  transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  @extend .d-flex, .h-100, .align-items-center, .gap-3, .overflow-hidden, .p-4 ;
+}
+
+/* محتوای اعلان‌های پشت سر */
+.toast-content[data-behind] {
+  @extend .opacity-0;
+}
+
+/* محتوای اعلان باز شده */
+.toast-content[data-expanded] {
+ @extend .opacity-10;
+}
+
+
+/* =========================================
+   5. ToastTitle
+   عنوان اعلان
+========================================= */
+
+.toast-title {
+  font-size: 0.875rem;
+  @extend .lh-5, .font-weight-medium;
+}
+
+
+/* =========================================
+   6. ToastDescription
+   توضیحات اعلان
+========================================= */
+
+.toast-description {
+  font-size: 0.875rem;
+  @extend .lh-5;
+}
+
+
+/* =========================================
+   7. ToastAction
+   دکمه عملیات اعلان
+========================================= */
+
+.toast-action {
+  flex-shrink: 0;
+}
+
+
+/* =========================================
+   8. ToastClose
+   دکمه بستن اعلان
+========================================= */
+
+.toast-close {
+  flex-shrink: 0;
+  color: var(--muted-foreground);
+  @extend .position-relative;
+}
+
+/* محدوده کلیک دکمه بستن */
+.toast-close::after {
+  content: "";
+  inset: -0.5rem;
+  @extend .position-absolute;
+}
+
+/* تغییر رنگ هنگام هاور */
+.toast-close:hover {
+  color: var(--foreground);
+}
+
+
+/* =========================================
+   9. ToastIcon
+   آیکون اعلان
+========================================= */
+
+.toast-icon {
+  flex-shrink: 0;
+}
+
+/* تنظیم اندازه SVG آیکون */
+.toast-icon svg {
+  width: 1rem;
+  height: 1rem;
+  pointer-events: none;
+}
+
+/* رنگ آیکون خطا */
+.toast-icon-error {
+  color: var(--destructive);
+}
+
+
+/* =========================================
+   10. ToastList
+   بخش متن و اطلاعات اعلان
+========================================= */
+
+.toast-text {
+  min-width: 0;
+  flex: 1;
+  @extend .d-flex, .flex-column, .gap-1;
+}
+
+
+/* =========================================
+   11. ToastIcon
+   انیمیشن آیکون بارگذاری
+========================================= */
+
+.toast-loading-icon {
+  animation: toast-spin 1s linear infinite;
+}
+
+@keyframes toast-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

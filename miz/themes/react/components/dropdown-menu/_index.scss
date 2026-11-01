@@ -11,18 +11,17 @@
 ===================================== */
 
 .dropdown-menu-content {
-  z-index: 50;
   max-height: var(--available-height);
-  width: var(--anchor-width);
   transform-origin: var(--transform-origin);
-  overflow-x: hidden;
   overflow-y: auto;
   outline: none;
+
+  @extend .overflow-x-hidden, .z-index-10, .w-100;
 }
 
 /* مخفی شدن محتوای منو هنگام بسته شدن */
 .dropdown-menu-content[data-closed] {
-  overflow: hidden;
+  @extend .overflow-hidden;
 }
 
 
@@ -32,9 +31,9 @@
 ===================================== */
 
 .dropdown-menu-positioner {
-  z-index: 50;
   isolation: isolate;
   outline: none;
+  @extend  .z-index-10;
 }
 
 
@@ -44,18 +43,16 @@
 ===================================== */
 
 .dropdown-menu-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: default;
   outline: none;
-  user-select: none;
+
+  @extend .position-relative, .d-flex, .align-items-center, .cursor-default, .user-select-none;
 }
 
 /* آیتم غیرفعال */
 .dropdown-menu-item[data-disabled] {
   pointer-events: none;
-  opacity: 0.5;
+
+  @extend .opacity-5;
 }
 
 /* آیکون داخل آیتم */
@@ -71,18 +68,15 @@
 ===================================== */
 
 .dropdown-submenu-trigger {
-  display: flex;
-  align-items: center;
-  cursor: default;
   outline: none;
-  user-select: none;
-  background-color: aqua;
+
+  @extend .d-flex, .align-items-center, .cursor-default, .user-select-none;
 }
 
 /* زمانی که زیرمنو باز است */
 .dropdown-submenu-trigger[data-popup-open] {
-  background-color: var(--accent);
-  color: var(--accent-foreground);
+
+  @extend .bg-primary-color, .on-primary-color;
 }
 
 /* آیکون بازکننده زیرمنو */
@@ -98,18 +92,16 @@
 ===================================== */
 
 .dropdown-checkbox-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: default;
   outline: none;
-  user-select: none;
+
+  @extend .d-flex, .align-items-center, .cursor-default, .user-select-none, .position-relative;
 }
 
 /* چک‌باکس غیرفعال */
 .dropdown-checkbox-item[data-disabled] {
   pointer-events: none;
-  opacity: 0.5;
+
+  @extend .opacity-5;
 }
 
 /* آیکون چک‌باکس */
@@ -130,18 +122,15 @@
 ===================================== */
 
 .dropdown-radio-item {
-  position: relative;
-  display: flex;
-  align-items: center;
-  cursor: default;
   outline: none;
-  user-select: none;
+
+  @extend  .d-flex, .position-relative, .align-items-center, .cursor-default, .user-select-none;
 }
 
 /* رادیو غیرفعال */
 .dropdown-radio-item[data-disabled] {
   pointer-events: none;
-  opacity: 0.5;
+  @extend .opacity-5;
 }
 
 /* آیکون رادیو */
@@ -157,7 +146,7 @@
 ===================================== */
 
 .dropdown-menu-separator {
-  /* استایل دلخواه خط جداکننده */
+  @extend .w-100, .bg-primary-color;
 }
 
 
@@ -177,5 +166,5 @@
 ===================================== */
 
 .dropdown-menu-shortcut {
-  display: inline-block;
+  @extend .d-inline-block;
 }
