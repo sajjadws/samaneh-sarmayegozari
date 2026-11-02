@@ -127,13 +127,13 @@ $dark-color-palette-react:(
 );
 
 $light-color-palette:map.merge($light-color-palette , $light-color-palette-react);
-// $dark-color-palette:map.merge($dark-color-palette , $dark-color-palette-react);
+$dark-color-palette:map.merge($dark-color-palette , $dark-color-palette-react);
 
 $color-palette-react:(
     default : $light-color-palette ,
     colors : (
         light : $light-color-palette ,
-        // dark : $dark-color-palette ,
+        dark : $dark-color-palette ,
     )
 );
 
