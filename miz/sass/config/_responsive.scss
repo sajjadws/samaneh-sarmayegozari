@@ -1,8 +1,8 @@
 $break-points:(xxl:1920px , xl:1280px , lg:1024px , md:767px , sm:478px);
 // number of boxed space around should be equal with break points
-$header-space-horizontally:(81px,70px,50px,25px,20px);
+$header-space-horizontally:(60px,50px,40px,20px,15px);
 $header-space-vertically:(5rem,4.5rem,4rem,3rem,3rem);
-$boxed-space-horizontally:(81px,70px,50px,25px,20px);
+$boxed-space-horizontally:(60px,50px,40px,20px,15px);
 $boxed-space-vertically:(5rem,4.5rem,4rem,3rem,3rem);
 $conf-font-size-responsive:(1rem, 1rem, 0.8rem, 0.7rem, 0.7rem);
 
@@ -11,7 +11,7 @@ $conf-cols:(
     responsive:true
 );
 $conf-width:(
-    count:50,
+    count:100,
     responsive:true
 );
 $conf-height:(
@@ -53,27 +53,27 @@ $conf-grids:(
     responsive:true
 );
 $conf-gaps:(
-    count:25,
+    count:50,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 );
 $conf-paddings:(
-    count:25,
+    count:50,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 );
 $conf-margins:(
-    count:25,
+    count:50,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 );
 $conf-letter-spacing:(
     count:25,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 );
 $conf-orders:(
