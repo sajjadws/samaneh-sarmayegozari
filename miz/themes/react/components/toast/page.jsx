@@ -5,7 +5,6 @@ import { Toast as ToastPrimitive } from "@base-ui/react/toast"
 import { cn } from "cn"
 
 import { Button } from "../button/page"
-// import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
 
 const toast = ToastPrimitive.createToastManager()
 
@@ -111,16 +110,7 @@ function ToastClose({
       )}
       {...props}
     >
-      {children ?? (
-        {/* <IconPlaceholder
-          lucide="XIcon"
-          tabler="IconX"
-          hugeicons="Cancel01Icon"
-          phosphor="XIcon"
-          remixicon="RiCloseLine"
-          aria-hidden="true"
-        /> */}
-      )}
+      {children ?? "*"}
     </ToastPrimitive.Close>
   )
 }

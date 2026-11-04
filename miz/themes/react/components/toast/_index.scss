@@ -86,7 +86,7 @@
     opacity 500ms,
     height 150ms;
 
-    @extend .position-absolute, .right-0, .bottom-0, .z-index-10, .w-100, .user-select-none;
+    @extend .position-absolute, .right-0, .bottom-0, .z-index-10, .w-100, .user-select-none, .bg-secondary-color;
 
 }
 

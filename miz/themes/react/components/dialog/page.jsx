@@ -1,8 +1,8 @@
 "use client"
 
 import * as React from "react"
-// import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
-import * as DialogPrimitive from "@base-ui/react/dialog";
+import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+// import * as DialogPrimitive from "@base-ui/react/dialog";
 import { cn } from "cn"
 
 import { Button } from "../button/page"
@@ -62,13 +62,13 @@ function DialogContent({
               />
             }
           >
-            <IconPlaceholder
+            {/* <IconPlaceholder
               lucide="XIcon"
               tabler="IconX"
               hugeicons="Cancel01Icon"
               phosphor="XIcon"
               remixicon="RiCloseLine"
-            />
+            /> */}
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}
