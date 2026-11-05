@@ -1,0 +1,116 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =====================================
+   INPUT OTP CONTAINER
+===================================== */
+
+.input-otp-container {
+  display: flex;
+  align-items: center;
+}
+
+/* وقتی ورودی غیرفعال باشد */
+
+.input-otp-container:has(:disabled) {
+  opacity: 0.5;
+}
+
+
+/* =====================================
+   INPUT OTP INPUT
+===================================== */
+
+.input-otp-input {
+  outline: none;
+}
+
+.input-otp-input:disabled {
+  cursor: not-allowed;
+}
+
+
+/* =====================================
+   INPUT OTP GROUP
+===================================== */
+
+.input-otp-group {
+  display: flex;
+  align-items: center;
+}
+
+
+/* =====================================
+   INPUT OTP SLOT
+===================================== */
+
+.input-otp-slot {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* خانه فعال */
+
+.input-otp-slot[data-active="true"] {
+  z-index: 10;
+}
+
+
+/* =====================================
+   INPUT OTP CARET
+===================================== */
+
+.input-otp-caret {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+/* خط مکان‌نما */
+
+.input-otp-caret-line {
+  width: 1px;
+  height: 20px;
+
+  background-color: currentColor;
+
+  animation: otp-caret-blink 1s step-end infinite;
+}
+
+/* انیمیشن چشمک زدن مکان‌نما */
+
+@keyframes otp-caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+
+/* =====================================
+   INPUT OTP SEPARATOR
+===================================== */
+
+.input-otp-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-otp-separator svg {
+  width: 16px;
+  height: 16px;
+
+  flex-shrink: 0;
+}

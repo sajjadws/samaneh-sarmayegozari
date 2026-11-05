@@ -1,0 +1,117 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =====================================
+   Avatar frame
+===================================== */
+
+.avatar {
+  width: 60px;
+
+  @extend .bw-1 , .border-style-solid , .border-color , .position-relative , .d-flex , .align-items-center , .justify-content-center , .aspect-ratio-1x1 , .radius-all-full ;
+}
+
+/* =====================================
+   Avatar frame
+===================================== */
+
+// .avatar[data-size="sm"] {
+//   width: 32px;
+//   height: 32px;
+// }
+
+// .avatar[data-size="default"] {
+//   width: 40px;
+//   height: 40px;
+// }
+
+// .avatar[data-size="lg"] {
+//   width: 48px;
+//   height: 48px;
+// }
+
+
+/* =====================================
+   Avatar Image
+===================================== */
+
+.avatar-image {
+
+  @extend .w-100 , .aspect-ratio-1x1 , .object-cover , .d-block;
+}
+
+
+/* =====================================
+   Avatar Fallback (name)
+===================================== */
+
+.avatar-fallback {
+  @extend .d-flex , .w-100 , .aspect-ratio-1x1 , .align-items-center , .justify-content-center , .txt-align-center , .user-select-none ;
+}
+
+/* Small Avatar Fallback */
+
+// .avatar[data-size="sm"] .avatar-fallback {
+//   font-size: 12px;
+// }
+
+
+/* =====================================
+   Avatar Badge (online)
+===================================== */
+
+.avatar-badge {
+  width: 15px;
+
+  @extend .bw-1 , .bg-success-regular-color , .border-style-solid , .border-color , .position-absolute , .right-0 , .bottom-0 , .z-index-1 , .d-flex , .align-items-center , .justify-content-center , .radius-all-full , .aspect-ratio-1x1 , .user-select-none ;
+}
+
+/* Badge Sizes */
+
+// .avatar[data-size="sm"] ~ .avatar-badge {
+//   width: 8px;
+//   height: 8px;
+// }
+
+// .avatar[data-size="default"] ~ .avatar-badge {
+//   width: 10px;
+//   height: 10px;
+// }
+
+// .avatar[data-size="lg"] ~ .avatar-badge {
+//   width: 12px;
+//   height: 12px;
+// }
+
+
+/* =====================================
+   Avatar Group
+===================================== */
+
+.avatar-group {
+
+  @extend .d-flex , .align-items-center , .gap-0 , .pis-2 ;
+}
+
+/* Overlapping Avatars */
+
+.avatar-group > [data-slot="avatar"] {
+  margin-left: -8px;
+  border-color: var(--bg-primary-color, white);
+
+  @extend .bw-2 , .border-style-solid ;
+}
+
+/* =====================================
+   Avatar Group Count
+===================================== */
+
+.avatar-group-count {
+  flex-shrink: 0;
+
+  @extend .border-color , .position-absolute , .d-flex , .align-items-center , .justify-content-center , .bw-2 , .border-style-solid , .radius-all-full  ;
+}

@@ -1,0 +1,202 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* ==============================
+   Message Group
+============================== */
+
+.message-group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  min-width: 0;
+  padding: 24px;
+  background-color: #f8fafc;
+  border: 1px solid #e8edf3;
+  border-radius: 18px;
+}
+
+
+/* ==============================
+   Message
+============================== */
+
+.message {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  position: relative;
+}
+
+.message[data-align="end"] {
+  flex-direction: row-reverse;
+}
+
+
+/* ==============================
+   Message Avatar
+============================== */
+
+.message-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
+
+  align-self: flex-end;
+  overflow: hidden;
+  border-radius: 50%;
+
+  background-color: #e2e8f0;
+  border: 2px solid #ffffff;
+
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+}
+
+.message-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+/* ==============================
+   Message Content
+============================== */
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  width: fit-content;
+  max-width: min(75%, 520px);
+  min-width: 0;
+
+  padding: 13px 16px;
+  border-radius: 16px 16px 16px 4px;
+
+  background-color: #ffffff;
+  border: 1px solid #e8edf3;
+
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+
+  overflow-wrap: break-word;
+  word-break: break-word;
+
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+/* پیام‌های سمت راست */
+
+.message[data-align="end"] .message-content {
+  border-radius: 16px 16px 4px 16px;
+
+  background-color: #eaf5ef;
+  border-color: #d6eadf;
+}
+
+
+/* ==============================
+   Message Header
+============================== */
+
+.message-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  max-width: 100%;
+  min-width: 0;
+
+  color: #334155;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+
+/* نام فرستنده در پیام خود کاربر */
+
+.message[data-align="end"] .message-header {
+  color: #176b45;
+}
+
+
+/* ==============================
+   Message Text
+============================== */
+
+.message-content > div:not(.message-header):not(.message-footer) {
+  color: #334155;
+  font-size: 14px;
+  line-height: 1.9;
+  font-weight: 400;
+}
+
+
+/* ==============================
+   Message Footer
+============================== */
+
+.message-footer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  max-width: 100%;
+  min-width: 0;
+
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.message[data-align="end"] .message-footer {
+  justify-content: flex-end;
+  color: #6b9b80;
+}
+
+
+/* ==============================
+   Responsive
+============================== */
+
+@media (max-width: 600px) {
+  .message-group {
+    padding: 14px;
+    gap: 20px;
+    border-radius: 14px;
+  }
+
+  .message {
+    gap: 8px;
+  }
+
+  .message-avatar {
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+  }
+
+  .message-content {
+    max-width: 85%;
+    padding: 10px 13px;
+  }
+
+  .message-content > div:not(.message-header):not(.message-footer) {
+    font-size: 13px;
+  }
+}

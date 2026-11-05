@@ -1,0 +1,195 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* Main Trigger */
+.combobox-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 12px;
+  background: #fff;
+  color: #111827;
+  font-size: 14px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.combobox-trigger:hover {
+  background: #f9fafb;
+}
+
+/* Trigger Icon */
+.combobox-trigger-icon {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* Input */
+.combobox-input {
+  width: auto;
+}
+
+/* Clear Button */
+.combobox-clear {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  padding: 4px;
+}
+
+.combobox-clear-icon {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+/* Dropdown Content */
+.combobox-content {
+  position: relative;
+  z-index: 50;
+  width: var(--anchor-width);
+  min-width: calc(var(--anchor-width) + 28px);
+  max-width: var(--available-width);
+  max-height: var(--available-height);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 4px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  transform-origin: var(--transform-origin);
+}
+
+.combobox-content[data-chips="true"] {
+  min-width: var(--anchor-width);
+}
+
+/* List */
+.combobox-list {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  max-height: 250px;
+}
+
+/* Items */
+.combobox-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  gap: 8px;
+  padding: 8px 10px;
+  cursor: pointer;
+  outline: none;
+  border-radius: 6px;
+  color: #111827;
+  font-size: 14px;
+
+  @extend .user-select-none ;
+}
+
+.combobox-item:hover,
+.combobox-item[data-highlighted] {
+  background: #f3f4f6;
+}
+
+.combobox-item[data-disabled] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Item Indicator */
+.combobox-item-indicator {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+}
+
+.combobox-item-indicator-icon {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+/* Group */
+.combobox-group {
+  padding: 4px;
+}
+
+/* Label */
+.combobox-label {
+  padding: 6px 10px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* Empty State */
+.combobox-empty {
+  padding: 16px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+/* Separator */
+.combobox-separator {
+  height: 1px;
+  margin: 5px 0;
+  background: #e5e7eb;
+}
+
+/* Chips Container */
+.combobox-chips {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+/* Single Chip */
+.combobox-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 8px;
+  border-radius: 5px;
+  background: #f3f4f6;
+  color: #374151;
+  font-size: 13px;
+}
+
+/* Chip Remove */
+.combobox-chip-remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 2px;
+}
+
+/* Chips Input */
+.combobox-chip-input {
+  min-width: 64px;
+  flex: 1;
+  outline: none;
+  border: none;
+  background: transparent;
+}

@@ -1,0 +1,160 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =================================
+   Native Select Wrapper
+================================= */
+
+.native-select-wrapper {
+  position: relative;
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* غیرفعال شدن کل کامپوننت */
+.native-select-wrapper:has(select:disabled) {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+
+/* =================================
+   Native Select
+================================= */
+
+.native-select {
+  appearance: none;
+  -webkit-appearance: none;
+
+  width: 100%;
+  min-width: 160px;
+
+  padding: 10px 38px 10px 14px;
+
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+
+  color: #334155;
+  background-color: #ffffff;
+
+  border: 1px solid #dbe2ea;
+  border-radius: 9px;
+
+  outline: none;
+  cursor: pointer;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+/* حالت Hover */
+
+.native-select:hover:not(:disabled) {
+  border-color: #94a3b8;
+}
+
+
+/* حالت Focus */
+
+.native-select:focus {
+  border-color: #39865d;
+  box-shadow: 0 0 0 3px rgba(57, 134, 93, 0.12);
+}
+
+
+/* حالت Disabled */
+
+.native-select:disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  background-color: #f1f5f9;
+  color: #94a3b8;
+}
+
+
+/* =================================
+   Select Sizes
+================================= */
+
+/* اندازه پیش‌فرض */
+
+.native-select[data-size="default"] {
+  height: 42px;
+  padding: 0 38px 0 14px;
+  font-size: 14px;
+}
+
+/* اندازه کوچک */
+
+.native-select[data-size="sm"] {
+  height: 34px;
+  padding: 0 34px 0 11px;
+  font-size: 12px;
+}
+
+/* اندازه بزرگ */
+
+.native-select[data-size="lg"] {
+  height: 48px;
+  padding: 0 42px 0 16px;
+  font-size: 15px;
+}
+
+
+/* =================================
+   Select Icon
+================================= */
+
+.native-select-icon {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+
+  width: 17px;
+  height: 17px;
+
+  color: #64748b;
+
+  pointer-events: none;
+  user-select: none;
+
+  transform: translateY(-50%);
+  transition: color 0.2s ease;
+}
+
+.native-select-wrapper:focus-within .native-select-icon {
+  color: #39865d;
+}
+
+
+/* =================================
+   Options
+================================= */
+
+.native-select-option {
+  color: #334155;
+  background-color: #ffffff;
+  font-family: inherit;
+}
+
+
+/* =================================
+   Option Groups
+================================= */
+
+.native-select-optgroup {
+  color: #64748b;
+  background-color: #ffffff;
+  font-weight: 700;
+  font-family: inherit;
+}
