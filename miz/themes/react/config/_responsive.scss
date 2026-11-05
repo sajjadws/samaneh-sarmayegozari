@@ -2,20 +2,20 @@
 @use "sass:map";
 
 $conf-gaps:map.merge($conf-gaps, (
-    count:20,
+    count:50,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 ));
 $conf-paddings:map.merge($conf-paddings, (
-    count:10,
+    count:50,
     unit:rem,
-    factor:0.5,
-    responsive:false
+    factor:0.25,
+    responsive:true
 ));
 $conf-margins:map.merge($conf-margins, (
-    count:25,
+    count:50,
     unit:rem,
-    factor:0.5,
+    factor:0.25,
     responsive:true
 ));

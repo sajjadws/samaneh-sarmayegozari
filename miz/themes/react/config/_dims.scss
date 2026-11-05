@@ -3,12 +3,12 @@
 
 $border-radius:map.merge($border-radius ,(
     extra-small:2px,
-    small:5px,
+    small:8px,
     normal:10px,
     medium:16px,
-    large:25px,
-    extra-large:50px,
-    full:1000px,
+    large:20px,
+    extra-large:1000px,
+    full:50%,
     none:0px,
 ));
 
