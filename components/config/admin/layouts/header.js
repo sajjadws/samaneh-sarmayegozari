@@ -1,5 +1,5 @@
 const moduleHeaderConfigs = import.meta.glob(
-    "/app/(modules)/*/config/panel/header.js",
+    "/app/**/config/panel/header.js",
     {
         eager: true,
         import: "default",
