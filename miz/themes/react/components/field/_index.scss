@@ -1,0 +1,252 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* =========================================
+   1. FieldSet
+   گروه‌بندی مجموعه‌ای از فیلدهای فرم
+========================================= */
+
+.field-set {
+  @extend .d-flex, .flex-column;
+}
+
+
+/* =========================================
+   2. FieldLegend
+   عنوان مجموعه فیلدها
+========================================= */
+
+.field-legend {
+  /* استایل اختصاصی در کد اصلی مشخص نشده است */
+}
+
+
+/* =========================================
+   3. FieldGroup
+   نگهدارنده گروهی از فیلدها
+========================================= */
+
+.field-group {
+  container-type: inline-size;
+  container-name: field-group;
+
+  @extend .d-flex, .w-100, .flex-column;
+}
+
+
+/* =========================================
+   4. Field
+   نگهدارنده اصلی هر فیلد
+========================================= */
+
+.field {
+  @extend .d-flex, .w-100;
+}
+
+
+/* حالت عمودی Field */
+
+.field[data-orientation="vertical"] {
+  @extend .flex-column;
+}
+
+.field[data-orientation="vertical"] > * {
+  @extend .w-100;
+}
+
+.field[data-orientation="vertical"] > .sr-only {
+  width: auto;
+}
+
+
+/* حالت افقی Field */
+
+.field[data-orientation="horizontal"] {
+  @extend .flex-row, .align-items-center;
+}
+
+/* اگر FieldContent فرزند مستقیم Field باشد */
+.field[data-orientation="horizontal"]:has(> [data-slot="field-content"]) {
+  @extend .align-items-flex-start;
+}
+
+/* عرض خودکار برای FieldLabel */
+.field[data-orientation="horizontal"] > [data-slot="field-label"] {
+  flex: auto;
+}
+
+/* فاصله عمودی برای checkbox و radio */
+.field[data-orientation="horizontal"]:has(> [data-slot="field-content"])
+  > :is([role="checkbox"], [role="radio"]) {
+  margin-top: 1px;
+}
+
+
+/* حالت واکنش‌گرا Field */
+
+.field[data-orientation="responsive"] {
+  @extend .flex-column;
+}
+
+.field[data-orientation="responsive"] > * {
+  @extend .w-100;
+}
+
+.field[data-orientation="responsive"] > .sr-only {
+  width: auto;
+}
+
+@container field-group (min-width: 28rem) {
+  .field[data-orientation="responsive"] {
+    @extend .flex-row, .align-items-center;
+  }
+
+  .field[data-orientation="responsive"] > * {
+    width: auto;
+  }
+
+  .field[data-orientation="responsive"]:has(> [data-slot="field-content"]) {
+    @extend .align-items-flex-start;
+  }
+
+  .field[data-orientation="responsive"]
+    > [data-slot="field-label"] {
+    flex: auto;
+  }
+
+  .field[data-orientation="responsive"]:has(> [data-slot="field-content"])
+    > :is([role="checkbox"], [role="radio"]) {
+    margin-top: 1px;
+  }
+}
+
+
+/* =========================================
+   5. FieldContent
+   محتوای داخلی فیلد
+========================================= */
+
+.field-content {
+  line-height: 1.375;
+
+  @extend .d-flex, .grow-1, .flex-column;
+}
+
+
+/* =========================================
+   6. FieldLabel
+   برچسب فیلد
+========================================= */
+
+.field-label {
+  @extend .d-flex, .w-fit-content;
+}
+
+/* وقتی Field داخل Label قرار دارد */
+.field-label:has(> [data-slot="field"]) {
+  @extend .d-flex, .w-100, .flex-column;
+}
+
+
+/* =========================================
+   7. FieldTitle
+   عنوان داخلی فیلد
+========================================= */
+
+.field-title {
+  @extend .d-flex,  .w-fit-content, .align-items-center;
+}
+
+
+/* =========================================
+   8. FieldDescription
+   توضیحات فیلد
+========================================= */
+
+.field-description {
+  line-height: normal;
+  @extend .font-weight-regular;
+}
+
+/* وقتی فیلد حالت افقی دارد */
+.field-group:has(.field[data-orientation="horizontal"])
+  .field-description {
+  @extend .txt-wrap-balance;
+}
+
+/* آخرین توضیح */
+.field-description:last-child {
+  @extend .mt-0;
+}
+
+/* توضیحی که یکی مانده به آخر است */
+.field-description:nth-last-child(2) {
+  margin-top: -0.25rem;
+}
+
+/* لینک‌های داخل توضیحات */
+.field-description a {
+  text-underline-offset: 4px;
+  @extend .txt-decoration-underline;
+}
+
+.field-description a:hover {
+  color: var(--primary);
+}
+
+
+/* =========================================
+   9. FieldSeparator
+   جداکننده بین فیلدها
+========================================= */
+
+.field-separator {
+  @extend .position-relative;
+}
+
+
+/* =========================================
+   10. FieldSeparatorLine
+   خط جداکننده
+========================================= */
+
+.field-separator-line {
+  inset: 0;
+  @extend .position-absolute, .top-50;
+}
+
+
+/* =========================================
+   11. FieldSeparatorContent
+   متن وسط جداکننده
+========================================= */
+
+.field-separator-content {
+  margin-right: auto;
+  margin-left: auto;
+  background-color: var(--background);
+  @extend .position-relative, .d-block,  .w-fit-content;
+}
+
+
+/* =========================================
+   12. FieldError
+   پیام خطای فیلد
+========================================= */
+
+.field-error {
+  @extend .font-weight-regular;
+}
+
+
+/* =========================================
+   13. FieldErrorList
+   لیست خطاها
+========================================= */
+
+.field-error-list {
+  @extend .d-flex, .flex-column, .gap-1, .ml-4, .txt-list-type-disc;
+}

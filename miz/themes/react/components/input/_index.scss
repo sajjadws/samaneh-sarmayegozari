@@ -4,113 +4,49 @@
 @use "../../config" as *;
 @use 'sass:map';
 
-
 /* =====================================
-   INPUT OTP CONTAINER
+   Input
+   استایل اصلی فیلد ورودی
 ===================================== */
 
-.input-otp-container {
-  display: flex;
-  align-items: center;
-}
-
-/* وقتی ورودی غیرفعال باشد */
-
-.input-otp-container:has(:disabled) {
-  opacity: 0.5;
-}
-
-
-/* =====================================
-   INPUT OTP INPUT
-===================================== */
-
-.input-otp-input {
+.input {
+  min-width: 0;
   outline: none;
-}
-
-.input-otp-input:disabled {
-  cursor: not-allowed;
+  @extend .w-100;
 }
 
 
 /* =====================================
-   INPUT OTP GROUP
+   Input - دکمه انتخاب فایل
 ===================================== */
 
-.input-otp-group {
-  display: flex;
-  align-items: center;
+.input::file-selector-button {
+  display: inline-flex;
+  border: 0;
+  background-color: transparent;
+  color: var(--foreground);
+
+
 }
 
 
 /* =====================================
-   INPUT OTP SLOT
+   Input - متن راهنمای داخل فیلد
 ===================================== */
 
-.input-otp-slot {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* خانه فعال */
-
-.input-otp-slot[data-active="true"] {
-  z-index: 10;
+.input::placeholder {
+  color: var(--muted-foreground);
+  @extend .opacity-10;
 }
 
 
 /* =====================================
-   INPUT OTP CARET
+   Input - حالت غیرفعال
 ===================================== */
 
-.input-otp-caret {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+.input:disabled {
   pointer-events: none;
-}
+  cursor: not-allowed;
 
-/* خط مکان‌نما */
-
-.input-otp-caret-line {
-  width: 1px;
-  height: 20px;
-
-  background-color: currentColor;
-
-  animation: otp-caret-blink 1s step-end infinite;
-}
-
-/* انیمیشن چشمک زدن مکان‌نما */
-
-@keyframes otp-caret-blink {
-  50% {
-    opacity: 0;
-  }
-}
-
-
-/* =====================================
-   INPUT OTP SEPARATOR
-===================================== */
-
-.input-otp-separator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.input-otp-separator svg {
-  width: 16px;
-  height: 16px;
-
-  flex-shrink: 0;
+  @extend .opacity-5;
 }
