@@ -1,0 +1,58 @@
+.sidebar {
+    width: 15%;
+    min-width: 67px;
+    height: calc(100vh - 10vh);
+    transition: width 300ms linear;
+}
+
+.sidebar > [class*="icon-menu"] {
+    width: fit-content;
+    transition: 300ms linear all;
+}
+
+.sidebar.close {
+    width: 67px;
+}
+
+.sidebar.close:not(.align-items-lg-center) > [class*="icon-menu"] {
+    transform: translateX(-40%);
+}
+
+.sidebar .title {
+    opacity: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar.close .title {
+    animation: FadeOut 300ms ease-in-out forwards;
+}
+
+.sidebar.opening .title {
+    animation: FadeIn 300ms ease-in-out forwards;
+}
+
+.sidebar .link-item {
+    transition: 300ms linear all;
+}
+
+@keyframes FadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes FadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
