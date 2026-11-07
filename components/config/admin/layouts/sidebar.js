@@ -1,5 +1,5 @@
 const moduleSidebarConfigs = import.meta.glob(
-    "/app/(modules)/*/config/panel/sidebar.js",
+    "/app/**/config/panel/sidebar.js",
     {
         eager: true,
         import: "default",
