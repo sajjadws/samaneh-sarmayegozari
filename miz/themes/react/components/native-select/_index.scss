@@ -1,0 +1,123 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =================================
+   Native Select Wrapper
+================================= */
+
+.native-select-wrapper {
+  display: inline-flex;
+  max-width: 100%;
+  @extend .position-relative , .w-fit-content ;
+}
+
+/* غیرفعال شدن کل کامپوننت */
+.native-select-wrapper:has(select:disabled) {
+  @extend .opacity-5 , .cursor-not-allowed ;
+}
+
+
+/* =================================
+   Native Select
+================================= */
+
+.native-select {
+  appearance: none;
+  min-width: 160px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+
+    @extend .w-100 , .py-3 , .pr-9 , .pl-4 , .font-weight-medium , .lh-6 , .primary-color , .bw-1 , .border-color , .border-style-solid , .bg-on-primary-color , .radius-all-normal , .cursor-pointer;
+}
+
+/* حالت Hover */
+
+.native-select:hover:not(:disabled) {
+  @extend .border-color ;
+}
+
+
+/* حالت Focus */
+
+.native-select:focus {
+  box-shadow: 0 0 0 3px rgba(57, 134, 93, 0.12);
+  @extend .border-color ;
+}
+
+
+/* حالت Disabled */
+
+.native-select:disabled {
+  pointer-events: none;
+  @extend .cursor-not-allowed , .bg-border-color , .secondary-color ;
+}
+
+
+/* =================================
+   Select Sizes
+================================= */
+
+/* اندازه پیش‌فرض */
+
+.native-select[data-size="default"] {
+  height: 42px;
+  @extend .py-0 , .pr-9 , .pl-4 ;
+}
+
+/* اندازه کوچک */
+
+.native-select[data-size="sm"] {
+  height: 34px;
+  @extend .py-0 , .pr-8 , .pl-3 ;  
+}
+
+/* اندازه بزرگ */
+
+.native-select[data-size="lg"] {
+  height: 48px;
+  @extend .py-0 , .pr-10  , .pl-4 ;
+}
+
+
+/* =================================
+   Select Icon
+================================= */
+
+.native-select-icon {
+  right: 12px;
+  width: 17px;
+  height: 17px;
+  pointer-events: none;
+  transform: translateY(-50%);
+  transition: color 0.2s ease;
+  @extend .position-absolute , .primary-color , .top-50 , .aspect-ratio-1x1 , .primary-color , .user-select-none ;
+}
+
+.native-select-wrapper:focus-within .native-select-icon {
+  @extend .primary-color ;
+}
+
+
+/* =================================
+   Options
+================================= */
+
+.native-select-option {
+  @extend .primary-color , .bg-on-primary-color ;
+}
+
+
+/* =================================
+   Option Groups
+================================= */
+
+.native-select-optgroup {
+  @extend .primary-color , .bg-on-primary-color , .font-weight-bold ;
+}

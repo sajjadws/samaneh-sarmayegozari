@@ -1,0 +1,26 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* استایل اصلی جداکننده */
+.separator {
+  flex-shrink: 0;
+
+  @extend .bg-primary-color;
+}
+
+/* حالت افقی */
+.separator[data-orientation="horizontal"] {
+  height: 1px;
+  @extend .w-100;
+}
+
+/* حالت عمودی */
+.separator[data-orientation="vertical"] {
+  width: 1px;
+  align-self: stretch;
+
+}
