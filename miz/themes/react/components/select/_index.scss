@@ -1,0 +1,279 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* ==============================
+   Select Component
+============================== */
+
+.select-trigger {
+  min-height: 42px;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+
+    @extend .cursor-pointer , .text-color , .d-flex , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .w-100 , .gap-8 , .align-items-center , .justify-content-space-between , .py-0 , .px-4 , .radius-all-small , .txt-align-start ;
+}
+
+.select-trigger:hover {
+  background: #f9fafb;
+  border-color: #9ca3af;
+
+}
+
+.select-trigger:focus-visible,
+.select-trigger[data-popup-open] {
+  border-color: #9ca3af;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.select-trigger:disabled {
+
+  @extend .opacity-5 , .cursor-not-allowed ;
+}
+
+.select-trigger[data-size="sm"] {
+  min-height: 34px;
+}
+
+.select-trigger[data-size="default"] {
+  min-height: 42px;
+}
+
+.select-trigger[data-size="lg"] {
+  min-height: 50px;
+}
+
+.select-value {
+  flex: 1;
+  text-overflow: ellipsis;
+
+  @extend .overflow-hidden , .txt-white-space-nowrap ;
+}
+
+.select-value:empty::before {
+  content: "";
+}
+
+/* Trigger Icon */
+
+.select-trigger-icon {
+  width: 17px;
+  flex-shrink: 0;
+  color: #6b7280;
+
+  @extend .aspect-ratio-1x1 ;
+}
+
+/* ==============================
+   Select Positioner
+============================== */
+
+.select-positioner {
+  outline: none;
+
+  @extend .z-index-5;
+}
+
+/* ==============================
+   Select Content
+============================== */
+
+.select-content {
+  min-width: var(--anchor-width);
+  max-height: min(300px, var(--available-height));
+  overflow-y: auto;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.08),
+    0 2px 6px rgba(0, 0, 0, 0.04);
+
+  outline: none;
+  transform-origin: var(--transform-origin);
+  animation: select-open 0.15s ease-out;
+
+  @extend .p-2 , .overflow-x-hidden , .radius-all-normal , .bw-1 , .border-style-solid , .border-color , .bg-on-primary-color;
+}
+
+@keyframes select-open {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==============================
+   Select List
+============================== */
+
+.select-group {
+
+  @extend .py-12 , .px-0 ;
+}
+
+/* ==============================
+   Select Label
+============================== */
+
+.select-label {
+  color: #9ca3af;
+
+  @extend .p-20 , .font-weight-semi-bold  , .txt-align-start ;
+}
+
+/* ==============================
+   Select Item
+============================== */
+
+.select-item {
+  outline: none;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+
+    @extend .position-relative , .d-flex , .align-items-center , .justify-content-space-between , .gap-3 , .p-2 , .radius-all-small , .txt-align-start ;
+}
+
+.select-item:hover,
+.select-item[data-highlighted] {
+  background: #f3f4f6;
+  color: #9ca3af;
+}
+
+.select-item[data-selected] {
+  background: #eef2ff;
+  color: #9ca3af;
+
+  @extend .font-weight-medium ;
+}
+
+.select-item[data-disabled] {
+
+  @extend .opacity-5 , .cursor-not-allowed ;
+}
+
+.select-item-text {
+  flex: 1;
+  text-overflow: ellipsis;
+
+  @extend .overflow-hidden , .txt-white-space-nowrap ;
+}
+
+/* ==============================
+   Select Item Indicator
+============================== */
+
+.select-item-indicator {
+  flex-shrink: 0;
+
+  @extend .d-flex , .align-items-center  , .justify-content-center ;
+}
+
+.select-item-indicator-icon {
+  width: 15px;
+  color: #9ca3af;
+
+  @extend .aspect-ratio-1x1 ;
+}
+
+/* ==============================
+   Select Separator
+============================== */
+
+.select-separator {
+  height: 1px;
+  background: #e5e7eb;
+
+  @extend .m-1 ;
+}
+
+/* ==============================
+   Scroll Buttons
+============================== */
+
+.select-scroll-up-button,
+.select-scroll-down-button {
+  height: 24px;
+  color: #6b7280;
+  
+  @extend .d-flex , .align-items-center  , .justify-content-center  , .w-100  , .cursor-pointer;
+}
+
+.select-scroll-up-button svg,
+.select-scroll-down-button svg {
+  width: 16px;
+
+  @extend .aspect-ratio-1x1 ;
+}
+
+/* ==============================
+   Scrollbar
+============================== */
+
+.select-content::-webkit-scrollbar {
+  width: 5px;
+}
+
+.select-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.select-content::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+
+  @extend .radius-all-small ;
+}
+
+.select-content::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ==============================
+   Dark Mode
+============================== */
+
+.dark .select-trigger {
+  background: #9ca3af;
+  border-color: #374151;
+  color: #f9fafb;
+}
+
+.dark .select-trigger:hover {
+  background: #9ca3af;
+}
+
+.dark .select-content {
+  background: #9ca3af;
+  border-color: #374151;
+}
+
+.dark .select-item {
+  color: #e5e7eb;
+}
+
+.dark .select-item:hover,
+.dark .select-item[data-highlighted] {
+  background: #9ca3af;
+}
+
+.dark .select-item[data-selected] {
+  background: #374151;
+  color: #c7d2fe;
+}
+
+.dark .select-label {
+  color: #9ca3af;
+}
+
+.dark .select-separator {
+  background: #374151;
+}

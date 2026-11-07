@@ -1,0 +1,38 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =========================
+   base checkbox
+========================= */
+
+.checkbox {
+  display: inline-flex;
+  width: 25px;
+  min-width: 25px;
+
+  @extend .bw-2 , .border-style-solid , .aspect-ratio-1x1 , .border-color , .position-relative , .d-flex , .align-items-center , .justify-content-center , .cursor-pointer;
+}
+
+/* =========================
+   checkbox-indicator
+========================= */
+
+.checkbox-indicator {
+
+  @extend .aspect-ratio-1x1 , .w-100 , .d-flex , .position-absolute , .overflow-hidden ;
+}
+
+/* =========================
+   icon
+========================= */
+
+.checkbox-indicator svg {
+  stroke: var(--primary);
+
+  @extend .aspect-ratio-1x1 , .w-100 ;
+}
+

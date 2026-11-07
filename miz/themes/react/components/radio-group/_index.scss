@@ -1,0 +1,37 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* =========================
+  radios group
+========================= */
+
+.radio-group {
+
+  @extend .d-flex , .align-items-center , .gap-20 , .w-100;
+}
+
+/* =========================
+  Base radio-bottom
+========================= */
+
+.radio-item {
+  appearance: none;
+  flex-shrink: 0;
+  width: 35px;
+  transition: border 0.2s ease, background-color 0.2s ease;
+
+  @extend .d-flex , .align-items-center , .justify-content-center , .aspect-ratio-1x1 , .p-0 , .radius-all-full , .cursor-pointer , .bw-6 , .border-style-solid , .border-color ; 
+}
+
+/* =========================
+  checked state
+========================= */
+
+.radio-item[data-checked] {
+
+  @extend .border-primary-color ;
+}
+

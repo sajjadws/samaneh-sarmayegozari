@@ -1,3 +1,6 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:meta';
 @use "../functions/responsive" as *;
 @use "../../../config/responsive" as *;
 
@@ -39,5 +42,115 @@
 }
 
 
-$width-list : generate-classes-items("w" ,width, $conf-width, true, "percentage");
-$height-list : generate-classes-items("h" ,height, $conf-height, true, "percentage");
+$width-list : generate-classes-items("w", width, $conf-width, true, "percentage");
+$max-width-list : generate-classes-items("max-w", max-width, $conf-width, true, "percentage");
+$min-width-list : generate-classes-items("min-w", min-width, $conf-width, true, "percentage");
+$height-list : generate-classes-items("h", height, $conf-height, true, "percentage");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$dims-space-conf-list:(
+    width:map.get($conf-width , responsive),
+    max-width:map.get($conf-width , responsive),
+    min-width:map.get($conf-width , responsive),
+    height:map.get($conf-height , responsive),
+);
+$dims-space-width-value-list: (fit-content, );
+$dims-space-max-width-value-list: (fit-content, );
+$dims-space-min-width-value-list: (fit-content, );
+$dims-space-height-value-list: (fit-content, );
+$dims-space-value-list:(
+    $dims-space-width-value-list,
+    $dims-space-max-width-value-list,
+    $dims-space-min-width-value-list,
+    $dims-space-height-value-list,
+);
+$dims-space-key-list:(
+    width,
+    max-width,
+    min-width,
+    height,
+);
+$dims-space-class-list:(
+    w,
+    max-w,
+    min-w,
+    h,
+);
+
+
+
+
+
+
+@function generate-dims-space-list(){
+    $dims-space-list:();
+
+    @for $i from 1 through list.length($dims-space-key-list){
+        $value:generate-dims-space-classes(list.nth($dims-space-key-list , $i), list.nth($dims-space-value-list , $i),list.nth($dims-space-class-list,$i));
+        $dims-space-list:list.join($dims-space-list , $value);
+    }
+    @return $dims-space-list;
+}
+
+@function generate-dims-space-classes($property-key-list , $property-value-list,$class-name){
+    $list : ();
+    $count : ();
+    @if check-status($dims-space-conf-list, $property-key-list){
+        @each $key , $value in $break-points{
+            $list:list.join($list , get-dims-space-break-points-classes($key,$property-key-list , $property-value-list,$class-name));
+        }
+    }@else{
+        $list:list.join($list , get-dims-space-break-points-classes(null,$property-key-list , $property-value-list,$class-name));   
+    }  
+    @return $list;
+} 
+
+@function get-dims-space-break-points-classes($break-points-key,$property-key-list , $property-value-list,$class-name){
+    $list : ();
+    $base : ();
+    @for $i from 1 through list.length($property-value-list){
+        @if check-status($dims-space-conf-list, $property-key-list){
+            $base:generate-classes-responsive-on-value($class-name , $break-points-key , list.nth($property-value-list , $i));
+        }@else{
+            $base:generate-classes-on-value($class-name, list.nth($property-value-list , $i));
+        }
+        $map:(
+            className: $base,
+            propertyKeys:$property-key-list,
+            propertyValues:list.nth($property-value-list , $i)
+        );
+        $list:list.append($list , $map);
+    }
+    @return $list;
+}
+
+
+
+$dims-space-type : generate-dims-space-list();

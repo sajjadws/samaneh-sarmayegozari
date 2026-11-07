@@ -1,0 +1,22 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+.textarea {
+  field-sizing: content;
+  min-height: 64px;
+  outline: none;
+
+  @extend .d-flex , .w-100 ;
+
+  &::placeholder {
+    @extend .primary-color ;
+  }
+
+  &:disabled {
+    @extend .opacity-5 , .cursor-not-allowed;
+  }
+}

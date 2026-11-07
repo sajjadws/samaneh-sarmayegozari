@@ -1,0 +1,110 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =====================================
+   Popover Positioner
+===================================== */
+
+.popover-positioner {
+  isolation: isolate;
+  @extend .position-relative , .z-index-5 ;
+}
+
+
+/* =====================================
+   Popover Content
+===================================== */
+
+.popover-content {
+  width: 288px;
+  max-width: calc(100vw - 24px);
+  outline: none;
+  box-shadow:
+    0 10px 25px rgba(15, 23, 42, 0.08),
+    0 3px 8px rgba(15, 23, 42, 0.04);
+
+  transform-origin: var(--transform-origin);
+  animation: popover-open 0.18s ease-out;
+  @extend .position-relative , .z-index-5 , .d-flex , .flex-column , .p-4 , .primary-color , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-normal , .radius-all-medium ;
+}
+
+
+/* =====================================
+   Popover Open Animation
+===================================== */
+
+@keyframes popover-open {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(-4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+/* =====================================
+   Popover Header
+===================================== */
+
+.popover-header {
+   @extend .d-flex , .flex-column , .gap-1 , .mb-3 ;
+}
+
+
+/* =====================================
+   Popover Title
+===================================== */
+
+.popover-title {
+  @extend .m-0 , .primary-color , .font-weight-bold , .lh-6 ;
+}
+
+
+/* =====================================
+   Popover Description
+===================================== */
+
+.popover-description {
+  @extend .m-0 , .primary-color , .font-weight-regular , .lh-7 ;
+}
+
+
+/* =====================================
+   Popover Trigger
+===================================== */
+
+.popover-trigger {
+  display: inline-flex;
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+    @extend .align-items-center , .justify-content-center , .gap-2 , .py-2 , .px-4 , .primary-light-color , .bg-secondary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-normal , .font-weight-semi-bold , .cursor-pointer;
+}
+
+.popover-trigger:hover {
+  @extend .bg-secondary-color ;
+}
+
+.popover-trigger:focus-visible {
+  outline: 3px solid rgba(40, 122, 80, 0.2);
+  outline-offset: 3px;
+}
+
+.popover-trigger:active {
+  transform: scale(0.97);
+}
+
+.popover-trigger:disabled {
+  @extend .opacity-5 , .cursor-not-allowed;
+}
+

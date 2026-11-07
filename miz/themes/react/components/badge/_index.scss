@@ -1,0 +1,42 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* ظرف اصلی صفحه */
+.badge-page {
+    @extend .d-flex , .flex-column , .justify-content-center , .align-items-center , .w-100 , .h-100 , .gap-18 , .bg-primary-light-color ;
+}
+
+/* ظرف اصلی دکمه */
+.badge-wrapper {
+    @extend .d-flex , .justify-content-center  , .align-items-center , .gap-1 , .position-relative ;
+}
+
+/* استایل دکمه */
+.badge-button {
+    @extend .py-1 , .px-2 , .bg-primary-color , .secondary-color , .cursor-pointer , .radius-all-small ;
+}
+
+/* حذف فاصله پیش‌فرض پاراگراف */
+.badge-button p {
+    @extend .m-0 ;
+}
+
+/* بج قرارگرفته روی گوشه دکمه */
+.badge-top {
+    width: 22px;
+    @extend .position-absolute , .top-0 , .left-0 , .d-flex , .justify-content-center , .align-items-center , .aspect-ratio-1x1 , .bg-danger-regular-color , .radius-all-extra-large ;
+}
+
+/* بج قرارگرفته داخل دکمه */
+.badge-inside {
+    width: 22px;
+    @extend .radius-all-extra-large , .d-flex , .justify-content-center , .align-items-center , .aspect-ratio-1x1 , .bg-danger-regular-color , .radius-all-extra-large ;
+}
+
+/* آیکون داخل بج */
+.badge-icon {
+    @extend .danger-regular-color ;
+}

@@ -1,0 +1,315 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+
+
+/* =========================
+   Persian Calendar
+========================= */
+
+.calendar-months {
+  direction: rtl;
+  color: #1f2937;
+
+  @extend .w-100 ;
+}
+
+.calendar-month {
+  min-width: 260px;
+
+  @extend .d-flex , .flex-column , .gap-3 , .w-100 , .p-4 , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-normal ;
+}
+
+/* =========================
+   Month Caption
+========================= */
+
+.calendar-month-caption {
+  min-height: 40px;
+  direction: rtl;
+
+  @extend .d-flex , .align-items-center , .gap-3 , .w-100 , .justify-content-space-between;
+}
+
+.calendar-caption {
+  flex: 1;
+  min-width: 0;
+
+  @extend .d-flex , .align-items-center , .justify-content-space-between;
+}
+
+.calendar-caption-label {
+  color: #111827;
+
+  @extend .font-weight-bold , .txt-align-center ;
+}
+
+/* =========================
+   Navigation
+========================= */
+
+.calendar-navigation {
+  position: static;
+  flex-shrink: 0;
+
+  @extend .d-flex , .align-items-center , .justify-content-center , .gap-2 ;
+}
+
+.calendar-navigation button,
+.calendar-navigation .calendar-nav-button {
+  position: static;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #374151;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.calendar-navigation button:hover {
+  background: #f3f4f6;
+  border-color: #d1d5db;
+  color: #111827;
+}
+
+.calendar-navigation button:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+.calendar-navigation button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* =========================
+   Month Grid
+========================= */
+
+.calendar-month-grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 4px;
+  table-layout: fixed;
+}
+
+/* =========================
+   Weekdays
+========================= */
+
+.calendar-weekdays {
+  width: 100%;
+}
+
+.calendar-weekday {
+  height: 34px;
+  padding: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6b7280;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* =========================
+   Week Rows
+========================= */
+
+.calendar-week {
+  height: 38px;
+}
+
+/* =========================
+   Day Cells
+========================= */
+
+.calendar-day {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  text-align: center;
+  vertical-align: middle;
+}
+
+/* =========================
+   Day Button
+========================= */
+
+.calendar-day-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  margin: auto;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #374151;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.calendar-day-button:hover {
+  background: #f3f4f6;
+}
+
+.calendar-day-button:focus-visible {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+
+/* =========================
+   Selected Day
+========================= */
+
+.calendar-day.selected .calendar-day-button,
+.calendar-day-button[aria-selected="true"] {
+  background: #4f46e5;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.calendar-day.selected .calendar-day-button:hover,
+.calendar-day-button[aria-selected="true"]:hover {
+  background: #4338ca;
+  color: #ffffff;
+}
+
+/* =========================
+   Today
+========================= */
+
+.calendar-day.today:not(.selected) .calendar-day-button {
+  border: 1px solid #4f46e5;
+  color: #4f46e5;
+  font-weight: 700;
+}
+
+/* =========================
+   Outside Days
+========================= */
+
+.calendar-day.outside .calendar-day-button {
+  color: #c4c7ce;
+}
+
+/* =========================
+   Disabled Days
+========================= */
+
+.calendar-day.disabled .calendar-day-button,
+.calendar-day-button:disabled {
+  color: #d1d5db;
+  background: transparent;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* =========================
+   Range Selection
+========================= */
+
+.calendar-day.range_start .calendar-day-button,
+.calendar-day.range_end .calendar-day-button {
+  background: #4f46e5;
+  color: #ffffff;
+}
+
+.calendar-day.range_middle .calendar-day-button {
+  background: #eef2ff;
+  color: #4338ca;
+  border-radius: 0;
+}
+
+/* =========================
+   Hidden Elements
+========================= */
+
+.calendar-day.hidden {
+  visibility: hidden;
+}
+
+/* =========================
+   Year Selection
+========================= */
+
+.calendar-year-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
+}
+
+.calendar-year-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 9px;
+  background: #ffffff;
+  color: #374151;
+  font-family: inherit;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-year-button:hover {
+  background: #f3f4f6;
+  border-color: #c7d2fe;
+}
+
+.calendar-year-button.selected {
+  background: #4f46e5;
+  border-color: #4f46e5;
+  color: #ffffff;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 360px) {
+  .calendar-month {
+    padding: 10px;
+  }
+
+  .calendar-month-grid {
+    border-spacing: 2px;
+  }
+
+  .calendar-day {
+    width: 34px;
+    height: 34px;
+  }
+
+  .calendar-day-button {
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+  }
+
+  .calendar-weekday {
+    font-size: 11px;
+  }
+}
