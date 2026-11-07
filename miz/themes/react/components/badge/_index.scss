@@ -4,36 +4,39 @@
 @use "../../config" as *;
 @use 'sass:map';
 
-$badge-size: 4px;
+/* ظرف اصلی صفحه */
+.badge-page {
+    @extend .d-flex , .flex-column , .justify-content-center , .align-items-center , .w-100 , .h-100 , .gap-18 , .bg-primary-light-color ;
+}
 
-.badge-wrapper{
-    @extend .position-relative, .cursor-pointer;
+/* ظرف اصلی دکمه */
+.badge-wrapper {
+    @extend .d-flex , .justify-content-center  , .align-items-center , .gap-1 , .position-relative ;
+}
 
-    & .badge{
-        padding:$badge-size;
-        text-transform: uppercase;
-        @extend .#{$conf-font-prefix}-align-center, .d-flex, .flex-row, .justify-content-center, .align-items-center, .position-absolute;
+/* استایل دکمه */
+.badge-button {
+    @extend .py-1 , .px-2 , .bg-primary-color , .secondary-color , .cursor-pointer , .radius-all-small ;
+}
 
-        &:has(i){
-            padding:$badge-size !important;
-            @extend .aspect-ratio-1x1;
-        }
-    }
-    & .badge.top-0.left-0{
-        transform: translate(-50% , -50%);
-    }
-    & .badge.top-0.right-0{
-        transform: translate(50% , -50%);
-    }
-    & .badge.bottom-0.left-0{
-        transform: translate(-50% , 50%);
-    }
-    & .badge.bottom-0.right-0{
-        transform: translate(50% , 50%);
-    }
-    & .badge-inside{
-        @extend .badge;
-        position: unset !important;
-        transform: unset !important;
-    }
+/* حذف فاصله پیش‌فرض پاراگراف */
+.badge-button p {
+    @extend .m-0 ;
+}
+
+/* بج قرارگرفته روی گوشه دکمه */
+.badge-top {
+    width: 22px;
+    @extend .position-absolute , .top-0 , .left-0 , .d-flex , .justify-content-center , .align-items-center , .aspect-ratio-1x1 , .bg-danger-regular-color , .radius-all-extra-large ;
+}
+
+/* بج قرارگرفته داخل دکمه */
+.badge-inside {
+    width: 22px;
+    @extend .radius-all-extra-large , .d-flex , .justify-content-center , .align-items-center , .aspect-ratio-1x1 , .bg-danger-regular-color , .radius-all-extra-large ;
+}
+
+/* آیکون داخل بج */
+.badge-icon {
+    @extend .danger-regular-color ;
 }

@@ -103,7 +103,7 @@
   margin-left: -8px;
   border-color: var(--bg-primary-color, white);
 
-  @extend .bw-2 , .border-style-solid ;
+  @extend .bw-2 , .border-style-solid , .border-primary-color ;
 }
 
 /* =====================================

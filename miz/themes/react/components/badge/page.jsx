@@ -1,12 +1,13 @@
-export default function BadgePage() {
+function BadgePage() {
   return (
-    <div className="font-primary bg-color d-flex flex-row h-100 w-100 justify-content-center align-items-center gap-10">
+    <div className="badge-page">
 
-      <div className="badge-wrapper btn btn-primary px-2 py-1">
+      <div className="badge-wrapper badge-button">
+
         <p>button</p>
 
-        <span className="badge top-0 left-0 bg-secondary-light-color radius-all-full">
-          <i className="fa-solid fa-house icon-small secondary-color"></i>
+        <span className="badge-top">
+          <i className="fa-solid fa-house badge-icon"></i>
         </span>
 
       </div>
@@ -14,3 +15,26 @@ export default function BadgePage() {
     </div>
   );
 }
+
+function BadgeInside() {
+  return (
+    <div className="badge-page">
+
+      <div className="badge-wrapper badge-button">
+
+        <span className="badge-inside">
+          <i className="fa-solid fa-house badge-icon"></i>
+        </span>
+
+        <p>button</p>
+
+      </div>
+
+    </div>
+  );
+}
+
+export {
+  BadgeInside,
+  BadgePage
+};
