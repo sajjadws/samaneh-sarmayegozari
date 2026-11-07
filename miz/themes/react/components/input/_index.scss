@@ -12,11 +12,6 @@
 .input {
   min-width: 0;
   outline: none;
-  
-}
-
-.input-otp-input:disabled {
-  cursor: not-allowed;
   @extend .w-100;
 }
 
