@@ -1,0 +1,70 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* کانتینر اصلی Slider */
+.slider-root {
+  height: 10px;
+  @extend .w-100 ;
+}
+
+/* حالت عمودی Slider */
+.slider-root[data-orientation="vertical"] {
+  @extend .h-100;
+}
+
+/* کنترل‌کننده اصلی Slider */
+.slider-control {
+  height: 100%;
+  touch-action: none;
+  background-color: aqua;
+  @extend .d-flex, .position-relative, .align-items-center, .w-100, .user-select-none ;
+}
+
+/* حالت غیرفعال Slider */
+.slider-control[data-disabled] {
+  @extend .opacity-5;
+}
+
+/* حالت عمودی کنترل‌کننده */
+.slider-control[data-orientation="vertical"] {
+  @extend .h-100, .flex-column, .w-100;
+}
+
+/* مسیر اصلی Slider */
+.slider-track {
+  flex-grow: 1;
+
+  @extend .position-relative, .overflow-hidden, .user-select-none , .w-100, .h-100;
+}
+
+/* قسمت انتخاب‌شده Slider */
+.slider-range {
+  background-color: blueviolet;
+  @extend .user-select-none, .w-100, .h-100;
+}
+
+/* حالت افقی قسمت انتخاب‌شده */
+.slider-range[data-orientation="horizontal"] {
+  @extend .h-100;
+}
+
+/* حالت عمودی قسمت انتخاب‌شده */
+.slider-range[data-orientation="vertical"] {
+  @extend .w-100;
+}
+
+/* دکمه قابل حرکت Slider */
+.slider-thumb {
+  flex-shrink: 0;
+  @extend .d-block, .user-select-none;
+}
+
+/* حالت غیرفعال دکمه */
+.slider-thumb:disabled {
+  pointer-events: none;
+  @extend .opacity-5;
+}

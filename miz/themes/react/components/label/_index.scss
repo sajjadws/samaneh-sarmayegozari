@@ -1,0 +1,32 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* =====================================
+   Label
+   کامپوننت برچسب فرم
+===================================== */
+
+.form-label {
+  @extend .d-flex, .align-items-center,.user-select-none;
+}
+
+
+/* =====================================
+   Label - حالت غیرفعال گروه
+===================================== */
+
+[data-disabled="true"] .form-label {
+  pointer-events: none;
+}
+
+
+/* =====================================
+   Label - حالت غیرفعال ورودی مرتبط
+===================================== */
+
+.peer:disabled ~ .form-label {
+  cursor: not-allowed;
+}
