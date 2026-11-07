@@ -1,0 +1,15 @@
+// model UserUtilities {
+//     id           String @id
+//     firstName    String
+//     lastName     String
+//     nationalCode String @unique @db.VarChar(10)
+//     avatar       String
+//     // user User like wallet in user table
+// }
+model UserUtilities {
+    id           String @id
+    firstName    String
+    lastName     String
+    nationalCode String @unique @db.VarChar(10)
+    avatar       String
+}
