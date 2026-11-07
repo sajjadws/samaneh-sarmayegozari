@@ -1,0 +1,18 @@
+/* Error: The target selector was not found.
+ * Use "@extend .bg-divider-color !optional" to avoid this error.
+ *    ,
+ * 18 |   @extend .position-relative , .d-flex , .align-items-center , .w-100 , .overflow-hidden , .bg-divider-color , .radius-all-full ; 
+ *    |   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ *    '
+ *   miz\themes\react\components\progress\_index.scss 18:3  root stylesheet */
+
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: The target selector was not found.\aUse "@extend .bg-divider-color !optional" to avoid this error.\a    \2577 \a 18 \2502    @extend .position-relative , .d-flex , .align-items-center , .w-100 , .overflow-hidden , .bg-divider-color , .radius-all-full ; \d\a    \2502    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\a    \2575 \a   miz\\themes\\react\\components\\progress\\_index.scss 18:3  root stylesheet';
+}

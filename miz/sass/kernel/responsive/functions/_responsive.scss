@@ -23,7 +23,7 @@
     @return $result;
 }
 
-@function generate-classes($prefix , $count ,$type, $start-from-zero:false , $is-space:false){
+@function generate-classes($prefix, $count, $type, $start-from-zero:false, $is-space:false){
     $list:();
     $value:0;
     $much-size:0;

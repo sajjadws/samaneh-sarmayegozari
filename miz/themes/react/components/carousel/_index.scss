@@ -1,0 +1,145 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* =========================
+   Main Carousel Container
+========================= */
+
+.carousel-container {
+
+  @extend .position-relative , .w-100 ;
+}
+
+
+/* =========================
+   Carousel Viewport
+========================= */
+
+.carousel-viewport {
+
+  @extend .w-100 , .overflow-hidden ;
+}
+
+
+/* =========================
+   Carousel Track
+========================= */
+
+.carousel-track {
+
+  @extend .d-flex ;
+}
+
+.carousel-track-horizontal {
+  margin-left: -16px;
+}
+
+.carousel-track-vertical {
+  margin-top: -16px;
+
+  @extend .flex-column ;
+}
+
+
+/* =========================
+   Carousel Slide
+========================= */
+
+.carousel-slide {
+  flex: 0 0 100%;
+}
+
+.carousel-slide-horizontal {
+  
+  @extend .pl-5 ;
+}
+
+.carousel-slide-vertical {
+
+  @extend .pt-5 ;
+}
+
+
+/* =========================
+   Carousel Navigation Buttons
+========================= */
+
+.carousel-button {
+  touch-action: manipulation;
+
+  @extend .position-absolute , .z-index-2 ;
+}
+
+
+/* Previous Button - Horizontal */
+
+.carousel-previous {
+  left: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @extend .top-0 , .bottom-0 ;
+}
+
+
+/* Next Button - Horizontal */
+
+.carousel-next {
+  right: 20px;
+  margin-top: auto;
+  margin-bottom: auto;
+
+  @extend .top-0 , .bottom-0 ;
+}
+
+
+/* Previous Button - Vertical */
+
+.carousel-previous-vertical {
+  top: -48px;
+  transform: translateX(-50%) rotate(90deg);
+
+  @extend .left-50 ;
+}
+
+
+/* Next Button - Vertical */
+
+.carousel-next-vertical {
+  bottom: -48px;
+  transform: translateX(-50%) rotate(90deg);
+
+   @extend .left-50 ;
+}
+
+
+/* =========================
+   Disabled Buttons
+========================= */
+
+.carousel-button:disabled {
+
+   @extend .opacity-4 ;
+}
+
+
+/* =========================
+   Accessibility
+========================= */
+
+.sr-only {
+  width: 1px;
+  margin: -1px;
+  clip: rect(0, 0, 0, 0);
+
+  @extend .position-absolute , .aspect-ratio-1x1 , .p-0 , .overflow-hidden , .txt-white-space-nowrap ;
+}
+
+.product-card {
+
+  @extend .d-flex , .align-items-center ,  .justify-content-center , .bg-on-primary-color , .radius-all-normal , .font-weight-bold;
+} 

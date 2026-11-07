@@ -1,6 +1,6 @@
-$backgrounds:(primary,on-primary,primary-light,primary-dark,secondary,on-secondary,secondary-light,secondary-dark,specific,button,fields,text,title-text,secondary-text,section-title-text,border,divider,shadow,icon,menu,card,background,section,hover,button-hover,text-hover,button-text-hover,danger-regular,disabled-regular,warning-regular,warning-light,warning-dark,success-regular,success-light,success-dark,danger-dark,danger-light,disabled-light,disabled-dark,information-regular,information-light,information-dark,border-secondary,unCommon,"transparent");
-$colors:(primary-light,on-primary,on-secondary,icon,text,specific,primary,secondary,highlight-text, library-icon,title-text,button-text,text-fields,danger-regular);
-$borders:(divider,border,primary,on-primary);
+$backgrounds:(primary,on-primary,primary-light,primary-dark,secondary,on-secondary,secondary-light,secondary-dark,specific,button,fields,icon,menu,card,background,section,hover,button-hover,danger-regular,disabled-regular,warning-regular,warning-light,warning-dark,success-regular,success-light,success-dark,danger-dark,danger-light,disabled-light,disabled-dark,information-regular,information-light,information-dark,unCommon,"transparent");
+$colors:(primary-light,on-primary,on-secondary,icon,text,text-hover,specific,primary,secondary,title-text,button-text,text-fields,danger-regular,disabled-regular,warning-regular,warning-light,warning-dark,success-regular,success-light,success-dark,danger-dark,danger-light,disabled-light,disabled-dark,information-regular,information-light,information-dark);
+$borders:(divider,border,primary,on-primary,secondary);
 
 $light-color-palette:(
     primary:white,
@@ -16,6 +16,7 @@ $light-color-palette:(
     button: #00000000,
     library-icon : #94A3B8,
     text: #212529,
+    text-hover: #D6AE61,
     title-text: #000000,
     highlight-text : #FF5050,
     header-text: #DDCDFE,

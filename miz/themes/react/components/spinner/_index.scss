@@ -1,0 +1,25 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+
+.spinner {
+  width: 16px;
+  animation: spinner-rotate 1s linear infinite;
+
+  @extend  .aspect-ratio-1x1 ;
+}
+
+/* انیمیشن چرخش مداوم Spinner */
+@keyframes spinner-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(-360deg);
+  }
+}

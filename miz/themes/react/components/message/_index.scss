@@ -1,0 +1,110 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+/* ==============================
+   Message Group
+============================== */
+
+.message-group {
+  min-width: 0;
+  @extend .d-flex , .flex-column , .gap-6 , .w-100 , .p-6 , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-medium ;
+}
+
+
+/* ==============================
+   Message
+============================== */
+
+.message {
+  min-width: 0;
+  @extend .d-flex , .flex-row , .align-items-flex-end , .gap-3 , .w-100 , .position-relative ;
+}
+
+.message[data-align="end"] {
+  @extend .flex-row-reverse ;
+}
+
+
+/* ==============================
+   Message Avatar
+============================== */
+
+.message-avatar {
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.08);
+  @extend .d-flex , .align-items-center , .justify-content-center , .aspect-ratio-1x1 , .align-self-flex-end , .overflow-hidden , .primary-color , .radius-all-extra-large , .bw-2 , .border-style-solid , .border-color ;
+}
+
+.message-avatar img {
+  @extend .w-100 , .aspect-ratio-1x1 , .object-cover ;
+}
+
+
+/* ==============================
+   Message Content
+============================== */
+
+.message-content {
+  max-width: min(75%, 520px);
+  min-width: 0;
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.04);
+  overflow-wrap: break-word;
+  word-break: break-word;
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+
+    @extend .d-flex , .flex-column , .gap-2 , .w-fit-content , .py-3 , .px-4 , .bw-1 , .border-style-solid , .border-color , .bg-on-primary-color , .radius-br-small , .radius-tr-medium , .radius-bl-medium , .radius-tl-medium ;
+}
+
+
+/* پیام‌های سمت راست */
+
+.message[data-align="end"] .message-content {
+  @extend .radius-bl-small , .radius-tr-medium , .radius-br-medium , .radius-tl-medium , .primary-color , .border-color ;
+}
+
+
+/* ==============================
+   Message Header
+============================== */
+
+.message-header {
+  max-width: 100%;
+  min-width: 0;
+  @extend .d-flex , .align-items-center , .gap-2 , .font-weight-bold , .secondary-color;
+}
+
+
+/* نام فرستنده در پیام خود کاربر */
+
+.message[data-align="end"] .message-header {
+  @extend .primary-color ;
+}
+
+
+/* ==============================
+   Message Text
+============================== */
+
+.message-content > div:not(.message-header):not(.message-footer) {
+  @extend .primary-color , .font-weight-bold , .lh-8 ;
+}
+
+
+/* ==============================
+   Message Footer
+============================== */
+
+.message-footer {
+  max-width: 100%;
+  min-width: 0;
+  @extend .d-flex , .align-items-center , .gap-2 , .primary-color , .font-weight-medium ;
+}
+
+.message[data-align="end"] .message-footer {
+  @extend .justify-content-flex-end , .secondary-color ;
+}
+

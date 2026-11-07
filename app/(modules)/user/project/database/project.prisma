@@ -1,0 +1,137 @@
+enum ProjectStatus {
+  FUNDRAISING
+  IN_PROGRESS
+  COMPLETED
+}
+
+model Project {
+  id           String @id @default(uuid())
+  title        String @db.VarChar(50)
+  description  String @db.VarChar(255)
+  durationDate String @map("duration_date")
+
+  status        ProjectStatus @default(FUNDRAISING)
+  isPublication Boolean       @default(false)
+
+  usrId String
+  user  User   @relation(fields: [usrId], references: [id])
+
+  phases           ProjectPhase[]
+  questionProjects QuestionProject[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectPhase {
+  id          String @id @default(uuid())
+  title       String @db.VarChar(50)
+  description String @db.VarChar(250)
+
+  startDate DateTime? @db.Date
+  endDate   DateTime? @db.Date
+
+  totalAmount  String @default("0")
+  profitAmount String @default("0")
+  incomeAmount String @default("0")
+
+  isPublish Boolean       @default(false)
+  status    ProjectStatus @default(FUNDRAISING)
+
+  projectId              String
+  project                Project                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  phaseInvestments       ProjectPhaseInvestment[]
+  team                   TeamProject[]
+  createdAt              DateTime                 @default(now())
+  updatedAt              DateTime                 @updatedAt
+  InvestmentTransactions InvestmentTransaction[]
+  fileProjects           FileProject[]
+}
+
+enum FileType {
+  PDF
+  IMAGE
+  DOCUMENT
+  VIDEO
+  OTHER
+}
+
+enum InvestmentStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  REFUNDED
+}
+
+model FileProject {
+  id       String   @id @default(uuid())
+  fileName String   @db.VarChar(255)
+  filePath String   @db.VarChar(500)
+  fileType FileType
+
+  projectPhaseId String?
+  projectPhase   ProjectPhase? @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Investment {
+  id String @id @default(uuid())
+
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+
+  amount       Decimal @db.Decimal(18, 2)
+  profitAmount Decimal @default(0) @db.Decimal(18, 2)
+  returnAmount Decimal @default(0) @db.Decimal(18, 2)
+
+  status                 InvestmentStatus        @default(PENDING)
+  startInvestedDate      DateTime?               @db.Date
+  InvestmentTransactions InvestmentTransaction[]
+
+  projectPhases ProjectPhaseInvestment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ProjectPhaseInvestment {
+  id String @id @default(uuid())
+
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+
+  projectPhaseId String
+  projectPhase   ProjectPhase @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([investmentId, projectPhaseId])
+}
+
+model QuestionProject {
+  id          String @id @default(uuid())
+  title       String @db.VarChar(100)
+  description String @db.VarChar(500)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TeamProject {
+  id        String @id @default(uuid())
+  fullName  String @db.VarChar(100)
+  semat     String @db.VarChar(100)
+  expertise String @db.VarChar(255)
+
+  projectPhaseId String
+  projectPhase   ProjectPhase @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

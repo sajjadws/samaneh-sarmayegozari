@@ -1,0 +1,55 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* موقعیت‌دهی کانتینر Tooltip */
+.tooltip-positioner {
+  isolation: isolate;
+  @extend .position-relative, .z-index-10;
+}
+
+/* بدنه اصلی Tooltip */
+.tooltip-content {
+  max-width: 20rem;
+
+  transform-origin: var(--transform-origin);
+
+  @extend .position-relative, .z-index-10, .w-fit-content, .bg-primary-color, .secondary-color;
+}
+
+/* فلش Tooltip */
+.tooltip-arrow {
+
+  fill: var(--foreground);
+  @extend .position-relative, .z-index-10, .bg-secondary-color;
+}
+
+/* تنظیم موقعیت فلش بر اساس جهت Tooltip */
+
+/* Tooltip در پایین */
+.tooltip-arrow[data-side="bottom"] {
+  top: 0.25rem;
+  
+}
+
+/* Tooltip در سمت چپ */
+.tooltip-arrow[data-side="left"] {
+  top: 50%;
+  right: -0.25rem;
+  transform: translateY(-50%);
+}
+
+/* Tooltip در سمت راست */
+.tooltip-arrow[data-side="right"] {
+  top: 50%;
+  left: -0.25rem;
+  transform: translateY(-50%);
+}
+
+/* Tooltip در بالا */
+.tooltip-arrow[data-side="top"] {
+  bottom: -0.625rem;
+}

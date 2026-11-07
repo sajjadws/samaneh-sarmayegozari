@@ -1,0 +1,271 @@
+
+"use client"
+
+import * as React from "react"
+import useEmblaCarousel from "embla-carousel-react"
+
+import { Button } from "../button/page"
+import { MoveLeft, MoveRight } from "lucide-react"
+
+
+const CarouselContext = React.createContext(null)
+
+
+function useCarousel() {
+  const context = React.useContext(CarouselContext)
+
+  if (!context) {
+    throw new Error("useCarousel must be used within a <Carousel />")
+  }
+
+  return context
+}
+
+
+// Main Carousel
+function Carousel({
+  orientation = "horizontal",
+  opts,
+  setApi,
+  plugins,
+  className = "",
+  children,
+  ...props
+}) {
+
+  const [carouselRef, api] = useEmblaCarousel(
+    {
+      ...opts,
+      axis: orientation === "horizontal" ? "x" : "y",
+    },
+    plugins
+  )
+
+  const [canScrollPrev, setCanScrollPrev] = React.useState(false)
+  const [canScrollNext, setCanScrollNext] = React.useState(false)
+
+
+  const onSelect = React.useCallback((api) => {
+    if (!api) return
+
+    setCanScrollPrev(api.canScrollPrev())
+    setCanScrollNext(api.canScrollNext())
+  }, [])
+
+
+  const scrollPrev = React.useCallback(() => {
+    api?.scrollPrev()
+  }, [api])
+
+
+  const scrollNext = React.useCallback(() => {
+    api?.scrollNext()
+  }, [api])
+
+
+  const handleKeyDown = React.useCallback(
+    (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault()
+        scrollPrev()
+      }
+
+      if (event.key === "ArrowRight") {
+        event.preventDefault()
+        scrollNext()
+      }
+    },
+    [scrollPrev, scrollNext]
+  )
+
+
+  React.useEffect(() => {
+    if (!api || !setApi) return
+
+    setApi(api)
+  }, [api, setApi])
+
+
+  React.useEffect(() => {
+    if (!api) return
+
+    onSelect(api)
+
+    api.on("reInit", onSelect)
+    api.on("select", onSelect)
+
+    return () => {
+      api.off("select", onSelect)
+      api.off("reInit", onSelect)
+    }
+  }, [api, onSelect])
+
+
+  return (
+    <CarouselContext.Provider
+      value={{
+        carouselRef,
+        api,
+        opts,
+        orientation,
+        scrollPrev,
+        scrollNext,
+        canScrollPrev,
+        canScrollNext,
+      }}
+    >
+
+      <div
+        onKeyDownCapture={handleKeyDown}
+        className={`carousel-container ${className}`}
+        role="region"
+        aria-roledescription="carousel"
+        data-slot="carousel"
+        {...props}
+      >
+        {children}
+      </div>
+
+    </CarouselContext.Provider>
+  )
+}
+
+
+// Carousel Content
+function CarouselContent({ className = "", ...props }) {
+
+  const { carouselRef, orientation } = useCarousel()
+
+  return (
+    <div
+      ref={carouselRef}
+      className="carousel-viewport"
+      data-slot="carousel-content"
+    >
+
+      <div
+        className={`
+          carousel-track
+          ${orientation === "horizontal"
+            ? "carousel-track-horizontal"
+            : "carousel-track-vertical"
+          }
+          ${className}
+        `}
+        {...props}
+      />
+
+    </div>
+  )
+}
+
+
+// Carousel Item
+function CarouselItem({ className = "", ...props }) {
+
+  const { orientation } = useCarousel()
+
+  return (
+    <div
+      role="group"
+      aria-roledescription="slide"
+      data-slot="carousel-item"
+      className={`
+        carousel-slide
+        ${orientation === "horizontal"
+          ? "carousel-slide-horizontal"
+          : "carousel-slide-vertical"
+        }
+        ${className}
+      `}
+      {...props}
+    />
+  )
+}
+
+
+// Previous Button
+function CarouselPrevious({
+  className = "",
+  variant = "outline",
+  size = "icon-sm",
+  ...props
+}) {
+
+  const { orientation, scrollPrev, canScrollPrev } = useCarousel()
+
+  return (
+    <Button
+      data-slot="carousel-previous"
+      variant={variant}
+      size={size}
+      className={`
+        carousel-button
+        carousel-previous
+        ${orientation === "vertical"
+          ? "carousel-previous-vertical"
+          : ""
+        }
+        ${className}
+      `}
+      disabled={!canScrollPrev}
+      onClick={scrollPrev}
+      {...props}
+    >
+      <MoveLeft />
+
+      <span className="sr-only">
+        Previous slide
+      </span>
+    </Button>
+  )
+}
+
+
+// Next Button
+function CarouselNext({
+  className = "",
+  variant = "outline",
+  size = "icon-sm",
+  ...props
+}) {
+
+  const { orientation, scrollNext, canScrollNext } = useCarousel()
+
+  return (
+    <Button
+      data-slot="carousel-next"
+      variant={variant}
+      size={size}
+      className={`
+        carousel-button
+        carousel-next
+        ${orientation === "vertical"
+          ? "carousel-next-vertical"
+          : ""
+        }
+        ${className}
+      `}
+      disabled={!canScrollNext}
+      onClick={scrollNext}
+      {...props}
+    >
+      <MoveRight />
+
+      <span className="sr-only">
+        Next slide
+      </span>
+    </Button>
+  )
+}
+
+
+export {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+  useCarousel,
+}
+

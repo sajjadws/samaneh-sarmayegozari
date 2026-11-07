@@ -1,0 +1,88 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use 'sass:map';
+
+
+/* کانتینر اصلی بخش Empty */
+.empty-container {
+  display: flex;
+  flex: 1 1 0%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-width: 0;
+
+  text-align: center;
+  text-wrap: balance;
+}
+
+/* سربرگ Empty */
+.empty-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  max-width: 24rem;
+}
+
+/* بخش رسانه یا آیکون */
+.empty-media {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+/* جلوگیری از کلیک‌پذیری SVG داخل آیکون */
+.empty-media svg {
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+/* حالت پیش‌فرض رسانه */
+.empty-media-default {
+  /* استایل اختصاصی حالت default را اینجا قرار بده */
+}
+
+/* حالت آیکون */
+.empty-media-icon {
+  /* استایل اختصاصی حالت icon را اینجا قرار بده */
+}
+
+/* عنوان Empty */
+.empty-title {
+  /* استایل عنوان */
+}
+
+/* توضیحات Empty */
+.empty-description {
+  color: var(--muted-foreground);
+}
+
+/* لینک‌های داخل توضیحات */
+.empty-description a {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* حالت هاور لینک‌ها */
+.empty-description a:hover {
+  color: var(--primary);
+}
+
+/* محتوای Empty */
+.empty-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
+  max-width: 24rem;
+  min-width: 0;
+
+  text-wrap: balance;
+}
