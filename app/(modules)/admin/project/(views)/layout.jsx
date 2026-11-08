@@ -9,7 +9,7 @@ export default function ProjectsLayout({ children }) {
 		<>
 			<Header theme={theme} setTheme={setTheme} />
 			<main>
-				<Sidebar role={globalThis.getRole("admin")}/>
+				{/* <Sidebar role={globalThis.getRole("admin")}/> */}
 				{children}
 			</main>
 			<Footer />

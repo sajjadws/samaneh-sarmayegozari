@@ -12,7 +12,8 @@
 .input {
   min-width: 0;
   outline: none;
-  @extend .w-100;
+  border: 1px solid var(--border);
+  @extend .w-100, .radius-all-normal, .py-3, .px-3;
 }
 
 
@@ -24,9 +25,8 @@
   display: inline-flex;
   border: 0;
   background-color: transparent;
-  color: var(--border);
 
-
+  @extend .bg-primary-color, .secondary-color;
 }
 
 
@@ -35,8 +35,7 @@
 ===================================== */
 
 .input::placeholder {
-  color: var(--primary);
-  @extend .opacity-10;
+  @extend .opacity-10, .border-color;
 }
 
 
@@ -49,4 +48,13 @@
   cursor: not-allowed;
 
   @extend .opacity-5;
+}
+
+.input:focus {
+    border-color: #37433F;
+    outline: none;  
+}
+
+input:focus::placeholder {
+    @extend .text-color;
 }
