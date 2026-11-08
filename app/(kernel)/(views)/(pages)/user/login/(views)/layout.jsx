@@ -9,11 +9,11 @@ export default function ProjectsLayout({ children }) {
 
 	return (
 		<>
-			<Header theme={theme} setTheme={setTheme} />
+			{/* <Header theme={theme} setTheme={setTheme} /> */}
 			<main>
 				{children}
 			</main>
-			<Footer />
+			{/* <Footer /> */}
 		</>
 	);
 }

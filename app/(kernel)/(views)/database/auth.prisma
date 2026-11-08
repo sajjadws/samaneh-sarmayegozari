@@ -43,6 +43,8 @@ model Verification {
 }
 
 model AddToUser {
+	displayUsername String?
+
 	sessions Session[]
 	accounts Account[]
 }
