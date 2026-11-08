@@ -24,7 +24,7 @@
   display: inline-flex;
   border: 0;
   background-color: transparent;
-  color: var(--foreground);
+  color: var(--border);
 
 
 }
@@ -35,7 +35,7 @@
 ===================================== */
 
 .input::placeholder {
-  color: var(--muted-foreground);
+  color: var(--primary);
   @extend .opacity-10;
 }
 
