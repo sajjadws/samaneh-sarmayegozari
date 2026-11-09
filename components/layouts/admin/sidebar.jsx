@@ -94,6 +94,7 @@ export default function Sidebar({ role, ...props }) {
 				item.subList?.length > 0 ? (
 					<Collapsible key={item.link} open={isOpen} onOpenChange={setIsOpen} className="d-flex flex-column gap-2">
 						<CollapsibleTrigger
+							nativeButton={false}
 							render={
 								<div className={utils.cn("link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden", linkClassName, isActive(item.link) ? "bg-on-primary-color primary-color" : "on-primary-color")}>
 									<i className={utils.cn("icon", item.icon, "txt-size-mid-title")} />
@@ -102,7 +103,7 @@ export default function Sidebar({ role, ...props }) {
 										{item.label}
 									</span>
 
-									<i className={utils.cn("icon", item.icon, "txt-size-mid-title")} />
+									<i className={utils.cn("icon icon-arrow-left-2 txt-size-mid-title")} />
 								</div>
 							}
 						/>
@@ -112,7 +113,7 @@ export default function Sidebar({ role, ...props }) {
 								<Link key={subItem.link} href={subItem.link} className={utils.cn("link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden w-80", linkClassName, isActive(subItem.link) ? "bg-on-primary-color primary-color" : "on-primary-color")}>
 									<i className={utils.cn("icon", subItem.icon, "txt-size-mid-title")} />
 
-									<span className={utils.cn("title txt-size-normal d-md-none", titleClassName, hiddenTitles.has(subItem.link) ? "d-none" : "d-inline")} onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}>
+									<span className={utils.cn("title txt-size-subtitle d-md-none", titleClassName, hiddenTitles.has(subItem.link) ? "d-none" : "d-inline")} onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}>
 										{subItem.label}
 									</span>
 								</Link>

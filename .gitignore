@@ -42,7 +42,10 @@ next-env.d.ts
 
 # prisma
 /lib/generated/prisma
-# /prisma
 
-# # packages
-# /package-lock.json
+# packages
+/package-lock.json
+
+# public
+/public/css/*
+/public/modules/*
