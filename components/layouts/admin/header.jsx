@@ -20,7 +20,7 @@ export default function Header({ role, theme, setTheme }) {
     }, [theme]);
 
 	return (
-		<header className="header-test w-100 bg-on-primary-color d-flex justify-content-space-between align-items-center">
+		<header className="header w-100 bg-on-primary-color d-flex justify-content-space-between align-items-center">
 			<div className="d-flex gap-11">
 				<img src={globalThis.getAssets("/media/images/Logo.svg")} alt="" />
 				{/* <nav className="d-flex gap-7 align-items-center">
@@ -43,7 +43,7 @@ export default function Header({ role, theme, setTheme }) {
 						<span className="text-color">test</span>
 						<span className="secondary-text-color">test</span>
 					</div>
-					<img className="radius-all-full" src={globalThis.getAssets("media/images/پروفایل.png")} alt="" />
+					<img className="radius-all-full" src={globalThis.getAssets("media/images/پروفایل.jpg")} alt="" />
 				</div>
 			</div>
 		</header>
