@@ -1,7 +1,11 @@
+main:has(.sidebar) {
+    height: calc(100vh - 10vh);
+}
+
 .sidebar {
     width: 15%;
     min-width: 67px;
-    height: calc(100vh - 10vh);
+    /* height: calc(100vh - 10vh); */
     transition: width 300ms linear;
 }
 
@@ -34,7 +38,15 @@
 }
 
 .sidebar .link-item {
-    transition: 300ms linear all;
+    transition: 225ms ease-in-out all;
+}
+
+.sidebar .link-item i[class*="arrow"]{
+    transition: 225ms ease-in-out all;
+}
+
+.sidebar .link-item[data-panel-open] i[class*="arrow"]{
+    transform: rotateZ(-90deg);
 }
 
 @keyframes FadeIn {
