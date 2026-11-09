@@ -1,5 +1,0 @@
-model RolePermission {
-    id           String @id
-    roleId       String
-    permissionId String
-}

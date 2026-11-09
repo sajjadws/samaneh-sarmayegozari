@@ -1,7 +1,20 @@
-export default function UserLayout({children}){
+"use client";
+
+import { useState } from "react";
+import Sidebar from "@/components/layouts/admin/sidebar";
+import Header from "@/components/layouts/admin/header";
+
+export default function UserLayout({ children }) {
+    const [theme, setTheme] = useState("light");
+
     return (
-        <div className="bg-secondary-color primary-color">
-            {children}
-        </div>
+        <>
+            <Header theme={theme} setTheme={setTheme} />
+            <main className="bg-color">
+                <Sidebar role={globalThis.getRole("user")}/>
+                {children}
+            </main>
+            {/* <Footer /> */}
+        </>
     );
 }

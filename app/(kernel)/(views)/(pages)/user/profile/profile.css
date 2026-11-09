@@ -1,0 +1,16 @@
+.profile .information-list .information{
+    transition: 300ms linear all;
+}
+
+.body {
+    transition: 300ms linear all;
+}
+
+/* [need to fix] */
+form input {
+    height: 52px;
+}
+.shadow-lg {
+    box-shadow: 0 1 2 0 color-mix(in oklab, black 15%, transparent 100%), 0 1 3 1 color-mix(in oklab, black 15%, transparent 100%);
+    /* color-mix(in oklab, teal 20%, olive 30%, blue 50%) */
+}
