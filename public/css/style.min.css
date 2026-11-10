@@ -1,1 +1,1 @@
-body{background-color:red}
+main{display:flex}#sign-in .block img,#sign-up .block img{object-position:85%}#sign-in .block:has(img),#sign-up .block:has(img){position:relative}#sign-in .block:has(img)::after,#sign-up .block:has(img)::after{content:"";background-image:linear-gradient(-90deg, var(--background) 0%, transparent 40%);width:100%;height:100%;position:absolute;top:0;left:0}#sign-in .block .card,#sign-up .block .card{box-shadow:0px 1px 2px 0px color-mix(in oklch, var(--black) 30%, transparent),0px 1px 3px 1px color-mix(in oklch, var(--black) 10%, transparent)}
