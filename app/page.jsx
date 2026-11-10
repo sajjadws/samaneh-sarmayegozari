@@ -1,10 +1,7 @@
-import { Input } from "@/miz/themes/react/components/input/page";
-
-export default function home(){
-	return(
+export default function HomePage() {
+	return (
 		<>
-			<Input placeholder="جستجو" />
-			<p>سلام خوبی؟</p>
+			<h1>home page</h1>
 		</>
-	)
+	);
 }
