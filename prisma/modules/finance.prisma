@@ -1,0 +1,78 @@
+enum WalletTransactionType {
+    DEPOSIT
+    WITHDRAWAL
+}
+
+enum BankAccountStatus {
+    PENDING
+    VERIFIED
+    REJECTED
+}
+
+enum InvestmentTransactionType {
+    PROFIT
+    PRINCIPAL_RETURN
+}
+
+enum InvestmentTransactionStatus {
+    PENDING
+    PAID
+    FAILED
+}
+
+model Wallet {
+    id           String              @id @default(cuid())
+    balance      String              @default("0")
+    createdAt    DateTime            @default(now())
+    userId       String              @unique
+    user         User                @relation(fields: [userId], references: [id])
+    transactions WalletTransaction[]
+    bankAcounts  BankAccount[]
+}
+
+model BankAccount {
+    id          String            @id @default(cuid())
+    numberCard  String?           @db.VarChar(20)
+    bankName    String            @db.VarChar(20)
+    numberShaba String            @unique @db.VarChar(26)
+    dateExpired DateTime?         @db.Date
+    status      BankAccountStatus @default(PENDING)
+    walletId    String
+    wallet      Wallet            @relation(fields: [walletId], references: [id], onDelete: Cascade)
+
+    @@index([walletId])
+}
+
+model WalletTransaction {
+    id          String                @id @default(cuid())
+    amount      Decimal               @db.Decimal(18, 2)
+    type        WalletTransactionType
+    referenceId String?               @unique
+    createdAt   DateTime              @default(now())
+    walletId    String
+
+    wallet Wallet @relation(fields: [walletId], references: [id])
+
+    @@index([walletId, createdAt])
+}
+
+model InvestmentTransaction {
+    id     String                      @id @default(cuid())
+    type   InvestmentTransactionType
+    amount Decimal                     @db.Decimal(18, 2)
+    status InvestmentTransactionStatus @default(PENDING)
+
+    referenceId String?   @unique
+    createdAt   DateTime  @default(now())
+    paidAt      DateTime?
+
+    investmentId   String
+    projectPhaseId String
+
+    investment Investment @relation(fields: [investmentId], references: [id], onDelete: Restrict)
+
+    projectPhase ProjectPhase @relation(fields: [projectPhaseId], references: [id], onDelete: Restrict)
+
+    @@index([investmentId, createdAt])
+    @@index([projectPhaseId])
+}
