@@ -1,0 +1,36 @@
+enum NotificationStatus {
+    READ
+    UNREAD
+}
+
+enum TicketStatus {
+    UNDER_REVIEW
+    ANSWERED
+    CLOSED
+}
+
+model Notification {
+    id          String             @id @default(uuid())
+    title       String             @db.VarChar(100)
+    description String             @db.VarChar(500)
+    status      NotificationStatus @default(UNREAD)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Ticket {
+    id          String       @id @default(uuid())
+    title       String       @db.VarChar(150)
+    description String       @db.VarChar(1000)
+    status      TicketStatus @default(UNDER_REVIEW)
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}

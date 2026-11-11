@@ -8,7 +8,7 @@ export default function HomeLayout({ children }) {
 
     return (
         <html dir="rtl">
-            <body>
+            <body className="font-primary">
                 {children}
             </body>
         </html>
