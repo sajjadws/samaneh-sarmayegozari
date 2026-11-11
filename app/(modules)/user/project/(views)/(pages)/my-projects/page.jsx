@@ -1,0 +1,41 @@
+
+import { getAllPosts } from "./actions/crud";
+import { columns } from "./components/columns";
+import { DataTable } from "@/miz/components/react/data-table/data-table";
+// import SearchTable from "@/components/search-table";
+import { Suspense } from "react";
+// import HandlePagination from "@/components/pagination";
+import CreateModal from "./components/create-modal";
+
+
+// import "./projects.css";
+// import "../myprojects.css";
+
+
+export default async function ProjectsPage({ searchParams }) {
+    const { page, perPage, q = "", role } = await searchParams;
+  
+    const fetchData = await getAllPosts({
+        page: page ? +page : 1,
+        perPage: perPage ? +perPage : 10,
+        q: q || "",
+        role: role || null,
+    });
+
+    const fetchedData = fetchData.data;
+    
+    const { data, ...otherData } = fetchedData;
+
+    return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="container mx-auto space-y-4 p-10 py-10">
+        <CreateModal />
+        <SearchTable q={q} />
+        {/* <HandleFilter currentRole={role} /> */}
+        <DataTable columns={columns} data={data} options={otherData} />
+        <HandlePagination page={page ? +page : 1} perPage={perPage ? +perPage : 10} total={otherData?.total || 0} />
+      </div>
+    </Suspense>
+    
+  );
+}
