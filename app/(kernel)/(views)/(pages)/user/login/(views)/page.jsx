@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import PhoneNumber from "./components/phone-number";
 import VerifyCode from "./components/verify-code";
 import { useState } from "react";
+import "@/lib/globals-client";
 
 export default function LoginUserPage() {
 	const [userData, setUserData] = useState({
