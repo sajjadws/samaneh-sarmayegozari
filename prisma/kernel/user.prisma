@@ -32,17 +32,12 @@ model User {
     createdAt           DateTime   @default(now())
     updatedAt           DateTime   @updatedAt
 
-    displayUsername String?
+displayUsername String?
 
-    sessions Session[]
-    accounts Account[]
+	sessions Session[]
+	accounts Account[]
 
-    userRoles     UserRole[]
-    wallet        Wallet?
-    projects      Project[]
-    investment    Investment?
-    notifications Notification[]
-    tickets       Ticket[]
+userRoles UserRole[]
 }
 
 enum UserStatus {

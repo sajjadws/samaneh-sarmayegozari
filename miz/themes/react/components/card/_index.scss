@@ -16,7 +16,7 @@
 
 .card-title {
     line-height: 1.375;
-    @extend .txt-size-normal, .font-weight-medium;
+    @extend .txt-size-normal ;
 }
 
 .card[data-size="sm"] .card-title {

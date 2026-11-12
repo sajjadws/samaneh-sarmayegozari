@@ -1,20 +1,20 @@
 import { routes } from "@/lib/routes/routes";
 
-const sidebarProjectItems = [
+const sidebarSupporttems = [
 	{
 		order: 0,
-		label: "projects",
+		label: "tickets",
 		icon: "icon-3full",
-		link: routes.panel.adminProjects,
+		link: "routes.panel.adminTickets",
 		role: "admin",
 	},
 	{
 		order: 1,
-		label: "my projects",
+		label: "my tickets",
         icon: "icon-3full",
-		link: routes.panel.myProjects,
+		link: "routes.panel.adminTickets",
 		role: "admin",
 	},
 ];
 
-export default sidebarProjectItems;
+export default sidebarSupporttems;
