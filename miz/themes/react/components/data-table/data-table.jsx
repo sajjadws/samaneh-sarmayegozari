@@ -8,7 +8,7 @@ import { features } from "./data-table-features";
 
 export function DataTable({
 	className,
-	columns,
+	columns ,
 	data,
 	singleName = "سطر",
 	collectionName = "اطلاعات",
