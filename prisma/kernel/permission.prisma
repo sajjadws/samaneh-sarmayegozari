@@ -1,5 +1,0 @@
-// model Permission {
-//     id   String @id
-//     name String @unique @db.VarChar(50)
-//     key  String @unique @db.VarChar(50)
-// }

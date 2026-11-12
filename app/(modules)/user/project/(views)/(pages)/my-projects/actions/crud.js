@@ -1,431 +1,547 @@
 "use server";
 
-// import prismadb from "@/lib/prisma/prismaDB";
+import prismaDB from "@/lib/prisma/prismaDB";
 import { routes } from "@/lib/routes/routes";
-import { postSchema } from "@/lib/validation/project";
+import { auth } from "@/lib/authentication/auth";
+
 import { revalidatePath } from "next/cache";
-// import { getCurrentUser } from "@/lib/get-current-user";
-// import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
-import { randomUUID } from "node:crypto";
 
+// وضعیت‌های مجاز پروژه مطابق Prisma Schema
+const PROJECT_STATUSES = [
+  "FUNDRAISING",
+  "IN_PROGRESS",
+  "COMPLETED",
+];
 
-export const getAllPosts = async (options = {}) => {
-  const page = options?.page || 1;
-  const perPage = options?.perPage || 10;
-  //تعداد رکوردی که باید بره جلوتر
-  const skip = (page - 1) * perPage;
-  //تعداد رکوردی که از تیبل میخواهیم
-  const take = perPage;
-  const role = options?.role;
+// مسیر صفحه پروژه‌ها
+const PROJECTS_PATH = "routes.panel.myProjects";
 
-  // console.log("roleeeeeeeeeeeeeeeeeee", role);
+// ------------------------------------------
+// 1. دریافت تمام پروژه‌ها
+// ------------------------------------------
 
-  const searchString = options.q;
-
-  const searchFilter = {
-    AND: [
-      {
-        OR: [
-          { title: { contains: searchString} },
-          { description: { contains: searchString} },
-        ],
-      },
-    ],
-  };
-
-  console.log("searchFilter", searchFilter);
-
-  const where = searchFilter;
-
-  const total = await prismadb.post.count({ where });
-
-  const data = await prismadb.post.findMany({
-    where,
-    skip,
-    take,
-    orderBy: {
-      id: "desc",
-    },
-    select: {
-      id: true,
-      title: true,
-      description: true,
-      publishDate: true,
-    },
-  });
-
-
-  return {
-    ok: true,
-    status: 200,
-    data: {
-      data,
-      total,
-      page,
-      perPage,
-    },
-    message: "داده ها ارسال شدند",
-  };
-};
-
-export const getPostById = async (id) => {
+export const getAllProjects = async (options = {}) => {
   try {
-    console.log("شناسه دریافتی:", id);
+    const page = Math.max(1, Number(options.page) || 1);
+    const perPage = Math.max(1, Number(options.perPage) || 10);
 
-    const data = await prismadb.post.findUnique({
-      where: {
-        id: String(id),
+    const skip = (page - 1) * perPage;
+    const take = perPage;
+
+    const searchString = options.q?.trim() || "";
+
+    // فیلتر جستجو
+    const where = searchString
+      ? {
+          OR: [
+            {
+              title: {
+                contains: searchString,
+              },
+            },
+            {
+              description: {
+                contains: searchString,
+              },
+            },
+          ],
+        }
+      : {};
+
+    // تعداد کل پروژه‌ها
+    const total = await prismaDB.Project.count({
+      where,
+    });
+
+    // دریافت پروژه‌ها
+    const data = await prismaDB.Project.findMany({
+      where,
+
+      skip,
+      take,
+
+      orderBy: {
+        createdAt: "desc",
       },
+
       select: {
         id: true,
         title: true,
         description: true,
-        publishDate: true,
-        categoryId: true,
-      },
-    });
-
-    console.log("پست پیدا شده:", data);
-
-    if (!data) {
-      return {
-        ok: false,
-        data: null,
-        message: "پست موردنظر پیدا نشد.",
-      };
-    }
-
-    return {
-      ok: true,
-      data,
-    };
-  } catch (error) {
-    console.error("خطای دریافت پست:", error);
-
-    return {
-      ok: false,
-      data: null,
-      message: "دریافت پست ناموفق بود.",
-    };
-  }
-};
-
-
-
-// export const createPost = async (values) => {
-//   const validateData = postSchema.safeParse(values);
-//   const publishDate = parsePublishDate(values.publishDate);
-
-//   if (!validateData.success) {
-//     return {
-//       ok: false,
-//       status: 400,
-//       message: "فرمت دیتای ارسالی صحیح نمیباشد",
-//       errors: validateData.error.flatten().fieldErrors,
-//     };
-//   }
-
-
-//   const session = await auth.api.getSession({
-//     headers: await headers(),
-//   });
-
-//   if (!session) {
-//     return {
-//       ok: false,
-//       message: "برای ثبت پست ابتدا وارد حساب کاربری شوید.",
-//     };
-//   }
-  
-// const post = await prismadb.post.create({
-  
-//   data: {
-//     id: randomUUID(),
-//     title: values.title,
-//     description: values.description,
-//     publishDate,
-
-//     user: {
-//       connect: {
-//         id: session.user.id,
-//       },
-//     },
-
-//     category: {
-//       connect: {
-//         id: values.categoryId,
-//       },
-//     },
-//   },
-
-//   include: {
-//     user: true,
-//     category: true,
-//   },
-// });
-//   revalidatePath("/posts");
-
-//   return {
-//     ok: true,
-//     status: 201,
-//     post,
-//     message: "پروژه جدید اضافه شد",
-//   };
-// };
-export const createPost = async (values) => {
-  try {
-    // 1. اعتبارسنجی اطلاعات فرم
-    const validateData = postSchema.safeParse(values);
-
-    if (!validateData.success) {
-      console.error(
-        "خطای اعتبارسنجی:",
-        validateData.error.flatten().fieldErrors
-      );
-
-      return {
-        ok: false,
-        status: 400,
-        message: "اطلاعات واردشده معتبر نیست.",
-        errors: validateData.error.flatten().fieldErrors,
-      };
-    }
-
-    // 2. تبدیل تاریخ به Date معتبر
-    const publishDate = parsePublishDate(
-      validateData.data.publishDate
-    );
-
-    console.log("شروع ثبت پست");
-
-    // 3. بررسی ورود کاربر
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session) {
-      return {
-        ok: false,
-        status: 401,
-        message: "برای ثبت پست ابتدا وارد حساب کاربری شوید.",
-      };
-    }
-
-
-console.log("وضعیت Session هنگام ثبت پست:", !!session);
-console.log("شناسه کاربر:", session?.user?.id);
-
-    // 4. ذخیره پست در دیتابیس
-    const post = await prismadb.post.create({
-      data: {
-        id: randomUUID(),
-        title: validateData.data.title,
-        description: validateData.data.description,
-        publishDate,
+        durationDate: true,
+        status: true,
+        isPublication: true,
+        usrId: true,
+        createdAt: true,
+        updatedAt: true,
 
         user: {
-          connect: {
-            id: session.user.id,
+          select: {
+            id: true,
+            name: true,
           },
         },
-
-        category: {
-          connect: {
-            id: validateData.data.categoryId,
-          },
-        },
-      },
-      include: {
-        user: true,
-        category: true,
       },
     });
 
-    // 5. به‌روزرسانی مسیر
-    revalidatePath("/posts");
-
     return {
       ok: true,
-      status: 201,
-      post,
-      message: "پست با موفقیت ثبت شد.",
+      status: 200,
+
+      data: {
+        data,
+        total,
+        page,
+        perPage,
+        totalPages: Math.ceil(total / perPage),
+      },
+
+      message: "پروژه‌ها با موفقیت دریافت شدند.",
     };
   } catch (error) {
-    // نمایش علت واقعی خطا در ترمینال سرور
-    console.error("خطای واقعی در createPost:", error);
+    console.error("خطا در دریافت پروژه‌ها:", error);
 
     return {
       ok: false,
       status: 500,
-      message: "ذخیره پست با خطا مواجه شد.",
+      data: null,
+      message: "دریافت پروژه‌ها با خطا مواجه شد.",
     };
   }
 };
 
 
-// export const editPost = async (id, values) => {
-//   const validateData = postSchema.safeParse(values);
-//   const publishDate = parsePublishDate(values.publishDate);
+// ------------------------------------------
+// 2. دریافت یک پروژه با شناسه
+// ------------------------------------------
 
-//   if (!validateData.success) {
-//     return {
-//       ok: false,
-//       status: 400,
-//       message: "فرمت دیتای ارسالی صحیح نمیباشد",
-//       errors: validateData.error.flatten().fieldErrors,
-//     };
-//   }
-
-//   const data = await prismadb.post.update({
-//     where: { id },
-//     data: { ...values },
-//     publishDate,
-//   });
-
-//   revalidatePath(routes.panel.posts);
-
-//   return {
-//     ok: true,
-//     status: 201,
-//     data,
-//     message: "کاربر مورد نظر ویرایش شد",
-//   };
-// };
-export const editPost = async (id, values) => {
+export const getProjectById = async (id) => {
   try {
-    // مرحله اول: اعتبارسنجی
-    const validateData = postSchema.safeParse(values);
-
-    if (!validateData.success) {
+    if (!id) {
       return {
         ok: false,
         status: 400,
-        message: "اطلاعات واردشده معتبر نیست.",
-        errors: validateData.error.flatten().fieldErrors,
+        message: "شناسه پروژه ارسال نشده است.",
       };
     }
 
-    const validValues = validateData.data;
+    const data = await prismaDB.Project.findUnique({
+      where: {
+        id: String(id),
+      },
 
-    // مرحله دوم: تبدیل تاریخ
-    let publishDate;
-
-    try {
-      publishDate = parsePublishDate(validValues.publishDate);
-    } catch {
-      return {
-        ok: false,
-        status: 400,
-        message: "تاریخ انتشار معتبر نیست.",
-      };
-    }
-
-    // مرحله سوم: بررسی ورود کاربر
-    const session = await auth.api.getSession({
-      headers: await headers(),
-    });
-
-    if (!session) {
-      return {
-        ok: false,
-        status: 401,
-        message: "برای ویرایش پست ابتدا وارد حساب کاربری شوید.",
-      };
-    }
-
-    // مرحله چهارم: دریافت پست و بررسی مالکیت
-    const existingPost = await prismadb.post.findUnique({
-      where: { id },
       select: {
         id: true,
-        userId: true,
+        title: true,
+        description: true,
+        durationDate: true,
+        status: true,
+        isPublication: true,
+        usrId: true,
+        createdAt: true,
+        updatedAt: true,
+
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
+
+        phases: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
+
+        questionProjects: true,
       },
     });
 
-    if (!existingPost) {
+    if (!data) {
       return {
         ok: false,
         status: 404,
-        message: "پست موردنظر پیدا نشد.",
+        data: null,
+        message: "پروژه موردنظر پیدا نشد.",
       };
     }
-
-    // فقط مالک پست یا مدیر مجاز باید بتواند آن را ویرایش کند.
-    // این شرط را با ساختار نقش‌های واقعی پروژه تطبیق دهید.
-    if (existingPost.userId !== session.user.id) {
-      return {
-        ok: false,
-        status: 403,
-        message: "اجازه ویرایش این پست را ندارید.",
-      };
-    }
-
-    // مرحله پنجم: ویرایش پست
-    const data = await prismadb.post.update({
-      where: { id },
-      data: {
-        title: validValues.title,
-        description: validValues.description ?? "",
-        publishDate,
-
-        category: {
-          connect: {
-            id: validValues.categoryId,
-          },
-        },
-      },
-      include: {
-        category: true,
-      },
-    });
-
-    revalidatePath("/posts");
-    revalidatePath(routes.panel.posts);
 
     return {
       ok: true,
       status: 200,
       data,
-      message: "پست با موفقیت ویرایش شد.",
+      message: "پروژه با موفقیت دریافت شد.",
     };
   } catch (error) {
-    console.error("خطا در ویرایش پست:", error);
+    console.error("خطا در دریافت پروژه:", error);
 
     return {
       ok: false,
       status: 500,
-      message: "ویرایش پست با خطا مواجه شد.",
+      data: null,
+      message: "دریافت پروژه ناموفق بود.",
     };
   }
 };
 
 
-export const deletePost = async (id) => {
-  if (!id) {
+// ------------------------------------------
+// 3. ایجاد پروژه جدید
+// ------------------------------------------
+
+export const createProject = async (values) => {
+  try {
+    // بررسی ورود کاربر
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        ok: false,
+        status: 401,
+        message: "برای ثبت پروژه ابتدا وارد حساب کاربری شوید.",
+      };
+    }
+
+    // بررسی اطلاعات فرم
+    const title = values.title?.trim();
+    const description = values.description?.trim();
+    const durationDate = values.durationDate?.trim();
+
+    if (!title || !description || !durationDate) {
+      return {
+        ok: false,
+        status: 400,
+        message: "عنوان، توضیحات و مدت پروژه الزامی هستند.",
+      };
+    }
+
+    if (title.length > 50 || description.length > 255) {
+      return {
+        ok: false,
+        status: 400,
+        message: "طول عنوان یا توضیحات بیشتر از حد مجاز است.",
+      };
+    }
+
+    const status = values.status || "FUNDRAISING";
+
+    if (!PROJECT_STATUSES.includes(status)) {
+      return {
+        ok: false,
+        status: 400,
+        message: "وضعیت پروژه معتبر نیست.",
+      };
+    }
+
+    const isPublication = values.isPublication ?? false;
+
+    if (typeof isPublication !== "boolean") {
+      return {
+        ok: false,
+        status: 400,
+        message: "وضعیت انتشار باید Boolean باشد.",
+      };
+    }
+
+    // ثبت پروژه
+    const data = await prismaDB.Project.create({
+      data: {
+        title,
+        description,
+        durationDate,
+
+        status,
+        isPublication,
+
+        // اتصال پروژه به کاربر واردشده
+        usrId: session.user.id,
+      },
+
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        durationDate: true,
+        status: true,
+        isPublication: true,
+        usrId: true,
+        createdAt: true,
+      },
+    });
+
+    revalidatePath(PROJECTS_PATH);
+    revalidatePath("/");
+
+    return {
+      ok: true,
+      status: 201,
+      data,
+      message: "پروژه با موفقیت ثبت شد.",
+    };
+  } catch (error) {
+    console.error("خطا در ایجاد پروژه:", error);
+
     return {
       ok: false,
-      status: 400,
-      message: "id مورد نظر وجود ندارد",
+      status: 500,
+      message: "ثبت پروژه با خطا مواجه شد.",
     };
   }
-
-  const data = await prismadb.post.delete({
-    where: { id },
-  });
-
-  revalidatePath(routes.panel.posts);
-
-  return {
-    ok: true,
-    status: 200,
-    data,
-    message: "کاربر مورد نظر حذف شد",
-  };
 };
 
-export const getApprovedPosts = async () => {
-  const posts = await prismadb.post.findMany({
+
+// ------------------------------------------
+// 4. ویرایش پروژه
+// ------------------------------------------
+
+export const editProject = async (id, values) => {
+  try {
+    if (!id) {
+      return {
+        ok: false,
+        status: 400,
+        message: "شناسه پروژه ارسال نشده است.",
+      };
+    }
+
+    // بررسی ورود کاربر
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        ok: false,
+        status: 401,
+        message: "برای ویرایش پروژه ابتدا وارد حساب کاربری شوید.",
+      };
+    }
+
+    // پیدا کردن پروژه
+    const existingProject = await prismaDB.Project.findUnique({
+      where: {
+        id: String(id),
+      },
+
+      select: {
+        id: true,
+        usrId: true,
+      },
+    });
+
+    if (!existingProject) {
+      return {
+        ok: false,
+        status: 404,
+        message: "پروژه موردنظر پیدا نشد.",
+      };
+    }
+
+    // بررسی مالکیت پروژه
+    if (existingProject.usrId !== session.user.id) {
+      return {
+        ok: false,
+        status: 403,
+        message: "شما اجازه ویرایش این پروژه را ندارید.",
+      };
+    }
+
+    // آماده‌سازی اطلاعات ویرایش
+    const updateData = {};
+
+    if (values.title !== undefined) {
+      const title = values.title.trim();
+
+      if (!title || title.length > 50) {
+        return {
+          ok: false,
+          status: 400,
+          message: "عنوان پروژه معتبر نیست.",
+        };
+      }
+
+      updateData.title = title;
+    }
+
+    if (values.description !== undefined) {
+      const description = values.description.trim();
+
+      if (!description || description.length > 255) {
+        return {
+          ok: false,
+          status: 400,
+          message: "توضیحات پروژه معتبر نیست.",
+        };
+      }
+
+      updateData.description = description;
+    }
+
+    if (values.durationDate !== undefined) {
+      const durationDate = values.durationDate.trim();
+
+      if (!durationDate) {
+        return {
+          ok: false,
+          status: 400,
+          message: "مدت پروژه الزامی است.",
+        };
+      }
+
+      updateData.durationDate = durationDate;
+    }
+
+    if (values.status !== undefined) {
+      if (!PROJECT_STATUSES.includes(values.status)) {
+        return {
+          ok: false,
+          status: 400,
+          message: "وضعیت پروژه معتبر نیست.",
+        };
+      }
+
+      updateData.status = values.status;
+    }
+
+    if (values.isPublication !== undefined) {
+      if (typeof values.isPublication !== "boolean") {
+        return {
+          ok: false,
+          status: 400,
+          message: "وضعیت انتشار معتبر نیست.",
+        };
+      }
+
+      updateData.isPublication = values.isPublication;
+    }
+
+    if (Object.keys(updateData).length === 0) {
+      return {
+        ok: false,
+        status: 400,
+        message: "اطلاعاتی برای ویرایش ارسال نشده است.",
+      };
+    }
+
+    // بروزرسانی پروژه
+    const data = await prismaDB.Project.update({
+      where: {
+        id: String(id),
+      },
+
+      data: updateData,
+    });
+
+    revalidatePath(PROJECTS_PATH);
+    revalidatePath("/");
+
+    return {
+      ok: true,
+      status: 200,
+      data,
+      message: "پروژه با موفقیت ویرایش شد.",
+    };
+  } catch (error) {
+    console.error("خطا در ویرایش پروژه:", error);
+
+    return {
+      ok: false,
+      status: 500,
+      message: "ویرایش پروژه با خطا مواجه شد.",
+    };
+  }
+};
+
+
+// ------------------------------------------
+// 5. حذف پروژه
+// ------------------------------------------
+
+export const deleteProject = async (id) => {
+  try {
+    if (!id) {
+      return {
+        ok: false,
+        status: 400,
+        message: "شناسه پروژه ارسال نشده است.",
+      };
+    }
+
+    // بررسی ورود کاربر
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+      return {
+        ok: false,
+        status: 401,
+        message: "برای حذف پروژه ابتدا وارد حساب کاربری شوید.",
+      };
+    }
+
+    // بررسی وجود پروژه و مالکیت آن
+    const existingProject = await prismaDB.Project.findUnique({
+      where: {
+        id: String(id),
+      },
+
+      select: {
+        id: true,
+        usrId: true,
+      },
+    });
+
+    if (!existingProject) {
+      return {
+        ok: false,
+        status: 404,
+        message: "پروژه موردنظر پیدا نشد.",
+      };
+    }
+
+    if (existingProject.usrId !== session.user.id) {
+      return {
+        ok: false,
+        status: 403,
+        message: "شما اجازه حذف این پروژه را ندارید.",
+      };
+    }
+
+    // حذف پروژه
+    const data = await prismaDB.Project.delete({
+      where: {
+        id: String(id),
+      },
+    });
+
+    revalidatePath(PROJECTS_PATH);
+    revalidatePath("/");
+
+    return {
+      ok: true,
+      status: 200,
+      data,
+      message: "پروژه با موفقیت حذف شد.",
+    };
+  } catch (error) {
+    console.error("خطا در حذف پروژه:", error);
+
+    return {
+      ok: false,
+      status: 500,
+      message: "حذف پروژه با خطا مواجه شد.",
+    };
+  }
+};
+
+
+export const getApprovedProject = async () => {
+  const posts = await prismaDB.Project.findMany({
     where: {
       status: "APPROVED",
     },
@@ -442,9 +558,9 @@ export const getApprovedPosts = async () => {
   return posts;
 };
 
-export async function getApprovedPostsTable() {
+export async function getApprovedProjectTable() {
   try {
-    const posts = await prismadb.post.findMany({
+    const posts = await prismaDB.Project.findMany({
       where: {
         status: "APPROVED",
       },
@@ -459,12 +575,12 @@ export async function getApprovedPostsTable() {
 
     return {
       ok: true,
-      data: posts.map((post) => ({
-        id: post.id,
-        title: post.title,
-        description: post.description,
-        status: post.status,
-        categoryTitle: post.category.title,
+      data: posts.map((Project) => ({
+        id: Project.id,
+        title: Project.title,
+        description: Project.description,
+        status: Project.status,
+        categoryTitle: Project.category.title,
       })),
     };
   } catch (error) {

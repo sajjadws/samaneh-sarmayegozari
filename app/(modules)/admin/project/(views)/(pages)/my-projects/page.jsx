@@ -1,5 +1,5 @@
 
-import { getAllPosts } from "./actions/crud";
+import { getAllProjects } from "./actions/crud";
 import { columns } from "./components/columns";
 import { DataTable } from "../../../components/data-table/data-table";
 import SearchTable from "@/components/search-table";
@@ -15,7 +15,7 @@ import "../myprojects.css";
 export default async function ProjectsPage({ searchParams }) {
     const { page, perPage, q = "", role } = await searchParams;
   
-    const fetchData = await getAllPosts({
+    const fetchData = await getAllProjects({
         page: page ? +page : 1,
         perPage: perPage ? +perPage : 10,
         q: q || "",

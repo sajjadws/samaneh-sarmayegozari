@@ -4,7 +4,7 @@ import { Button } from "@/miz/components/react/button/page";
 import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
 import CreateForm from "./create-form";
 import { toast } from "@/miz/components/react/toast/page";
-import { deletePost } from "../actions/crud";
+import { deleteProject } from "../actions/crud";
 import Link from "next/link";
 import { routes } from "@/lib/routes/routes";
 
@@ -13,7 +13,7 @@ export default function CellActions({ cellData }) {
   const [dOpen, setDOpen] = useState(false);
 
   const handleDelete = async () => {
-    const res = await deletePost(cellData?.id);
+    const res = await deleteProject(cellData?.id);
     if (res?.ok) {
       toast.add({
         title: res?.message,

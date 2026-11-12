@@ -6,7 +6,7 @@ import { Field, FieldError, FieldGroup, FieldLabel } from "@/miz/components/reac
 import { Input } from "@/miz/components/react/input/page";
 import { toast } from "@/miz/components/react/toast/page";
 import { postSchema } from "@/lib/validation/project";
-import { createPost, editPost } from "../actions/crud";
+import { createProject, editProject } from "../actions/crud";
 import SubmitButton from "@/miz/components/react/submite-button/page";
 // import CategoryCombobox from "./category-combox";
 // import PersianDatePicker from "@/components/ui/persian-date-picker";
@@ -34,8 +34,8 @@ export default function CreateForm({ id, initialData, onComplete }) {
   console.log("شناسه دسته‌بندی:", values.categoryId);
 
   const res = initialData
-    ? await editPost(id, values)
-    : await createPost(values);
+    ? await editProject(id, values)
+    : await createProject(values);
 
   console.log("نتیجه عملیات:", res);
 

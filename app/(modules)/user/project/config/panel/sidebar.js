@@ -7,6 +7,7 @@ const sidebarProjectItems = [
 		icon: "icon-3full",
 		link: "routes.panel.adminProjects",
 		role: "admin",
+		// subList
 	},
 	{
 		order: 1,

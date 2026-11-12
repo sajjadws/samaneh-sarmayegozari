@@ -1,5 +1,5 @@
 
-import { getAllPosts } from "./actions/crud";
+import { getAllProjects } from "./actions/crud";
 import { columns } from "./components/columns";
 import { DataTable } from "@/miz/components/react/data-table/data-table";
 // import SearchTable from "@/components/search-table";
@@ -15,7 +15,7 @@ import CreateModal from "./components/create-modal";
 export default async function ProjectsPage({ searchParams }) {
     const { page, perPage, q = "", role } = await searchParams;
   
-    const fetchData = await getAllPosts({
+    const fetchData = await getAllProjects({
         page: page ? +page : 1,
         perPage: perPage ? +perPage : 10,
         q: q || "",
@@ -30,10 +30,10 @@ export default async function ProjectsPage({ searchParams }) {
     <Suspense fallback={<div>Loading...</div>}>
       <div className="container mx-auto space-y-4 p-10 py-10">
         <CreateModal />
-        <SearchTable q={q} />
+        {/* <SearchTable q={q} /> */}
         {/* <HandleFilter currentRole={role} /> */}
         <DataTable columns={columns} data={data} options={otherData} />
-        <HandlePagination page={page ? +page : 1} perPage={perPage ? +perPage : 10} total={otherData?.total || 0} />
+        {/* <HandlePagination page={page ? +page : 1} perPage={perPage ? +perPage : 10} total={otherData?.total || 0} /> */}
       </div>
     </Suspense>
     
