@@ -1,9 +1,10 @@
 generator client {
   provider = "prisma-client"
   output   = "../lib/generated/prisma"
-  // generatedFileExtension = "ts"
-  // importFileExtension    = "ts"
-  // moduleFormat           = "esm"
+
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "ts"
 }
 
 datasource db {
