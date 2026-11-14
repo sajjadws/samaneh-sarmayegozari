@@ -5,15 +5,15 @@ const sidebarProjectItems = [
 		order: 0,
 		label: "projects",
 		icon: "icon-3full",
-		link: routes.panel.adminProjects,
-		role: "admin",
+		link: routes.user.panel.projects.root,
+		role: "user",
 	},
 	{
 		order: 1,
 		label: "my projects",
         icon: "icon-3full",
-		link: routes.panel.myProjects,
-		role: "admin",
+		link: routes.user.panel.projects.investments,
+		role: "user",
 	},
 ];
 

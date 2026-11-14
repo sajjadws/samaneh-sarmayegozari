@@ -12,4 +12,6 @@ model UserUtilities {
     lastName     String
     nationalCode String @unique @db.VarChar(10)
     avatar       String
+    userId       String @unique
+    user         User   @relation(fields: [userId], references: [id])
 }

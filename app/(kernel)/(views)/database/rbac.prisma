@@ -1,5 +1,6 @@
 model AddToUser {
-    userRoles UserRole[]
+    userRoles      UserRole[]
+    userPermission UserPermission[]
 }
 
 model Role {
@@ -26,6 +27,7 @@ model Permission {
     description String?
 
     roles RolePermission[]
+    userPermission UserPermission[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -45,6 +47,22 @@ model UserRole {
     @@unique([userId, roleId])
     @@index([userId])
     @@index([roleId])
+}
+
+model UserPermission {
+    id           String @id @default(cuid())
+    userId       String
+    permissionId String
+
+    assignedAt DateTime @default(now())
+    assignedBy String?
+
+    user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+    @@unique([userId, permissionId])
+    @@index([userId])
+    @@index([permissionId])
 }
 
 model RolePermission {

@@ -22,7 +22,6 @@ export default function Sidebar({ role, ...props }) {
 			return globalThis.getRole(item.role) === globalThis.getRole(role);
 		})
 		.sort((a, b) => a.order - b.order);
-
 	const allItems = flattenSidebarItems(items);
 
 	const activeHref = allItems
