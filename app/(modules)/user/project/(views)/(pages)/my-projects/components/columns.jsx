@@ -15,29 +15,41 @@ const statusLabels = {
 export const columns = columnHelper.columns([
 
   columnHelper.accessor("title", {
-    header: "عنوان",
+    header: "عنوان طرح",
   }),
-  columnHelper.accessor("description", {
-    header: "توضیحات",
+
+  columnHelper.accessor("incomeAmount", {
+    header: "مبلغ جذب شده",
   }),
+ 
   
    columnHelper.accessor("status", {
-    header: "وضعیت",
+    header: "وضعیت طرح",
     cell: ({ getValue }) => {
       const status = getValue();
 
-      return status === "APPROVED"
-        ? "تأیید شده"
+      return status === "FUNDRAISING"
+        ? "جذب سرمایه"
         : status;
     },
   }),
 
-  columnHelper.accessor("publishDate", {
-    header: "تاریخ انتشار",
-      cell: ({ row }) => {
-      return formatJalaliDate(row.original.publishDate);
-    },
+  columnHelper.accessor("createdAt", {
+    header: "تاریخ سرمایه گذاری",
+     
   }),
+
+   columnHelper.accessor("profitAmount", {
+    header: "سود",
+  }),
+
+  //   columnHelper.accessor("profitAmount", {
+  //   header: "وضعیت پرداخت سود",
+  // }),
+
+  //   columnHelper.accessor("", {
+  //   header: "وضعیت عودت",
+  // }),
  
   columnHelper.accessor("display", {
     header: "عملیات",

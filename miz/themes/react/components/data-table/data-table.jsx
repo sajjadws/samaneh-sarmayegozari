@@ -26,14 +26,6 @@ export function DataTable({
 
 	return (
 		<div className={cn("data-table", className)}>
-			<div className="data-table-heading">
-				<div>
-					<h2 className="data-table-title">فهرست {collectionName}</h2>
-					<p className="data-table-count">
-						{rowCount.toLocaleString("fa-IR")} {singleName} موجود
-					</p>
-				</div>
-			</div>
 			<Table className="data-table-content">
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (

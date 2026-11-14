@@ -17,7 +17,7 @@
 
 .table-header tr {
 	border-bottom-width: 1px;
-	@extend .bb-style-solid, .border-color;
+	@extend .bb-style-solid, .border-color, .bg-on-primary-color;
 }
 
 .table-body tr:last-child {
@@ -26,7 +26,7 @@
 
 .table-footer {
 	border-top-width: 1px;
-	@extend .bt-style-solid, .border-color, .bg-secondary-light-color, .font-weight-medium;
+	@extend .bt-style-solid, .border-color, .bg-secondary-light-color;
 }
 
 .table-footer > tr:last-child {
@@ -39,7 +39,7 @@
 	@extend .bb-style-solid, .border-color;
 }
 
-.table-row:hover,
+
 .table-row:has([aria-expanded="true"]),
 .table-row[data-state="selected"] {
 	@extend .bg-secondary-light-color;
@@ -48,7 +48,7 @@
 .table-head {
 	height: 2.5rem;
 	vertical-align: middle;
-	@extend .p-1, .txt-align-start, .font-weight-medium, .txt-white-space-nowrap;
+	@extend .p-1, .txt-align-start, .txt-white-space-nowrap, .section-title-text-color;
 }
 
 .table-cell {

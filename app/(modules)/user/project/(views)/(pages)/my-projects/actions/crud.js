@@ -9,9 +9,9 @@ import { headers } from "next/headers";
 
 // وضعیت‌های مجاز پروژه مطابق Prisma Schema
 const PROJECT_STATUSES = [
-  "FUNDRAISING",
-  "IN_PROGRESS",
-  "COMPLETED",
+ " جذب سرمایه",
+"در حال انجام",
+"تکمیل‌شده",
 ];
 
 // مسیر صفحه پروژه‌ها
@@ -82,6 +82,28 @@ export const getAllProjects = async (options = {}) => {
             name: true,
           },
         },
+
+        phases: {
+          select: {
+            id: true,
+            profitAmount: true,
+            incomeAmount: true,
+
+            phaseInvestments: {
+              select: {
+                investment: {
+                  select: {
+                    id: true,
+                    amount: true,
+                    profitAmount: true,
+                    returnAmount: true,
+                    status: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     });
 
@@ -110,7 +132,6 @@ export const getAllProjects = async (options = {}) => {
     };
   }
 };
-
 
 // ------------------------------------------
 // 2. دریافت یک پروژه با شناسه
@@ -185,7 +206,6 @@ export const getProjectById = async (id) => {
     };
   }
 };
-
 
 // ------------------------------------------
 // 3. ایجاد پروژه جدید
@@ -273,7 +293,7 @@ export const createProject = async (values) => {
       },
     });
 
-    revalidatePath(PROJECTS_PATH);
+    revalidatePath("/user/project/my-projects");
     revalidatePath("/");
 
     return {
@@ -292,7 +312,6 @@ export const createProject = async (values) => {
     };
   }
 };
-
 
 // ------------------------------------------
 // 4. ویرایش پروژه
@@ -594,26 +613,6 @@ export async function getApprovedProjectTable() {
   }
 }
 
-// function parsePublishDate(value) {
-//   if (
-//     typeof value !== "string" ||
-//     !/^\d{4}-\d{2}-\d{2}$/.test(value)
-//   ) {
-//     throw new Error("تاریخ انتشار معتبر نیست.");
-//   }
-
-//   const date = new Date(`${value}T00:00:00.000Z`);
-
-//   // بررسی اینکه تاریخ واقعاً وجود داشته باشد.
-//   if (
-//     Number.isNaN(date.getTime()) ||
-//     date.toISOString().slice(0, 10) !== value
-//   ) {
-//     throw new Error("تاریخ انتشار معتبر نیست.");
-//   }
-
-//   return date;
-// }
 function parsePublishDate(value) {
   if (
     typeof value !== "string" ||

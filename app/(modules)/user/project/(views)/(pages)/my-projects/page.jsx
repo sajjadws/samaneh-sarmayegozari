@@ -5,7 +5,8 @@ import { DataTable } from "@/miz/components/react/data-table/data-table";
 // import SearchTable from "@/components/search-table";
 import { Suspense } from "react";
 // import HandlePagination from "@/components/pagination";
-import CreateModal from "./components/create-modal";
+import CreateProject from "./components/create-project";
+import { Link } from "lucide-react";
 
 
 // import "./projects.css";
@@ -28,13 +29,24 @@ export default async function ProjectsPage({ searchParams }) {
 
     return (
     <Suspense fallback={<div>Loading...</div>}>
-      <div className="container mx-auto space-y-4 p-10 py-10">
-        <CreateModal />
+      <section className="w-100 px-12">
+        <div className="d-flex justify-content-space-between align-items-center">
+          <div>
+            <h2>طرح‌های ثبت شده من</h2>
+            <p>مشاهده وضعیت بررسی و پیگیری طرح‌هایی که برای جذب سرمایه ثبت کرده‌اید</p>
+          </div>
+          <div>
+            <Link>بازگشت </Link>
+            <CreateProject />
+          </div>
+        </div>
+
         {/* <SearchTable q={q} /> */}
         {/* <HandleFilter currentRole={role} /> */}
-        <DataTable columns={columns} data={data} options={otherData} />
+        <DataTable className="w-100" columns={columns} data={data} options={otherData} />
         {/* <HandlePagination page={page ? +page : 1} perPage={perPage ? +perPage : 10} total={otherData?.total || 0} /> */}
-      </div>
+      </section>
+
     </Suspense>
     
   );

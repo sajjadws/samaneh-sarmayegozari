@@ -5,7 +5,7 @@ import { DataTable } from "../../../components/data-table/data-table";
 import SearchTable from "@/components/search-table";
 import { Suspense } from "react";
 import HandlePagination from "@/components/pagination";
-import CreateModal from "./components/create-modal";
+import createProject from "./components/create-project";
 
 
 import "./projects.css";
@@ -29,7 +29,7 @@ export default async function ProjectsPage({ searchParams }) {
     return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="container mx-auto space-y-4 p-10 py-10">
-        <CreateModal />
+        <createProject />
         <SearchTable q={q} />
         {/* <HandleFilter currentRole={role} /> */}
         <DataTable columns={columns} data={data} options={otherData} />
