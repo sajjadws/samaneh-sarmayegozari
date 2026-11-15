@@ -4,11 +4,11 @@
 @use "../../config" as *;
 
 .data-table {
-	@extend .overflow-hidden, .bw-1, .border-style-solid, .border-color, .bg-card-color, .text-color, .radius-all-normal;
+	@extend .overflow-hidden, .bw-1, .border-style-solid, .border-color, .bg-card-color, .text-color, .radius-all-normal, .w-100;
 }
 
 .data-table-heading {
-	@extend .d-flex, .align-items-center, .justify-content-space-between, .p-3;
+	@extend .d-flex, .align-items-center, .justify-content-space-between, .p-3, .bg-primary-color;
 }
 
 .data-table-title {
@@ -27,8 +27,8 @@
 .data-table-content .table-head {
 	border-top-width: 1px;
 	border-bottom-width: 1px;
-	color: var(--secondary-text);
-	@extend .py-2, .px-3, .bt-style-solid, .bb-style-solid, .border-color, .txt-size-subtitle, .font-weight-bold;
+	color: var(--section-title-text) !important;
+	@extend .py-2, .px-3, .bt-style-solid, .bb-style-solid, .txt-size-subtitle, .border-color, .font-weight-regular;
 }
 
 .data-table-content .table-cell {
