@@ -1,70 +1,81 @@
 /*
   Warnings:
 
-  - The primary key for the `project` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - You are about to drop the column `categoryId` on the `project` table. All the data in the column will be lost.
-  - You are about to drop the column `credit` on the `project` table. All the data in the column will be lost.
-  - You are about to drop the column `enable` on the `project` table. All the data in the column will be lost.
-  - You are about to drop the column `executionDuration` on the `project` table. All the data in the column will be lost.
-  - You are about to drop the column `publishedAt` on the `project` table. All the data in the column will be lost.
-  - You are about to drop the column `userId` on the `project` table. All the data in the column will be lost.
-  - You are about to alter the column `title` on the `project` table. The data in that column could be lost. The data in that column will be cast from `VarChar(191)` to `VarChar(50)`.
-  - You are about to alter the column `status` on the `project` table. The data in that column could be lost. The data in that column will be cast from `Enum(EnumId(0))` to `Enum(EnumId(6))`.
-  - You are about to drop the column `fullName` on the `user` table. All the data in the column will be lost.
-  - You are about to drop the column `role` on the `user` table. All the data in the column will be lost.
-  - You are about to drop the column `thumbnail` on the `user` table. All the data in the column will be lost.
-  - You are about to drop the `category` table. If the table is not empty, all the data it contains will be lost.
+  - The primary key for the `user` table will be changed. If it partially fails, the table could be left without primary key constraint.
+  - A unique constraint covering the columns `[email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
+  - A unique constraint covering the columns `[phoneNumber]` on the table `User` will be added. If there are existing duplicate values, this will fail.
   - A unique constraint covering the columns `[username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `duration_date` to the `Project` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `usrId` to the `Project` table without a default value. This is not possible if the table is not empty.
-  - Made the column `phoneNumberVerified` on table `user` required. This step will fail if there are existing NULL values in that column.
-  - Made the column `emailVerified` on table `user` required. This step will fail if there are existing NULL values in that column.
+  - Added the required column `phoneNumber` to the `User` table without a default value. This is not possible if the table is not empty.
+  - Added the required column `updatedAt` to the `User` table without a default value. This is not possible if the table is not empty.
 
 */
--- DropForeignKey
-ALTER TABLE `project` DROP FOREIGN KEY `Project_categoryId_fkey`;
-
--- DropForeignKey
-ALTER TABLE `project` DROP FOREIGN KEY `Project_userId_fkey`;
-
--- DropIndex
-DROP INDEX `Project_categoryId_fkey` ON `project`;
-
--- DropIndex
-DROP INDEX `Project_userId_fkey` ON `project`;
-
 -- AlterTable
-ALTER TABLE `project` DROP PRIMARY KEY,
-    DROP COLUMN `categoryId`,
-    DROP COLUMN `credit`,
-    DROP COLUMN `enable`,
-    DROP COLUMN `executionDuration`,
-    DROP COLUMN `publishedAt`,
-    DROP COLUMN `userId`,
-    ADD COLUMN `duration_date` VARCHAR(191) NOT NULL,
-    ADD COLUMN `isPublication` BOOLEAN NOT NULL DEFAULT false,
-    ADD COLUMN `usrId` VARCHAR(191) NOT NULL,
-    MODIFY `id` VARCHAR(191) NOT NULL,
-    MODIFY `title` VARCHAR(50) NOT NULL,
-    MODIFY `description` VARCHAR(255) NOT NULL,
-    MODIFY `status` ENUM('FUNDRAISING', 'IN_PROGRESS', 'COMPLETED') NOT NULL DEFAULT 'FUNDRAISING',
-    ADD PRIMARY KEY (`id`);
-
--- AlterTable
-ALTER TABLE `user` DROP COLUMN `fullName`,
-    DROP COLUMN `role`,
-    DROP COLUMN `thumbnail`,
+ALTER TABLE `user` DROP PRIMARY KEY,
+    ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    ADD COLUMN `displayUsername` VARCHAR(191) NULL,
+    ADD COLUMN `email` VARCHAR(191) NULL,
+    ADD COLUMN `emailVerified` BOOLEAN NOT NULL DEFAULT false,
+    ADD COLUMN `image` VARCHAR(191) NULL,
     ADD COLUMN `name` VARCHAR(191) NULL,
     ADD COLUMN `password` VARCHAR(191) NULL,
+    ADD COLUMN `phoneNumber` VARCHAR(191) NOT NULL,
+    ADD COLUMN `phoneNumberVerified` BOOLEAN NOT NULL DEFAULT false,
     ADD COLUMN `roleId` VARCHAR(191) NULL,
     ADD COLUMN `status` ENUM('ACTIVE', 'NOT_ACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    ADD COLUMN `updatedAt` DATETIME(3) NOT NULL,
     ADD COLUMN `userUtilitiesId` VARCHAR(191) NULL,
-    ADD COLUMN `username` VARCHAR(191) NULL,
-    MODIFY `phoneNumberVerified` BOOLEAN NOT NULL DEFAULT false,
-    MODIFY `emailVerified` BOOLEAN NOT NULL DEFAULT false;
+    ADD COLUMN `username` VARCHAR(100) NULL,
+    MODIFY `id` VARCHAR(191) NOT NULL,
+    ADD PRIMARY KEY (`id`);
 
--- DropTable
-DROP TABLE `category`;
+-- CreateTable
+CREATE TABLE `session` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `token` VARCHAR(191) NOT NULL,
+    `expiresAt` DATETIME(3) NOT NULL,
+    `ipAddress` VARCHAR(191) NULL,
+    `userAgent` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `session_token_key`(`token`),
+    INDEX `session_userId_idx`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `account` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NOT NULL,
+    `accountId` VARCHAR(191) NOT NULL,
+    `providerId` VARCHAR(191) NOT NULL,
+    `accessToken` VARCHAR(191) NULL,
+    `refreshToken` VARCHAR(191) NULL,
+    `accessTokenExpiresAt` DATETIME(3) NULL,
+    `refreshTokenExpiresAt` DATETIME(3) NULL,
+    `scope` VARCHAR(191) NULL,
+    `idToken` VARCHAR(191) NULL,
+    `password` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `account_userId_idx`(`userId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `verification` (
+    `id` VARCHAR(191) NOT NULL,
+    `identifier` VARCHAR(191) NOT NULL,
+    `value` VARCHAR(191) NOT NULL,
+    `expiresAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL,
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    INDEX `verification_identifier_idx`(`identifier`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `Role` (
@@ -191,6 +202,21 @@ CREATE TABLE `InvestmentTransaction` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `Project` (
+    `id` VARCHAR(191) NOT NULL,
+    `title` VARCHAR(50) NOT NULL,
+    `description` VARCHAR(255) NOT NULL,
+    `duration_date` VARCHAR(191) NOT NULL,
+    `status` ENUM('FUNDRAISING', 'IN_PROGRESS', 'COMPLETED') NOT NULL DEFAULT 'FUNDRAISING',
+    `isPublication` BOOLEAN NOT NULL DEFAULT false,
+    `usrId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `ProjectPhase` (
     `id` VARCHAR(191) NOT NULL,
     `title` VARCHAR(50) NOT NULL,
@@ -301,7 +327,19 @@ CREATE TABLE `Ticket` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateIndex
+CREATE UNIQUE INDEX `User_email_key` ON `User`(`email`);
+
+-- CreateIndex
+CREATE UNIQUE INDEX `User_phoneNumber_key` ON `User`(`phoneNumber`);
+
+-- CreateIndex
 CREATE UNIQUE INDEX `User_username_key` ON `User`(`username`);
+
+-- AddForeignKey
+ALTER TABLE `session` ADD CONSTRAINT `session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `account` ADD CONSTRAINT `account_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `UserRole` ADD CONSTRAINT `UserRole_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -359,9 +397,3 @@ ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE `Ticket` ADD CONSTRAINT `Ticket_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- RenameIndex
-ALTER TABLE `user` RENAME INDEX `user_email_key` TO `User_email_key`;
-
--- RenameIndex
-ALTER TABLE `user` RENAME INDEX `user_phoneNumber_key` TO `User_phoneNumber_key`;
