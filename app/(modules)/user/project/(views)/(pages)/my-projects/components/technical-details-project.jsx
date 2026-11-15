@@ -3,6 +3,7 @@ import CreatePhaseModal from "./creat-phase-modal";
 
 import { DataTable } from "@/miz/components/react/data-table/data-table";
 import { columns } from "./columns";
+import { Separator } from "@/miz/themes/react/components/separator/page";
 
 export default function TechnicalDetailsProject({
   currentStep,
@@ -23,6 +24,7 @@ export default function TechnicalDetailsProject({
         <p className="mt-2 text-sm">
           فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.
         </p>
+        <Separator />
       </div>
 
       <CreatePhaseModal />

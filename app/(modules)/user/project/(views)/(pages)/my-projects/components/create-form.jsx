@@ -3,6 +3,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Separator } from "@/miz/themes/react/components/separator/page";
 
 import {
   Field,
@@ -36,37 +37,7 @@ export default function CreateForm({ id, initialData, onComplete }) {
     formState: { errors, isSubmitting },
   } = form;
 
-  // const onSubmit = async (values) => {
-  //   try {
-  //     console.log("مقادیر فرم:", values);
-
-  //     const res = initialData
-  //       ? await editProject(id, values)
-  //       : await createProject(values);
-
-  //     console.log("نتیجه عملیات:", res);
-
-  //     if (!res?.ok) {
-  //       toast.add({
-  //         title: res?.message || "عملیات با خطا مواجه شد.",
-  //       });
-  //       return;
-  //     }
-
-  //     toast.add({
-  //       title: res.message || "پروژه با موفقیت ثبت شد.",
-  //     });
-
-  //     onComplete?.();
-  //   } catch (error) {
-  //     console.error("Project submit error:", error);
-
-  //     toast.add({
-  //       title: "خطا در ثبت اطلاعات پروژه",
-  //     });
-  //   }
-  // };
-
+ 
   const onSubmit = async (values) => {
   console.log("1. فرم Submit شد");
   console.log("2. مقادیر فرم:", values);
@@ -114,6 +85,7 @@ export default function CreateForm({ id, initialData, onComplete }) {
         <p className="mt-2 text-sm">
           اطلاعات کلی طرح سرمایه گذاری خود را وارد کنید.
         </p>
+        <Separator />
       </div>
 
       <form

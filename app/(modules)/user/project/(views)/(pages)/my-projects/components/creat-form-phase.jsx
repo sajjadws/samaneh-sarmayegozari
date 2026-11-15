@@ -74,7 +74,7 @@ export default function CreateFormPhase({ id, initialData, onComplete }) {
 };
 
   return (
-    <div className="px-6 py-8 bg-color radius-all-normal">
+    <div className="px-6 py-8 bg-color radius-all-normal w-40">
       <div className="mb-6">
         <h2 className="text-xl font-bold">
           {initialData
@@ -172,10 +172,46 @@ export default function CreateFormPhase({ id, initialData, onComplete }) {
             )}
           </Field>
 
+           <Field>
+            <FieldLabel>درآمد پیش بینی شده (تومان)</FieldLabel>
+
+            <Input
+              {...register("title")}
+              placeholder=""
+            />
+
+            {errors.title && (
+              <FieldError>
+                {errors.title.message}
+              </FieldError>
+            )}
+          </Field>
+
+           <Field>
+            <FieldLabel>سود پیش بینی شده (تومان)</FieldLabel>
+
+            <Input
+              {...register("title")}
+              placeholder=""
+            />
+
+            {errors.title && (
+              <FieldError>
+                {errors.title.message}
+              </FieldError>
+            )}
+          </Field>
+
 
           {/* دکمه ثبت */}
           <SubmitButton
             title={initialData ? "ویرایش" : "افزودن"}
+            loading={isSubmitting}
+            disabled={isSubmitting}
+            form="form-rhf-input"
+          />
+           <SubmitButton
+            title={"انصراف"}
             loading={isSubmitting}
             disabled={isSubmitting}
             form="form-rhf-input"

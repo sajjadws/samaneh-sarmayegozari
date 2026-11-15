@@ -4,9 +4,13 @@
 import { useState } from "react";
 import { Modal } from "@/miz/components/react/modal/page";
 import { Button } from "@/miz/components/react/button/page";
-
+import ExecutionTeam from "./execution-team";
 import CreateForm from "./create-form";
 import TechnicalDetailsProject from "./technical-details-project";
+import ProjectDocumentsMedia from "./project-documents-media";
+import { useRouter } from "next/navigation";
+import ProjectSuccess from "./project-success";
+
 
 const CreateProject = () => {
   const [open, setOpen] = useState(false);
@@ -25,7 +29,34 @@ const CreateProject = () => {
     investmentDetails: "",
     image: null,
     documents: [],
+    teamMembers: [],
+    phases: [],
   });
+
+  const addTeamMember = (member) => {
+    setFormData((prev) => ({
+      ...prev,
+      teamMembers: [
+        ...prev.teamMembers,
+        {
+          ...member,
+          id: crypto.randomUUID(),
+        },
+      ],
+    }));
+  };
+
+  const [showSuccess, setShowSuccess] = useState(false);
+const [submittedProject, setSubmittedProject] = useState(null);
+
+  const deleteTeamMember = (id) => {
+    setFormData((prev) => ({
+      ...prev,
+      teamMembers: prev.teamMembers.filter(
+        (member) => member.id !== id
+      ),
+    }));
+  };
 
   const [errors, setErrors] = useState({});
 
@@ -101,24 +132,30 @@ const CreateProject = () => {
 
           {/* مرحله سوم */}
           {currentStep === 2 && (
-            <div>اطلاعات مالی طرح</div>
+             <ExecutionTeam
+                teamMembers={formData.teamMembers}
+                addTeamMember={addTeamMember}
+                deleteTeamMember={deleteTeamMember}
+              />
           )}
 
           {/* مرحله چهارم */}
           {currentStep === 3 && (
-            <div>اطلاعات تکمیلی طرح</div>
+            <ProjectDocumentsMedia
+              formData={formData}
+              updateField={updateField}
+              previousStep={previousStep}
+              handleSubmit={handleSubmit}
+              loading={loading}
+             />
           )}
 
           {/* مرحله پنجم */}
           {currentStep === 4 && (
-            <div>پیش‌نمایش نهایی طرح</div>
+            <ProjectSuccess />
           )}
 
           <div className="project-modal-footer">
-
-            <span>
-              مرحله {currentStep + 1} از ۵
-            </span>
 
             {currentStep > 0 && (
               <Button onClick={previousStep}>
