@@ -10,13 +10,13 @@ import TicketReply from "./TicketReply";
 
 function TicketConversation({ messages, onSendMessage }) {
   return (
-    <Card className="ticket-conversation-card w-100 bw-1 border-style-solid border-color">
+    <Card className="ticket-conversation-card w-100 bw-1 border-style-solid border-color p-2 position-relayive h-75vh">
       <CardHeader className="ticket-conversation-header bb-style-solid border-color bw-1 pb-3">
         <CardTitle className="primary-color txt-size-mid-title font-weight-bold">گفت‌وگو</CardTitle>
       </CardHeader>
 
-      <CardContent className="ticket-conversation-content">
-        <div className="ticket-messages-list d-flex flex-column gap-6">
+      <CardContent className="ticket-conversation-content p-2 overflow-scroll">
+        <div className="ticket-messages-list d-flex flex-column gap-4">
           {messages.map((message) => (
             <TicketMessage
               className="w-fit-content"
@@ -25,9 +25,8 @@ function TicketConversation({ messages, onSendMessage }) {
             />
           ))}
         </div>
-
-        <TicketReply onSendMessage={onSendMessage} />
       </CardContent>
+      <TicketReply onSendMessage={onSendMessage} />
     </Card>
   );
 }

@@ -4,8 +4,7 @@
 import * as React from "react"
 import { Select as SelectPrimitive } from "@base-ui/react/select"
 import { cn } from "cn"
-import { IconPlaceholder } from "@tabler/icons-react"
-import { ArrowBigDown, ArrowUpDown } from "lucide-react"
+import { ChevronDown, ChevronLeft } from "lucide-react"
 
 
 const Select = SelectPrimitive.Root
@@ -47,7 +46,7 @@ function SelectTrigger({
 
       <SelectPrimitive.Icon
         render={
-          <IconPlaceholder
+          <ChevronDown
             lucide="ChevronDownIcon"
             tabler="IconSelector"
             hugeicons="UnfoldMoreIcon"
@@ -55,6 +54,7 @@ function SelectTrigger({
             remixicon="RiArrowDownSLine"
             className="select-trigger-icon"
           />
+          
         }
       />
     </SelectPrimitive.Trigger>
@@ -124,7 +124,7 @@ function SelectItem({ className, children, ...props }) {
       <SelectPrimitive.ItemIndicator
         render={<span className="select-item-indicator" />}
       >
-        <IconPlaceholder
+        <ChevronLeft
           lucide="CheckIcon"
           tabler="IconCheck"
           hugeicons="Tick02Icon"
@@ -154,7 +154,7 @@ function SelectScrollUpButton({ className, ...props }) {
       className={cn("select-scroll-up-button", className)}
       {...props}
     >
-      <IconPlaceholder
+      <ChevronDown
         lucide="ChevronUpIcon"
         tabler="IconChevronUp"
         hugeicons="ArrowUp01Icon"
@@ -172,7 +172,7 @@ function SelectScrollDownButton({ className, ...props }) {
       className={cn("select-scroll-down-button", className)}
       {...props}
     >
-      <IconPlaceholder
+      <ChevronDown
         lucide="ChevronDownIcon"
         tabler="IconChevronDown"
         hugeicons="ArrowDown01Icon"

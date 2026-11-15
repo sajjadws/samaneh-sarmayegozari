@@ -24,7 +24,7 @@ function TicketDetails() {
   };
 
   return (
-    <div className="ticket-details-page d-flex py-6 px-10 flex-column gap-5 w-100" >
+    <div className="ticket-details-page d-flex py-6 px-10 flex-column w-100" >
       <div className="ticket-page-header primary-color d-flex align-items-center justify-content-space-between">
         <h1 className="font-weight-bold txt-size-high-title">جزئیات تیکت</h1>
 
@@ -37,9 +37,10 @@ function TicketDetails() {
         </Link>
       </div>
 
-      <div className="ticket-details-layout d-grid align-items-start gap-4">
+      <div className="ticket-details-layout d-grid align-items-start gap-4 ">
         <TicketInfo ticket={ticketData} />
         <TicketConversation
+          className="overflow-scroll"
           messages={messages}
           onSendMessage={handleSendMessage}
         />

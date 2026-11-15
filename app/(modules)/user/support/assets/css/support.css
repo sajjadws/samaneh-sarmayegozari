@@ -153,3 +153,79 @@
     width: 100%;
   }
 }
+
+/* */
+
+.support-page .table-cell {
+  text-align: start;
+  border-left: 1px solid var(--border) !important;
+}
+
+
+.new-ticket-page {
+
+
+ 
+  .new-ticket-back {
+
+    transition: all .3s;
+    &:hover {
+      transform: translate(3px , 3px);
+    }
+  }
+
+  .new-ticket-success {
+    margin: -16px 0 0;
+    color: #15803d;
+    font-size: 14px;
+  }
+
+  /* @media (max-width: 768px) {
+    gap: 24px;
+
+    .new-ticket-header h1 {
+      font-size: 20px;
+    }
+
+    .card-content {
+      padding: 18px 14px;
+    }
+
+    .new-ticket-form {
+      gap: 24px;
+    }
+
+    .new-ticket-field {
+      gap: 12px;
+
+      label {
+        font-size: 16px;
+      }
+
+      .input {
+        height: 50px;
+      }
+
+      .textarea {
+        min-height: 200px;
+      }
+    }
+  }
+
+  @media (max-width: 480px) {
+    .new-ticket-header h1 {
+      font-size: 18px;
+    }
+
+    .new-ticket-back {
+      font-size: 13px;
+    }
+
+    .new-ticket-footer .btn {
+      width: 100%;
+    }
+  } */
+}
+
+
+

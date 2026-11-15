@@ -8,10 +8,10 @@ export default function ProjectsLayout({ children }) {
 	const [theme, setTheme] = useState("light");
 
 	return (
-		<>
-			
+		
+		<section className="w-100">
 			{children}
 			
-		</>
+		</section	>
 	);
 }

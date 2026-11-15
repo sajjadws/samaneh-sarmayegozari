@@ -20,7 +20,7 @@ function TicketReply({ onSendMessage }) {
 
   return (
     <form
-      className="ticket-reply"
+      className="ticket-reply position-sticky bottom-0"
       onSubmit={handleSubmit}
     >
       <textarea

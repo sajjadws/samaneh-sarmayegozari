@@ -4,7 +4,7 @@
 @use "../../config" as *;
 
 .card {
-    @extend .d-flex, .flex-column, .overflow-hidden, .bg-card-color, .text-color, .txt-size-subtitle, .radius-all-normal , .gap-4 , .p-6;
+    @extend .d-flex, .flex-column, .overflow-hidden, .bg-card-color, .text-color, .txt-size-subtitle, .radius-all-normal , .p-6;
 }
 
 

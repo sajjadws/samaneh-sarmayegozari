@@ -8,8 +8,8 @@ export default function ProjectsLayout({ children }) {
 	const [theme, setTheme] = useState("light");
 
 	return (
-		<>
+		<section>
 			{children}
-		</>
+		</section>
 	);
 }

@@ -1,6 +1,6 @@
 generator client {
-  provider               = "prisma-client"
-  output                 = "../lib/generated/prisma"
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
 
   moduleFormat           = "esm"
   generatedFileExtension = "ts"
@@ -9,4 +9,148 @@ generator client {
 
 datasource db {
   provider = "mysql"
+}
+
+model Session {
+  id        String   @id
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String
+  token     String   @unique
+  expiresAt DateTime @db.DateTime(3)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId], map: "session_userId_idx")
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime? @db.DateTime(3)
+  refreshTokenExpiresAt DateTime? @db.DateTime(3)
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  @@index([userId], map: "account_userId_idx")
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime @db.DateTime(3)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([identifier], map: "verification_identifier_idx")
+  @@map("verification")
+}
+
+enum UserStatus {
+  ACTIVE
+  NOT_ACTIVE
+}
+
+enum RoleName {
+  ADMIN
+  OPERATOR
+  SUPERVISOR
+  USER
+}
+
+enum Authentication {
+  PENDING
+  ACCEPT
+  REJECT
+}
+
+model User {
+  id          String     @id @default(cuid())
+  phoneNumber String     @unique
+  username    String?    @unique
+  status      UserStatus @default(ACTIVE)
+  roleId      String
+  createdAt   DateTime   @default(now())
+
+  role               Role             @relation(fields: [roleId], references: [id])
+  userUtilities      UserUtilities?
+  permissions        UserPermission[]
+  sessions           Session[]
+  accounts           Account[]
+  notifications      Notification[]
+  tickets            Ticket[]
+  projects           Project[]
+  investment         Investment?
+  wallet             Wallet?
+  authentication     Authentication   @default(PENDING)
+  sentTicketMessages TicketMessage[]  @relation("TicketMessageSender")
+  logs               Log[]
+}
+
+model UserUtilities {
+  id           String  @id
+  firstName    String? @db.VarChar(50)
+  lastName     String? @db.VarChar(50)
+  nationalCode String? @unique @db.VarChar(10)
+  avatar       String?
+  userId       String  @unique
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Role {
+  id          String           @id @default(cuid())
+  name        RoleName         @unique @default(USER)
+  users       User[]
+  permissions RolePermission[]
+}
+
+model Permission {
+  id   String @id @default(cuid())
+  name String @unique @db.VarChar(50)
+  key  String @unique @db.VarChar(50)
+
+  roles RolePermission[]
+  users UserPermission[]
+}
+
+model RolePermission {
+  roleId       String
+  permissionId String
+
+  role       Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([roleId, permissionId])
+}
+
+model UserPermission {
+  userId       String
+  permissionId String
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permission Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, permissionId])
+}
+
+model Log {
+  id          String @id @default(uuid())
+  title       String @db.VarChar(150)
+  description String @db.VarChar(1000)
+
+  userId String
+
+  createdAt DateTime @default(now())
 }
