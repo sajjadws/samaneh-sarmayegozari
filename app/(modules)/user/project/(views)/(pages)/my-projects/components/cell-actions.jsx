@@ -1,12 +1,8 @@
 import { useState } from "react";
-import { Modal } from "@/miz/components/react/modal/page";
 import { Button } from "@/miz/components/react/button/page";
-import { IconEdit, IconEye, IconTrash } from "@tabler/icons-react";
-import CreateForm from "./create-form";
 import { toast } from "@/miz/components/react/toast/page";
 import { deleteProject } from "../actions/crud";
 import Link from "next/link";
-import { routes } from "@/lib/routes/routes";
 
 export default function CellActions({ cellData }) {
   const [open, setOpen] = useState(false);

@@ -6,12 +6,6 @@ import CellActions from "./cell-actions";
 
 const columnHelper = createColumnHelper();
 
-const statusLabels = {
-  PENDING: "در انتظار تأیید",
-  APPROVED: "تأیید شده",
-  REJECTED: "رد شده",
-};
-
 export const columns = columnHelper.columns([
 
   columnHelper.accessor("title", {
@@ -43,12 +37,15 @@ export const columns = columnHelper.columns([
     header: "سود",
   }),
 
-  //   columnHelper.accessor("profitAmount", {
+  //   columnHelper.accessor("status", {
   //   header: "وضعیت پرداخت سود",
-  // }),
+  //   cell: ({ getValue }) => {
+  //     const status = getValue();
 
-  //   columnHelper.accessor("", {
-  //   header: "وضعیت عودت",
+  //     return status === "FUNDRAISING"
+  //       ? "جذب سرمایه"
+  //       : status;
+  //   },
   // }),
  
   columnHelper.accessor("display", {

@@ -21,7 +21,7 @@ const fileToBase64 = (file) =>
     reader.readAsDataURL(file);
   });
 
-export default function DocumentsProject({
+export default function ProjectDocumentsMedia({
   formData,
   updateField,
   previousStep,

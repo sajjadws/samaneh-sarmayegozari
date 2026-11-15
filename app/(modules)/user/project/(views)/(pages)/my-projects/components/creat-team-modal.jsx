@@ -82,7 +82,7 @@ const CreateTeamModal = ({ initialMember = null, onSave }) => {
         onOpenChange={setOpen}
         title={initialMember ? "ویرایش عضو" : "افزودن عضو جدید"}
       >
-        <div className="px-6 py-8 bg-color radius-all-normal">
+        <div className="px-8 bg-card-color radius-all-normal px-6 py-6">
 
           <div className="mb-6">
             <h2 className="text-xl font-bold">

@@ -1,38 +1,78 @@
 
+
+
 "use client";
 
 import { useState } from "react";
-import { Modal } from "@/miz/components/react/modal/page";
+import { useRouter } from "next/navigation";
+
+import { Modal } from "@/miz/themes/react/components/modal/page";
 import { Button } from "@/miz/components/react/button/page";
-import ExecutionTeam from "./execution-team";
+
 import CreateForm from "./create-form";
 import TechnicalDetailsProject from "./technical-details-project";
+import ExecutionTeam from "./execution-team";
 import ProjectDocumentsMedia from "./project-documents-media";
-import { useRouter } from "next/navigation";
 import ProjectSuccess from "./project-success";
 
+import { createProject } from "../actions/crud";
 
-const CreateProject = () => {
+const initialFormData = {
+  title: "",
+  categoryId: "",
+  durationDate: "",
+  description: "",
+
+  targetAmount: "",
+  minInvestment: "",
+  maxInvestment: "",
+  expectedProfit: "",
+  investmentDetails: "",
+
+  phases: [],
+  teamMembers: [],
+
+  image: null,
+  images: [],
+  documents: [],
+};
+
+export default function CreateProject() {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+
   const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-  const [formData, setFormData] = useState({
-    title: "",
-    categoryId: "",
-    durationDate: "",
-    description: "",
-    targetAmount: "",
-    minInvestment: "",
-    maxInvestment: "",
-    expectedProfit: "",
-    investmentDetails: "",
-    image: null,
-    documents: [],
-    teamMembers: [],
-    phases: [],
-  });
+  const [submittedProject, setSubmittedProject] = useState(null);
 
+  // تمام اطلاعات فرم در این State نگهداری می‌شوند
+  const [formData, setFormData] = useState(initialFormData);
+
+  // به‌روزرسانی اطلاعات هر مرحله
+  const updateField = (name, value) => {
+    setFormData((prev) => ({
+        ...prev,
+        [name]:
+            typeof value === "function"
+                ? value(prev[name])
+                : value,
+    }));
+};
+
+  // رفتن به مرحله بعد
+  const nextStep = () => {
+    setCurrentStep((prev) => Math.min(prev + 1, 3));
+  };
+
+  // برگشت به مرحله قبل
+  const previousStep = () => {
+    setCurrentStep((prev) => Math.max(prev - 1, 0));
+  };
+
+  // اضافه کردن عضو تیم
   const addTeamMember = (member) => {
     setFormData((prev) => ({
       ...prev,
@@ -46,9 +86,7 @@ const CreateProject = () => {
     }));
   };
 
-  const [showSuccess, setShowSuccess] = useState(false);
-const [submittedProject, setSubmittedProject] = useState(null);
-
+  // حذف عضو تیم
   const deleteTeamMember = (id) => {
     setFormData((prev) => ({
       ...prev,
@@ -58,43 +96,66 @@ const [submittedProject, setSubmittedProject] = useState(null);
     }));
   };
 
-  const [errors, setErrors] = useState({});
-
-  const onClose = () => {
-    setOpen(false);
-    setCurrentStep(0);
-  };
-
-  const updateField = (name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
-  };
-
-  const nextStep = () => {
-    setCurrentStep((prev) => Math.min(prev + 1, 4));
-  };
-
-  const previousStep = () => {
-    setCurrentStep((prev) => Math.max(prev - 1, 0));
-  };
-
+  // ثبت نهایی تمام اطلاعات
   const handleSubmit = async () => {
+    if (loading) return;
+
     setLoading(true);
 
     try {
-      // عملیات ثبت نهایی طرح
+      console.log("اطلاعات نهایی فرم:", formData);
+
+      // فعلاً فایل‌ها را از اطلاعات ارسالی جدا می‌کنیم.
+      // آپلود واقعی فایل‌ها باید جداگانه انجام شود.
+      const payload = {
+        ...formData,
+        image: formData.image
+          ? {
+              name: formData.image.name,
+            }
+          : null,
+
+        images: formData.images.map((item) => ({
+          name: item.name,
+        })),
+
+        documents: formData.documents.map((item) => ({
+          name: item.name,
+          size: item.size,
+        })),
+      };
+
+      const res = await createProject(payload);
+
+      if (!res?.ok) {
+        throw new Error(
+          res?.message || "خطا در ثبت طرح سرمایه‌گذاری"
+        );
+      }
+
+      // نگهداری اطلاعات طرح ثبت شده
+      setSubmittedProject(
+        res.project || res.data?.project || res.data || payload
+      );
+
+      // نمایش صفحه موفقیت
+      setShowSuccess(true);
+
     } catch (error) {
-      console.error(error);
+      console.error("Create project error:", error);
+      alert(error?.message || "خطا در ثبت اطلاعات طرح");
     } finally {
       setLoading(false);
     }
+  };
+
+  // بستن و بازنشانی فرم
+  const onClose = () => {
+    setOpen(false);
+    setCurrentStep(0);
+    setShowSuccess(false);
+    setSubmittedProject(null);
+    setFormData(initialFormData);
   };
 
   return (
@@ -105,83 +166,75 @@ const [submittedProject, setSubmittedProject] = useState(null);
 
       <Modal
         open={open}
-        onOpenChange={setOpen}
+        onOpenChange={(value) => {
+          if (!value) onClose();
+          else setOpen(true);
+        }}
       >
-        <div className="w-50 ">
+        <div className="w-100 overflow-y-hidden py-6 px-12">
 
-          {/* مرحله اول */}
-          {currentStep === 0 && (
-            <CreateForm
-              formData={formData}
-              updateField={updateField}
-              errors={errors}
-              onNext={nextStep}
+          {/* صفحه موفقیت */}
+          {showSuccess ? (
+            <ProjectSuccess
+              project={submittedProject}
+              onViewDetails={() => {
+                router.push("/userdashboard/projects/my-projects");
+                onClose();
+              }}
+              onDashboard={() => {
+                router.push("/userdashboard");
+                onClose();
+              }}
             />
+          ) : (
+            <>
+              {/* مرحله اول */}
+              {currentStep === 0 && (
+                <CreateForm
+                  formData={formData}
+                  updateField={updateField}
+                  nextStep={nextStep}
+                />
+              )}
+
+              {/* مرحله دوم */}
+              {currentStep === 1 && (
+                <TechnicalDetailsProject
+                  formData={formData}
+                  updateField={updateField}
+                  currentStep={currentStep}
+                  nextStep={nextStep}
+                  previousStep={previousStep}
+                />
+              )}
+
+              {/* مرحله سوم */}
+              {currentStep === 2 && (
+                <ExecutionTeam
+                  teamMembers={formData.teamMembers}
+                  addTeamMember={addTeamMember}
+                  deleteTeamMember={deleteTeamMember}
+                  currentStep={currentStep}
+                  nextStep={nextStep}
+                  previousStep={previousStep}
+                />
+              )}
+
+              {/* مرحله چهارم */}
+              {currentStep === 3 && (
+                <ProjectDocumentsMedia
+                  formData={formData}
+                  updateField={updateField}
+                  previousStep={previousStep}
+                  handleSubmit={handleSubmit}
+                  loading={loading}
+                />
+              )}
+            </>
           )}
-
-          {/* مرحله دوم */}
-          {currentStep === 1 && (
-            <TechnicalDetailsProject
-              currentStep={currentStep}
-              nextStep={nextStep}
-              previousStep={previousStep}
-              loading={loading}
-              handleSubmit={handleSubmit}
-            />
-          )}
-
-          {/* مرحله سوم */}
-          {currentStep === 2 && (
-             <ExecutionTeam
-                teamMembers={formData.teamMembers}
-                addTeamMember={addTeamMember}
-                deleteTeamMember={deleteTeamMember}
-              />
-          )}
-
-          {/* مرحله چهارم */}
-          {currentStep === 3 && (
-            <ProjectDocumentsMedia
-              formData={formData}
-              updateField={updateField}
-              previousStep={previousStep}
-              handleSubmit={handleSubmit}
-              loading={loading}
-             />
-          )}
-
-          {/* مرحله پنجم */}
-          {currentStep === 4 && (
-            <ProjectSuccess />
-          )}
-
-          <div className="project-modal-footer">
-
-            {currentStep > 0 && (
-              <Button onClick={previousStep}>
-                مرحله قبل
-              </Button>
-            )}
-
-            {currentStep < 4 ? (
-              <Button onClick={nextStep}>
-                مرحله بعد ←
-              </Button>
-            ) : (
-              <Button
-                disabled={loading}
-                onClick={handleSubmit}
-              >
-                {loading ? "در حال ثبت..." : "ثبت نهایی طرح"}
-              </Button>
-            )}
-
-          </div>
 
         </div>
       </Modal>
     </>
   );
-};
-
-export default CreateProject;
+}
