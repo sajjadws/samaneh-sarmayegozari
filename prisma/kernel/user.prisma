@@ -32,12 +32,15 @@ model User {
     createdAt           DateTime   @default(now())
     updatedAt           DateTime   @updatedAt
 
-displayUsername String?
+    displayUsername     String?
 
-	sessions Session[]
-	accounts Account[]
+    sessions            Session[]
+    accounts            Account[]
+    userRoles           UserRole[]
 
-userRoles UserRole[]
+    tickets             Ticket[]
+    notifications       Notification[]
+    sentTicketMessages TicketMessage[] @relation("TicketMessageSender")
 }
 
 enum UserStatus {

@@ -18,7 +18,7 @@ export default function NewTicketPage() {
         <h1 className="txt-size-high-title font-weight-bold">ثبت تیکت جدید</h1>
 
         <Link
-          href="/madoles/user/support"
+          href="/user/support"
           className="new-ticket-back font-weight-bold primary-color d-flex align-items-center gap-2 txt-size-normal"
         >
           بازگشت

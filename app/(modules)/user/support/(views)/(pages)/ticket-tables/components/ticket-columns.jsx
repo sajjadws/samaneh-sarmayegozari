@@ -34,7 +34,7 @@ export const ticketColumns = [
       <Button
       className="txt-size-small px-6 font-weight-regular txt-align-end"
         render={
-          <Link href={`/madoles/user/support/${row.original.id}`} />
+          <Link href={`/user/support/ticket-details/${row.original.id}`} />
         }
         
         size="sm"
