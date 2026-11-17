@@ -29,7 +29,7 @@
   transform: translate(-50%, -50%);
   outline: none;
 
-  @extend .position-fixed, .top-50, .left-50, .bg-color , .radius-all-normal, .px-6, .py-8;
+  @extend .position-fixed, .top-50, .left-50, .bg-color , .radius-all-normal, .px-6, .py-8 , .d-flex , .align-items-start , .justify-content-space-between;
 }
 
 
@@ -60,6 +60,7 @@
 
 .dialog-title {
   /* کلاس cn-font-heading قبلاً اختصاصی بوده است */
+  @extend .font-weight-extra-bold ;
 }
 
 
@@ -70,6 +71,7 @@
 
 .dialog-description {
   /* در کد اصلی کلاس Tailwind ندارد */
+  @extend .font-weight-light ;
 }
 
 
@@ -78,4 +80,5 @@
    دکمه بستن دیالوگ
 ===================================== */
 
-
+.dialog-close {
+}

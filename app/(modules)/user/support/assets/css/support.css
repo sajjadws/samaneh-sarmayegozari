@@ -115,44 +115,7 @@
   flex-shrink: 0;
 }
 
-/* Responsive */
 
-@media (max-width: 900px) {
-  .ticket-details-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .ticket-info-card {
-    min-height: auto;
-  }
-
-  .ticket-message {
-    width: 90%;
-  }
-}
-
-@media (max-width: 600px) {
-  .ticket-details-page {
-    padding: 16px;
-  }
-
-  .ticket-page-header h1 {
-    font-size: 21px;
-  }
-
-  .ticket-details-layout {
-    gap: 16px;
-  }
-
-  .ticket-conversation-card,
-  .ticket-info-card {
-    padding: 16px;
-  }
-
-  .ticket-message {
-    width: 100%;
-  }
-}
 
 /* */
 
@@ -180,53 +143,7 @@
     font-size: 14px;
   }
 
-  /* @media (max-width: 768px) {
-    gap: 24px;
-
-    .new-ticket-header h1 {
-      font-size: 20px;
-    }
-
-    .card-content {
-      padding: 18px 14px;
-    }
-
-    .new-ticket-form {
-      gap: 24px;
-    }
-
-    .new-ticket-field {
-      gap: 12px;
-
-      label {
-        font-size: 16px;
-      }
-
-      .input {
-        height: 50px;
-      }
-
-      .textarea {
-        min-height: 200px;
-      }
-    }
-  }
-
-  @media (max-width: 480px) {
-    .new-ticket-header h1 {
-      font-size: 18px;
-    }
-
-    .new-ticket-back {
-      font-size: 13px;
-    }
-
-    .new-ticket-footer .btn {
-      width: 100%;
-    }
-  } */
 }
-
 
 td.table-cell:last-child {
     justify-content: end;

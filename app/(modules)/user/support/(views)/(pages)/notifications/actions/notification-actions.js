@@ -45,6 +45,7 @@ export async function getUserNotifications() {
 }
 
 // تغییر وضعیت اعلان به خوانده‌شده
+
 export async function markNotificationAsRead(notificationId) {
   try {
     const session = await auth.api.getSession({
@@ -76,8 +77,34 @@ export async function markNotificationAsRead(notificationId) {
       },
     });
 
+    // اگر رکورد تغییر نکرده، بررسی می‌کنیم آیا قبلاً خوانده شده است.
+    if (result.count === 0) {
+      const notification = await prismaDB.notification.findFirst({
+        where: {
+          id: notificationId,
+          userId: session.user.id,
+        },
+        select: {
+          status: true,
+        },
+      });
+
+      if (!notification) {
+        return {
+          success: false,
+          message: "اعلان موردنظر پیدا نشد.",
+        };
+      }
+
+      return {
+        success: notification.status === "READ",
+        status: notification.status,
+      };
+    }
+
     return {
-      success: result.count > 0,
+      success: true,
+      status: "READ",
     };
   } catch (error) {
     console.error("MARK_NOTIFICATION_AS_READ_ERROR:", error);
@@ -88,6 +115,7 @@ export async function markNotificationAsRead(notificationId) {
     };
   }
 }
+
 
 
 // خوانده‌شده کردن تمام اعلان‌های خوانده‌نشده کاربر

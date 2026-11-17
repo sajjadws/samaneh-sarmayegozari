@@ -49,6 +49,8 @@ function DialogContent({
         {...props}
       >
 
+        {children}
+        
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
@@ -56,23 +58,16 @@ function DialogContent({
               <Button
                 variant="ghost"
                 className="dialog-close"
-                size="100"
+                size={10}
               />
             }
           >
-            {/* <XCircleIcon size={70}/> */}
-            <XCircle 
-              lucide="XIcon"
-              tabler="IconX"
-              hugeicons="Cancel01Icon"
-              phosphor="XIcon"
-              remixicon="RiCloseLine"
-            />
+            <XCircle className="txt-size-high-title"/>
 
           </DialogPrimitive.Close>
         )}
         
-          {children}
+          
       </DialogPrimitive.Popup>
     </DialogPortal>
   )

@@ -13,7 +13,7 @@ import "../../../assets/css/support.css";
 
 export default function NewTicketPage() {
   return (
-    <div className="new-ticket-page p-8 d-flex flex-column gap-4 bg-on-primary-color">
+    <div className="new-ticket-page p-8 d-flex flex-column gap-4">
       <div className="new-ticket-header d-flex align-items-center justify-content-space-between primary-color ">
         <h1 className="txt-size-high-title font-weight-bold">ثبت تیکت جدید</h1>
 
@@ -26,7 +26,7 @@ export default function NewTicketPage() {
         </Link>
       </div>
 
-      <Card className="new-ticket-card bw-1 border-style-solid border-color ">
+      <Card className="new-ticket-card bw-1 border-style-solid border-color h-100">
         <CardContent>
           <NewTicketForm />
         </CardContent>

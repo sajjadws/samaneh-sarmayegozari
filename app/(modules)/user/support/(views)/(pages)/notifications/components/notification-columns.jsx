@@ -1,5 +1,5 @@
+
 import NotificationDetailsDialog from "./NotificationDetailsDialog";
-import { Button } from "@/miz/themes/react/components/button/page";
 import { Badge } from "@/miz/themes/react/components/badge/page";
 
 function formatDate(date) {
@@ -34,7 +34,7 @@ function NotificationStatusBadge({ status }) {
   );
 }
 
-export const notificationColumns = [
+export const getNotificationColumns = (onRead) => [
   {
     accessorKey: "title",
     header: "عنوان",
@@ -59,8 +59,9 @@ export const notificationColumns = [
     id: "actions",
     header: "عملیات",
     cell: ({ row }) => (
-      <NotificationDetailsDialog className="w-fit-content"
+      <NotificationDetailsDialog
         notification={row.original}
+        onRead={onRead}
       />
     ),
   },
