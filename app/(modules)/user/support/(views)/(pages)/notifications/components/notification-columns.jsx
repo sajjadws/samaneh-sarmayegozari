@@ -1,6 +1,4 @@
-
-import Link from "next/link";
-
+import NotificationDetailsDialog from "./NotificationDetailsDialog";
 import { Button } from "@/miz/themes/react/components/button/page";
 import { Badge } from "@/miz/themes/react/components/badge/page";
 
@@ -61,18 +59,9 @@ export const notificationColumns = [
     id: "actions",
     header: "عملیات",
     cell: ({ row }) => (
-      <Button
-        size="sm"
-        variant="default"
-        className="txt-size-small font-weight-regular"
-        render={
-          <Link
-            href={`/madoles/admin/support/notifications/${row.original.id}`}
-          />
-        }
-      >
-        مشاهده جزئیات
-      </Button>
+      <NotificationDetailsDialog 
+        notification={row.original}
+      />
     ),
   },
 ];

@@ -8,15 +8,18 @@ import { Send } from "lucide-react";
 function TicketReply({ onSendMessage }) {
   const [message, setMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const trimmedMessage = message.trim();
 
     if (!trimmedMessage) return;
 
-    onSendMessage(trimmedMessage);
-    setMessage("");
+    const success = await onSendMessage(trimmedMessage);
+
+    if (success) {
+      setMessage("");
+    }
   };
 
   return (

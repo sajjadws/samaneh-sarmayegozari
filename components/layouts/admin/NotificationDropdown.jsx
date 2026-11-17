@@ -1,8 +1,9 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./NotificationDropdown.css";
+
 import {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -15,64 +16,61 @@ import {
 
 import "@/public/css/miz.min.css";
 import { Button } from "@/miz/themes/react/components/button/page";
-import { MoveLeftIcon } from "lucide-react";
+import { Check, MoveLeftIcon, Ticket } from "lucide-react";
+
+import {
+    getUserNotifications,
+    markAllNotificationsAsRead,
+} from "@/app/(modules)/user/support/(views)/(pages)/notifications/actions/notification-actions";
+import Link from "next/link";
 
 export default function NotificationDropdown() {
-    const [notifications, setNotifications] = useState([
-    {
-        id: 1,
-        title: "سفارش جدید",
-        message: "یک سفارش جدید ثبت شده است.",
-        is_read: false,
-        created_at: "۲ دقیقه پیش",
-    },
-    {
-        id: 2,
-        title: "پیام جدید",
-        message: "یک پیام جدید دریطلاعات شما به‌روزرسانی شطلاعات شما به‌روزرسانی شافت کرده‌اید.",
-        is_read: false,
-        created_at: "۱۰ دقیقه پیش",
-    },
-    {
-        id: 3,
-        title: "به‌روزرسانی سیستم",
-        message: "اطلاعات شما به‌روزرسانی شد.",
-        is_read: true,
-        created_at: "یک ساعت پیش",
-    },
-    {
-        id: 4,
-        title: "به‌روزرسانی سیستم",
-        message: "اطلاعات شما به‌روزرسانی شطلاعات شما به‌روزرسانی شطلاعات شما به‌روزرسانی شطلاعات شما به‌روزرسانی شطلاعات شما به‌روزرسانی شد.",
-        is_read: true,
-        created_at: "یک ساعت پیش",
-    },
-    {
-        id: 5,
-        title: "به‌روزرسانی سیستم",
-        message: "اطلاعات شما به‌روزرسانی شد.",
-        is_read: true,
-        created_at: "یک ساعت پیش",
-    },
-    ]);
+    const [notifications, setNotifications] = useState([]);
+
+    useEffect(() => {
+        async function fetchNotifications() {
+            const result = await getUserNotifications();
+
+            if (result.success) {
+                setNotifications(result.notifications);
+            }
+        }
+
+        fetchNotifications();
+    }, []);
 
     const unreadCount = notifications.filter(
-        (notification) => !notification.is_read
+        (notification) => notification.status === "UNREAD"
     ).length;
 
-    function handleReadNotification(notificationId) {
-        setNotifications((prev) =>
-            prev.map((item) =>
-                item.id === notificationId
-                    ? { ...item, is_read: true }
-                    : item
-            )
-        );
+    const [loading, setLoading] = useState(false);
+
+    async function handleReadAll() {
+        if (unreadCount === 0 || loading) return;
+
+        setLoading(true);
+
+        try {
+            const result = await markAllNotificationsAsRead();
+
+            if (result.success) {
+                setNotifications((prev) =>
+                    prev.map((notification) => ({
+                        ...notification,
+                        status: "READ",
+                    }))
+                );
+            }
+        } catch (error) {
+            console.error("MARK_ALL_NOTIFICATIONS_ERROR:", error);
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (
-        <DropdownMenu >
-            <DropdownMenuTrigger className="position-relative">
+        <DropdownMenu>
+            <DropdownMenuTrigger className="position-relative bg-on-primary-color">
                 <i className="icon icon-notification txt-size-mid-title"></i>
 
                 {unreadCount > 0 && (
@@ -82,11 +80,26 @@ export default function NotificationDropdown() {
                 )}
             </DropdownMenuTrigger>
 
-            <DropdownMenuContent align="end" className="d-flex flex-column gap-2 p-8 radius-all-normal bg-card-color py-3 px-5 border-color bw-1 border-style-solid">
+            <DropdownMenuContent
+                align="end"
+                className="d-flex flex-column gap-2 p-8 radius-all-normal bg-card-color py-3 px-5 border-color bw-1 border-style-solid"
+            >
                 <DropdownMenuGroup>
-                    <DropdownMenuLabel className="py-3 border-color bw-1 bb-style-solid primary-color font-weight-medium txt-size-normal">
-                        اعلان‌ها
-                    </DropdownMenuLabel>
+                    <div className="d-flex justify-content-space-between align-items-center w-100 border-color bw-1 bb-style-solid  ">
+                        <DropdownMenuLabel className=" py-3  font-weight-medium txt-size-normal primary-dark-color">
+                            اعلان‌ها
+                        </DropdownMenuLabel>
+
+                            <button
+                                className="primary-color d-flex align-items-center bg-card-color txt-size-normal"
+                                type="button"
+                                disabled={unreadCount === 0 || loading}
+                                onClick={handleReadAll}
+                            >
+                                خواندن همه
+                                <Check size={20}/>
+                            </button>
+                    </div>
                 </DropdownMenuGroup>
 
                 <DropdownMenuSeparator />
@@ -98,34 +111,36 @@ export default function NotificationDropdown() {
                 ) : (
                     notifications.map((notification) => (
                         <DropdownMenuItem
-                            className={`p-3 radius-all-small d-flex flex-column border-color bw-1 border-style-solid  ${
-                                !notification.is_read
+                            className={`p-3 radius-all-small d-flex flex-column border-color bw-1 border-style-solid ${
+                                notification.status === "UNREAD"
                                     ? "bg-on-primary-color"
                                     : "bg-card-color"
                             }`}
                             key={notification.id}
-                            onClick={() =>
-                                handleReadNotification(notification.id)
-                            }
                         >
                             <div className="d-flex flex-column gap-1 w-100">
-                                <div className="d-flex justify-content-space-between align-items-center primary-color font-weight-regular">
-                                    <strong className="">{notification.title}</strong>
-                                </div>
+                                <strong className="primary-color">
+                                    {notification.title}
+                                </strong>
 
-                                <span className="text-color txt-size-small font-weight-regular">{notification.message}</span>
+                                <span className="text-color txt-size-small">
+                                    {notification.description}
+                                </span>
 
-                                <small className="text-color txt-size-small font-weight-regular">
-                                    {notification.created_at}
+                                <small className="text-color txt-size-small">
+                                    {new Date(notification.createdAt).toLocaleString("fa-IR")}
                                 </small>
                             </div>
                         </DropdownMenuItem>
                     ))
                 )}
-                <Button className="py-2">
-                    مشاهده همه اعلان ها
-                    <MoveLeftIcon />
-                </Button>
+
+                <Link href="/user/support/notifications">
+                    <Button className="py-2 w-100">
+                        مشاهده همه اعلان‌ها
+                        <MoveLeftIcon />
+                    </Button>
+                </Link>
             </DropdownMenuContent>
         </DropdownMenu>
     );

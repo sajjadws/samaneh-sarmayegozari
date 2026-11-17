@@ -1,11 +1,12 @@
 
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card, CardContent } from "@/miz/themes/react/components/card/page";
 import { DataTable } from "@/miz/themes/react/components/data-table/data-table";
 import { ArrowLeft, Search } from "lucide-react";
 
+import { getAdminTickets } from "@/app/(modules)/admin/support/(views)/actions/support-actions";
 import {
   Input,
 } from "@/miz/themes/react/components/input/page";
@@ -38,50 +39,6 @@ import { ticketColumns } from "./components/ticket-columns";
 import "../../../assets/css/support.css";
 import Link from "next/link";
 
-const tickets = [
-  {
-    id: "TK-1001",
-    title: "مشکل در پرداخت هزینه",
-    userName: "علی رضایی",
-    createdAt: "2026-11-13T10:30:00",
-    status: "UNDER_REVIEW",
-  },
-  {
-    id: "TK-1002",
-    title: "عدم نمایش اطلاعات حساب",
-    userName: "مریم احمدی",
-    createdAt: "2026-11-12T14:20:00",
-    status: "ANSWERED",
-  },
-  {
-    id: "TK-1003",
-    title: "درخواست تغییر شماره تماس",
-    userName: "محمد کریمی",
-    createdAt: "2026-11-11T09:15:00",
-    status: "CLOSED",
-  },
-  {
-    id: "TK-1004",
-    title: "خطا هنگام ورود به سامانه",
-    userName: "زهرا محمدی",
-    createdAt: "2026-11-10T16:45:00",
-    status: "UNDER_REVIEW",
-  },
-  {
-    id: "TK-1005",
-    title: "مشکل در ثبت درخواست",
-    userName: "حسین مرادی",
-    createdAt: "2026-11-09T11:00:00",
-    status: "ANSWERED",
-  },
-  {
-    id: "TK-1006",
-    title: "پیگیری درخواست قبلی",
-    userName: "نگار حسینی",
-    createdAt: "2026-11-08T13:10:00",
-    status: "CLOSED",
-  },
-];
 
 const PAGE_SIZE = 5;
 
@@ -90,6 +47,24 @@ export default function TicketTablesPage() {
   const [status, setStatus] = useState("ALL");
   const [sortOrder, setSortOrder] = useState("newest");
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    async function fetchTickets() {
+      const result = await getAdminTickets();
+
+console.log("ADMIN TICKETS RESULT:", result);
+
+      if (result.success) {
+        setTickets(result.tickets);
+      } else {
+        console.error("GET_ADMIN_TICKETS_ERROR:", result.message);
+      }
+    }
+
+    fetchTickets();
+  }, []); 
 
   const filteredTickets = useMemo(() => {
     let result = [...tickets];

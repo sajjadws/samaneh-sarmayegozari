@@ -1,62 +1,77 @@
 
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
 
 import TicketInfo from "./TicketInfo";
 import TicketConversation from "./TicketConversation";
 import { TicketStatusBadge } from "@/miz/themes/react/components/ticket-status-badge/page";
-
-// داده نمایشی؛ بعداً با اطلاعات واقعی تیکت جایگزین می‌شود.
-const initialTicket = {
-  id: "TK-001",
-  title: "مشکل در عملیات واریز وجه",
-  userName: "علی رضایی",
-  createdAt: "1405/01/01",
-  status: "UNDER_REVIEW",
-  messages: [
-    {
-      id: 1,
-      sender: "admin",
-      senderName: "مدیر سیستم",
-      content: "لطفاً اطلاعات مربوط به درخواست خود را ارسال کنید.",
-      time: "4 روز پیش",
-    },
-    {
-      id: 2,
-      sender: "user",
-      senderName: "کاربر",
-      content: "هنگام ثبت درخواست با خطا مواجه می‌شوم.",
-      time: "2 روز پیش",
-    },
-    {
-      id: 3,
-      sender: "user",
-      senderName: "کاربر",
-      content: "هنگام ثبت درخواست با خطا مواجه می‌شوم.",
-      time: "2 روز پیش",
-    },
-  ],
-};
+import { useParams } from "next/navigation";
+import { getAdminTicketDetails } from "@/app/(modules)/admin/support/(views)/actions/support-actions";
+import { sendAdminTicketMessage } from "@/app/(modules)/admin/support/(views)/actions/support-actions";
 
 function TicketDetails() {
-  const [ticket, setTicket] = useState(initialTicket);
-  const [messages, setMessages] = useState(initialTicket.messages);
+  const params = useParams();
 
-  const handleSendMessage = (content) => {
-    const newMessage = {
-      id: Date.now(),
-      sender: "admin",
-      senderName: "مدیر سیستم",
-      content,
-      time: "همین الان",
-    };
+  const [ticket, setTicket] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    setMessages((prev) => [...prev, newMessage]);
+  useEffect(() => {
+    async function fetchTicket() {
+      try {
+        const result = await getAdminTicketDetails(params.id);
+
+        if (result.success) {
+          setTicket(result.ticket);
+          setMessages(result.ticket.messages);
+        } else {
+          console.error("GET_ADMIN_TICKET_DETAILS:", result.message);
+        }
+      } catch (error) {
+        console.error("FETCH_ADMIN_TICKET_ERROR:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    if (params.id) {
+      fetchTicket();
+    }
+  }, [params.id]);
+
+  if (loading) {
+    return <div className="p-6">در حال دریافت اطلاعات تیکت...</div>;
+  }
+
+  if (!ticket) {
+    return <div className="p-6">تیکت موردنظر پیدا نشد.</div>;
+  }
+  const handleSendMessage = async (content) => {
+    try {
+      const result = await sendAdminTicketMessage(
+        ticket.id,
+        content
+      );
+
+      if (!result.success) {
+        console.error("SEND_ADMIN_MESSAGE_ERROR:", result.message);
+        alert(result.message);
+        return false;
+      }
+
+      setMessages((prev) => [...prev, result.message]);
+
+      return true;
+    } catch (error) {
+      console.error("SEND_ADMIN_MESSAGE_ERROR:", error);
+      alert("ارسال پاسخ با خطا مواجه شد.");
+      return false;
+    }
   };
-
+  
   const handleStatusChange = (status) => {
     setTicket((prev) => ({
       ...prev,

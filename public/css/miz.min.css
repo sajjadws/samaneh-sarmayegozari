@@ -635,42 +635,6 @@ input:focus::placeholder,
     border-color: var(--border)
 }
 
-.border-color,
-.popover-content,
-.popover-trigger,
-.native-select,
-.native-select:hover:not(:disabled),
-.native-select:focus,
-.message-group,
-.message-avatar,
-.message-content,
-.message[data-align=end] .message-content,
-.combobox-trigger,
-.combobox-content,
-.combobox-chips,
-.input::placeholder,
-.input-group,
-.input-group-addon-inline-start,
-.input-group-addon-inline-end,
-.input-group-addon-block-start,
-.input-group-addon-block-end,
-.checkbox,
-.avatar,
-.avatar-badge,
-.avatar-group-count,
-.radio-item,
-.select-trigger,
-.select-content,
-.switch,
-.data-table,
-.data-table-content .table-head,
-.table-header tr,
-.table-footer,
-.table-row,
-.btn-outline {
-    color: var(--border)
-}
-
 .bg-border-color,
 .separator,
 .native-select:disabled {

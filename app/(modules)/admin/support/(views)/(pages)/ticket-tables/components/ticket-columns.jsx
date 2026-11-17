@@ -15,10 +15,10 @@ function formatDate(date) {
 
 export const ticketColumns = [
   {
-    accessorKey: "id",
-    header: "شناسه",
+    accessorKey: "ticketNumber",
+    header: "شماره تیکت",
     cell: ({ getValue }) => (
-      <span dir="ltr">{getValue()}</span>
+      <span dir="ltr">TK-{getValue()}</span>
     ),
   },
   {

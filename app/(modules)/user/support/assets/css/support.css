@@ -228,4 +228,8 @@
 }
 
 
+td.table-cell:last-child {
+    justify-content: end;
+    display: flex;
+}
 

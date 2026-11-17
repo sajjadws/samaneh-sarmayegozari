@@ -6,6 +6,7 @@ import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
 import { cn } from "cn"
 
 import { Button } from "../button/page"
+import { IconXMark } from "@tabler/icons-react"
 // import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
 
 
@@ -62,13 +63,14 @@ function DialogContent({
               />
             }
           >
-            {/* <IconPlaceholder
+            <IconXMark
               lucide="XIcon"
               tabler="IconX"
               hugeicons="Cancel01Icon"
               phosphor="XIcon"
               remixicon="RiCloseLine"
-            /> */}
+            />
+            
             <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
         )}
