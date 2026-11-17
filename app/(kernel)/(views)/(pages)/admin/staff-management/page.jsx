@@ -1,22 +1,27 @@
+import Link from "next/link";
 import { Suspense } from "react";
-import { ShowUsers } from "./(pages)/show/page";
+import ShowUsers from "./components/user-table";
 
-export default function AdminUserManagementPage({ searchParams }) {
+export default function AdminStaffManagementPage({ searchParams }) {
 	return (
-		<>
-			<section className="section justify-content-start align-items-start gap-8 px-8 py-10">
-				<div className="container w-100 h-100 gap-8">
-					<div className="block w-100 d-flex flex-column align-items-start gap-2">
-						<h1 className="">مدیریت کاربران</h1>
-						<p className="">مشاهده اطلاعات کاربران، بررسی وضعیت حساب و احراز هویت</p>
-					</div>
-					<div className="block w-100 h-100">
-						<Suspense>
-							<ShowUsers searchParams={searchParams} />
-						</Suspense>
-					</div>
+		<section className="section justify-content-start align-items-start gap-8 px-8 py-10">
+			<div className="container w-100 h-100 gap-8">
+				<div className="block w-100 d-flex flex-column align-items-start gap-2">
+					<h1>مدیریت کارمندان</h1>
+					<p>مشاهده و مدیریت حساب کارمندان</p>
+					<Link
+						href="/admin/staff-management/create"
+						className="btn btn-primary"
+					>
+						افزودن کارمند جدید
+					</Link>
 				</div>
-			</section>
-		</>
+				<div className="block w-100 h-100">
+					<Suspense>
+						<ShowUsers searchParams={searchParams} />
+					</Suspense>
+				</div>
+			</div>
+		</section>
 	);
 }

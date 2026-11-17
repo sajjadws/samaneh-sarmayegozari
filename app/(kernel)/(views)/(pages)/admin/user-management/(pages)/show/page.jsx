@@ -7,7 +7,6 @@ import { columns } from "../../components/columns";
 // import { Button } from "@/components/ui/button";
 // import Link from "next/link";
 // import { routes } from "@/lib/routes/routes";
-import useLoginServer from "@/lib/authentication/is-login-server";
 import SearchTable from "../../components/search-table";
 import FilterTable from "../../components/filter-table";
 import { BankAccountStatus, UserStatus } from "@/lib/prisma/prisma-enums";
@@ -16,7 +15,6 @@ export async function ShowUsers({ searchParams }) {
 	await connection();
 	const { page, perPage, q = "", bankAccountStatus, userStatus } = await searchParams;
 
-	const { user } = await useLoginServer();
 	const fetchData = await getAllUsers({
 		page: +page ? +page : 1,
 		perPage: +perPage ? +perPage : 10,
@@ -24,6 +22,9 @@ export async function ShowUsers({ searchParams }) {
 		bankAccountStatus,
 		userStatus,
 	});
+	if (!fetchData?.ok || !fetchData.data) {
+		return <p role="alert">{fetchData?.message || "دریافت کاربران ناموفق بود"}</p>;
+	}
 	const fetchedData = fetchData.data;
 	const { data, ...otherData } = fetchedData;
 

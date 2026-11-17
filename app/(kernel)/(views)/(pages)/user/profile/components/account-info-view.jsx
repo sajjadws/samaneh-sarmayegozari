@@ -2,7 +2,6 @@ import { UserStatus } from "@/lib/prisma/prisma-enums";
 
 export default function AccountInfoView({ user }) {
     const isActive = user.status === UserStatus.ACTIVE;
-    console.log("user", user);
 
     return (
         <>

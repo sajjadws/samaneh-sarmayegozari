@@ -1,29 +1,38 @@
-// import { DataTable } from "@/miz/themes/react/components/data-table/data-table";
-// import { connection } from "next/server";
-// // import SearchTable from "@/components/search-table";
-// import { getAllUsers } from "../actions/crud";
-// // import DataTable from "@/components/data-table/data-table";
-// import { columns } from "./columns";
-// // import { Button } from "@/components/ui/button";
-// // import Link from "next/link";
-// // import { routes } from "@/lib/routes/routes";
-// import useLoginServer from "@/lib/authentication/is-login-server";
+import { DataTable } from "@/miz/themes/react/components/data-table/data-table";
+import { connection } from "next/server";
+import { getAllUsers } from "../actions/crud";
+import { columns } from "./columns";
+import useLoginServer from "@/lib/authentication/is-login-server";
 
-// export async function TestAAA({ searchParams }){
-//         await connection();
-//         const { page, perPage, q = "", role } = await searchParams;
-//         const { user } = await useLoginServer();
-    
-//         const fetchData = await getAllUsers(user?.id, {
-//             page: +page ? +page : 1,
-//             perPage: +perPage ? +perPage : 10,
-//             q: q || "",
-//             role: role || null,
-//         });
-//         const fetchedData = fetchData.data;
-//         const { data, ...otherData } = fetchedData;
+export default async function ShowUsers({ searchParams = {} }) {
+	await connection();
 
-//     return (
-//         <DataTable className="w-100 h-100" singleName="پروژه" collectionName="پروژه ها" columns={columns} data={data} option={otherData} total={otherData?.total || 0} />
-//     );
-// }
+	const params = await searchParams;
+	const { page, perPage, q = "", role } = params || {};
+	const { user } = await useLoginServer();
+
+	const fetchData = await getAllUsers(user?.id, {
+		page: Number(page) || 1,
+		perPage: Number(perPage) || 10,
+		q: q || "",
+		role: role || null,
+	});
+
+	if (!fetchData?.ok || !fetchData.data) {
+		return <p role="alert">{fetchData?.message || "دریافت فهرست کارمندان ناموفق بود."}</p>;
+	}
+
+	const { data, ...otherData } = fetchData.data;
+
+	return (
+		<DataTable
+			className="w-100 h-100 shadow-lg"
+			singleName="کارمند"
+			collectionName="کارمندان"
+			columns={columns}
+			data={data || []}
+			option={otherData}
+			total={otherData?.total || 0}
+		/>
+	);
+}

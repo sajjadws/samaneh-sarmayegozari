@@ -3,13 +3,11 @@
 // import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { createColumnHelper } from "@tanstack/react-table";
 import CellAction from "./cell-action";
-import { dateToString } from "@/lib/utils";
-import { UserStatus } from "@/lib/prisma/prisma-enums";
 
 const columnHelper = createColumnHelper();
 
 export const columns = columnHelper.columns([
-	columnHelper.accessor("role", {
+	columnHelper.accessor("title", {
 		header: "نقش",
 		cell: ({ row }) => {
 			return (

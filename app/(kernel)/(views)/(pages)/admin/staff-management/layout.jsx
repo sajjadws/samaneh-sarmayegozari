@@ -1,26 +1,15 @@
-"use client";
-import { useState } from "react";
-// import Footer from "@/components/layouts/website/footer";
-import Header from "@/components/layouts/admin/header";
-import Sidebar from "@/components/layouts/admin/sidebar";
-import UserLayout from "@/app/(kernel)/layouts/user-panel";
+import UserPanel from "@/app/(kernel)/layouts/user-panel";
+import { PERMISSIONS } from "@/lib/rbac/config/permissions";
+// import "./user.css";
 
 export default function UsersLayout({ children }) {
-    const [theme, setTheme] = useState("light");
-
     return (
-        // <>
-        //     <Header theme={theme} setTheme={setTheme} />
-        //     <main>
-        //         <Sidebar role={globalThis.getRole("admin")}/>
-        //         {children}
-        //     </main>
-        //     {/* <Footer /> */}
-        // </>
-        <>
-            <UserLayout>
-                {children}
-            </UserLayout>
-        </>
+        <UserPanel permission={PERMISSIONS.USERS.READ}>
+            <section className="section justify-content-start align-items-start gap-8 px-8 py-10">
+                <div className="container w-100 h-100 gap-8">
+                    {children}
+                </div>
+            </section>
+        </UserPanel>
     );
 }

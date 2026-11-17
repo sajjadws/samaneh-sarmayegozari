@@ -50,12 +50,9 @@ export async function resolveProfileUser(id) {
             id: targetUserId,
         },
         select: {
-            id: true,
             name: true,
-            email: true,
             image: true,
             status: true,
-            createdAt: true,
 
             userRoles: {
                 select: {
@@ -75,17 +72,6 @@ export async function resolveProfileUser(id) {
                 },
             },
 
-            wallet: {
-                select: {
-                    bankAccounts: {
-                        select: {
-                            bankName: true,
-                            numberCard: true,
-                            numberShaba: true
-                        }
-                    }
-                }
-            }
         },
     });
 

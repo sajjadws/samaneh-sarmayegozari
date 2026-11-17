@@ -13,8 +13,8 @@ model Project {
     status        ProjectStatus @default(FUNDRAISING)
     isPublication Boolean       @default(false)
 
-    usrId String
-    user  User   @relation(fields: [usrId], references: [id])
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
 
     phases           ProjectPhase[]
     questionProjects QuestionProject[]

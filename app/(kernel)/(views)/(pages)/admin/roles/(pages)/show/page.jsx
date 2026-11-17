@@ -14,13 +14,14 @@ export async function ShowUsers({ searchParams }){
         const { page, perPage, q = "", role } = await searchParams;
         const { user } = await useLoginServer();
     
-        const fetchData = await getAllRoles(user?.id, {
+        const fetchData = await getAllRoles({
             page: +page ? +page : 1,
             perPage: +perPage ? +perPage : 10,
             q: q || "",
             role: role || null,
         });
         const fetchedData = fetchData.data;
+        console.log("fetchData", fetchData);
         const { data, ...otherData } = fetchedData;
 
     return (

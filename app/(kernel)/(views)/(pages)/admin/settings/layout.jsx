@@ -1,12 +1,13 @@
-"use client";
-import { useState } from "react";
+// "use client";
+// import { useState } from "react";
 // import Footer from "@/components/layouts/website/footer";
 import Header from "@/components/layouts/admin/header";
 import Sidebar from "@/components/layouts/admin/sidebar";
 import UserLayout from "@/app/(kernel)/layouts/user-panel";
+import { PERMISSIONS } from "@/lib/rbac/config/permissions";
 
 export default function UsersLayout({ children }) {
-    const [theme, setTheme] = useState("light");
+    // const [theme, setTheme] = useState("light");
 
     return (
         // <>
@@ -18,7 +19,7 @@ export default function UsersLayout({ children }) {
         //     {/* <Footer /> */}
         // </>
         <>
-            <UserLayout>
+            <UserLayout permission={PERMISSIONS.USERS.READ}>
                 {children}
             </UserLayout>
         </>

@@ -1,244 +1,118 @@
 "use server";
 
-import { auth } from "@/lib/authentication/auth";
 import prismaDB from "@/lib/prisma/prismaDB";
-import { routes } from "@/lib/routes/routes";
-import { userSchema } from "@/lib/validation/user";
+import { authorizeAction, PERMISSIONS } from "@/lib/rbac";
+import { applyPermissionScope } from "@/lib/rbac/policies/scope-policy";
+import { authorizationResult } from "@/lib/rbac/errors/authorization-error";
 import { revalidatePath } from "next/cache";
-import { headers } from "next/headers";
+import { z } from "zod";
 
-export const getAllUsers = async (options = {}) => {
-	const page = options?.page || 1;
-	const perPage = options?.perPage || 10;
-	const skip = (page - 1) * perPage;
-	const take = perPage;
-	const role = options?.role;
+const assignmentSchema = z.array(z.object({
+  permissionId: z.string().min(1),
+  scope: z.enum(["OWN", "GLOBAL"]).nullable().optional(),
+}));
+const result = (ok, status, message, data = null, errors = null) => ({ ok, status, message, data, errors });
+const staffPath = "/admin/staff-management";
 
-	const searchString = options.q;
+async function staffTarget(userId) {
+  const user = await prismaDB.user.findUnique({
+    where: { id: userId },
+    include: { userRoles: { include: { role: { select: { id: true, name: true, isSuperAdmin: true } } } } },
+  });
+  if (!user || !user.userRoles.some(({ role }) => role && !role.isSuperAdmin)) return null;
+  if (user.userRoles.some(({ role }) => role?.isSuperAdmin)) return null;
+  return user;
+}
 
-	const searchFilter = {
-		// AND: [
-		// 	{
-		// 		OR: [
-		// 			{
-		// 				title: {
-		// 					contains: searchString,
-		// 				},
-		// 			},
-		// 			{
-		// 				description: {
-		// 					contains: searchString,
-		// 				},
-		// 			},
-		// 		],
-		// 	},
-		// ],
-	};
+export async function getAllUsers(actorIdOrOptions, maybeOptions = {}) {
+  try {
+    const access = await authorizeAction({ permission: PERMISSIONS.USERS.READ });
+    const options = actorIdOrOptions && typeof actorIdOrOptions === "object" ? actorIdOrOptions : maybeOptions;
+    const page = Math.max(1, Number(options.page) || 1);
+    const perPage = Math.min(100, Math.max(1, Number(options.perPage) || 10));
+    const q = String(options.q || "").trim();
+    const scopeWhere = applyPermissionScope(access, PERMISSIONS.USERS.READ, "id");
+    const where = {
+      ...scopeWhere,
+      userRoles: { some: { role: { isSuperAdmin: false }, ...(options.role ? { roleId: String(options.role) } : {}) } },
+      ...(q ? { OR: [
+        { name: { contains: q } }, { email: { contains: q } },
+        { username: { contains: q } }, { phoneNumber: { contains: q } },
+        { userUtilities: { is: { firstName: { contains: q } } } },
+        { userUtilities: { is: { lastName: { contains: q } } } },
+      ] } : {}),
+    };
+    const [total, data] = await Promise.all([
+      prismaDB.user.count({ where }),
+      prismaDB.user.findMany({
+        where, orderBy: { createdAt: "desc" }, skip: (page - 1) * perPage, take: perPage,
+        include: { userUtilities: true, userRoles: { include: { role: { select: { id: true, name: true, title: true } } } } },
+      }),
+    ]);
+    return result(true, 200, "فهرست کارمندان دریافت شد", { data, total, page, perPage });
+  } catch (error) {
+    return authorizationResult(error) ?? result(false, 500, "دریافت فهرست کارمندان ناموفق بود");
+  }
+}
 
-	const where = searchFilter;
+export async function getStaffDetails(id) {
+  try {
+    const access = await authorizeAction({ permission: PERMISSIONS.USERS.READ });
+    if (!id) return result(false, 400, "شناسه کارمند الزامی است");
+    const scopeWhere = applyPermissionScope(access, PERMISSIONS.USERS.READ, "id");
+    const user = await prismaDB.user.findFirst({
+      where: { id, ...scopeWhere, userRoles: { some: { role: { isSuperAdmin: false } } } },
+      include: {
+        userPermission: { include: { permission: true } },
+        userRoles: { include: { role: { select: { id: true, name: true, title: true, isSuperAdmin: true } } } },
+        userUtilities: true,
+      },
+    });
+    if (!user || user.userRoles.some(({ role }) => role?.isSuperAdmin)) return result(false, 404, "کارمند پیدا نشد");
+    return result(true, 200, "اطلاعات کارمند دریافت شد", user);
+  } catch (error) {
+    return authorizationResult(error) ?? result(false, 500, "دریافت اطلاعات کارمند ناموفق بود");
+  }
+}
 
-	const total = await prismaDB.user.count({ where });
+export async function getStaffPermissionCatalog() {
+  try {
+    await authorizeAction({ permission: PERMISSIONS.PERMISSIONS.READ });
+    const data = await prismaDB.permission.findMany({ orderBy: { name: "asc" } });
+    return result(true, 200, "فهرست دسترسی‌ها دریافت شد", data);
+  } catch (error) {
+    return authorizationResult(error) ?? result(false, 500, "دریافت دسترسی‌ها ناموفق بود");
+  }
+}
 
-	const data = await prismaDB.user.findMany({
-		where,
-		orderBy: {
-			createdAt: "desc",
-		},
-		skip,
-		take,
-		select: {
-			id: true,
-			name: true,
-			email: true,
-			username: true,
-			phoneNumber: true,
-			status: true,
-			createdAt: true,
-
-			userUtilities: true,
-
-			userRoles: {
-				select: {
-					role: {
-						select: {
-							id: true,
-							title: true,
-
-							permissions: {
-								select: {
-									roleId: true,
-								},
-							},
-						},
-					},
-				},
-			},
-		},
-	});
-
-	return {
-		ok: true,
-		status: 200,
-		data: {
-			data,
-			total,
-			page,
-			perPage,
-		},
-		message: "داده ها ارسال شدند",
-	};
-};
-
-export const getUserById = async (id) => {
-	const data = await prismaDB.user.findUnique({
-		where: {
-			id,
-		},
-	});
-
-	return {
-		ok: true,
-		status: 200,
-		data,
-		message: "داده ها ارسال شد.",
-	};
-};
-
-export const createUser = async (values) => {
-	const validateData = userSchema.safeParse(values);
-
-	if (!validateData.success) {
-		return {
-			ok: false,
-			status: 400,
-			message: "فرمت دیتای ارسالی صحیح نمی‌باشد",
-			errors: validateData.error.flatten().fieldErrors,
-		};
-	}
-
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-
-	if (!session?.user?.id) {
-		return {
-			ok: false,
-			status: 401,
-			message: "برای ثبت پروژه ابتدا وارد حساب کاربری شوید",
-		};
-	}
-
-	const { userStatus, categoryId, ...userData } = validateData.data;
-
-	const data = await prismaDB.user.create({
-		data: {
-			...userData,
-			status: userStatus ?? "PENDING",
-			user: {
-				connect: {
-					id: session.user.id,
-				},
-			},
-			category: {
-				connect: {
-					id: Number(categoryId),
-				},
-			},
-		},
-		include: {
-			user: true,
-			category: true,
-		},
-	});
-
-	revalidatePath(routes.panel.users);
-
-	return {
-		ok: true,
-		status: 201,
-		data,
-		message: "پروژه جدید اضافه شد",
-	};
-};
-
-export const editUser = async (id, values) => {
-	const validateData = userSchema.safeParse(values);
-
-	if (!validateData.success) {
-		return {
-			ok: false,
-			status: 400,
-			message: "فرمت دیتای ارسالی صحیح نمی‌باشد",
-			errors: validateData.error.flatten().fieldErrors,
-		};
-	}
-
-	const session = await auth.api.getSession({
-		headers: await headers(),
-	});
-
-	if (!session?.user?.id) {
-		return {
-			ok: false,
-			status: 401,
-			message: "برای ویرایش پروژه ابتدا وارد حساب کاربری شوید",
-		};
-	}
-
-	const { categoryId, userStatus, ...userData } = validateData.data;
-
-	const data = await prismaDB.user.update({
-		where: {
-			id: Number(id),
-		},
-		data: {
-			...userData,
-
-			status: userStatus ?? "PENDING",
-
-			category: {
-				connect: {
-					id: Number(categoryId),
-				},
-			},
-		},
-		include: {
-			category: true,
-		},
-	});
-
-	revalidatePath(routes.panel.users);
-	revalidatePath(routes.panel.myUsers);
-
-	return {
-		ok: true,
-		status: 200,
-		data,
-		message: "پروژه با موفقیت ویرایش شد",
-	};
-};
-
-export const deleteUser = async (id) => {
-	if (!id) {
-		return {
-			ok: false,
-			status: 400,
-			message: "id مورد نظر وجود ندارد.",
-		};
-	}
-
-	const data = await prismaDB.user.delete({
-		where: {
-			id,
-		},
-	});
-
-	revalidatePath(routes.panel.users);
-
-	return {
-		ok: true,
-		status: 201,
-		data,
-		message: "کاربر مورد نظر حذف شد",
-	};
-};
+export async function updateStaffPermissions(userId, assignments = []) {
+  try {
+    const actor = await authorizeAction({ permission: PERMISSIONS.PERMISSIONS.UPDATE });
+    if (!userId) return result(false, 400, "شناسه کارمند الزامی است");
+    const target = await staffTarget(userId);
+    if (!target) return result(false, 404, "کارمند پیدا نشد");
+    if (!actor.isSuperAdmin && actor.user.id !== userId) return result(false, 403, "اجازه ویرایش دسترسی‌های این کارمند را ندارید.");
+    const parsed = assignmentSchema.safeParse(assignments);
+    if (!parsed.success) return result(false, 400, "اطلاعات دسترسی‌ها معتبر نیست", null, parsed.error.flatten().fieldErrors);
+    const ids = parsed.data.map((item) => item.permissionId);
+    if (new Set(ids).size !== ids.length) return result(false, 400, "یک دسترسی بیش از یک بار ارسال شده است");
+    const permissionRows = ids.length ? await prismaDB.permission.findMany({ where: { id: { in: ids } }, select: { id: true, name: true } }) : [];
+    if (permissionRows.length !== ids.length) return result(false, 400, "یک یا چند دسترسی معتبر نیستند");
+    const names = new Map(permissionRows.map(({ id, name }) => [id, name]));
+    for (const item of parsed.data) {
+      const read = names.get(item.permissionId)?.endsWith(".read");
+      if (read && !["OWN", "GLOBAL"].includes(item.scope)) return result(false, 400, "برای دسترسی مشاهده باید محدوده انتخاب شود");
+      if (!read && item.scope != null) return result(false, 400, "Scope فقط برای مجوزهای مشاهده مجاز است");
+    }
+    const updated = await prismaDB.$transaction(async (tx) => {
+      await tx.userPermission.deleteMany({ where: { userId } });
+      if (parsed.data.length) await tx.userPermission.createMany({ data: parsed.data.map(({ permissionId, scope }) => ({ userId, permissionId, scope: scope ?? null, assignedBy: actor.user.id })) });
+      return tx.user.findUnique({ where: { id: userId }, include: { userPermission: { include: { permission: true } } } });
+    });
+    revalidatePath(staffPath);
+    revalidatePath(`${staffPath}/edit/${userId}`);
+    return result(true, 200, "دسترسی‌های کارمند به‌روزرسانی شدند", updated);
+  } catch (error) {
+    return authorizationResult(error) ?? result(false, 500, "ذخیره دسترسی‌های کارمند ناموفق بود");
+  }
+}

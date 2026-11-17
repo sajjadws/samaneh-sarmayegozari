@@ -1,11 +1,10 @@
-// ""
-
-import { Suspense } from "react";
+import UserPanel from "@/app/(kernel)/layouts/user-panel";
 import ProfileLayoutClient from "./components/profile-layout-client";
 
 export default function ProfileLayout({ children }) {
-    // return <ProfileLayoutClient>{children}</ProfileLayoutClient>;
-    return <Suspense>
-        <ProfileLayoutClient>{children}</ProfileLayoutClient>
-    </Suspense>;
+    return (
+        <UserPanel>
+            <ProfileLayoutClient>{children}</ProfileLayoutClient>
+        </UserPanel>
+    );
 }

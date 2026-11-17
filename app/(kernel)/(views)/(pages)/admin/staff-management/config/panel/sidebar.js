@@ -1,13 +1,4 @@
 import { routes } from "@/lib/routes/routes";
+import { PERMISSIONS } from "@/lib/rbac/config/permissions";
 
-const sidebarUserItems = [
-    {
-        order: 1,
-        label: "کاربران",
-        icon: "icon-frame-1",
-        link: routes.admin.panel.userManagement.root,
-        role: "admin",
-    },
-];
-
-export default sidebarUserItems;
+export default [{ order: 20, label: "مدیریت کارکنان", icon: "icon-users", link: routes.admin.panel.staffManagement.root, permission: PERMISSIONS.USERS.READ }];

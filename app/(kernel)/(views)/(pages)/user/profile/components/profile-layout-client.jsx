@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { useParams, usePathname } from "next/navigation";
 import Link from "next/link";
-import UserLayout from "@/app/(kernel)/layouts/user-panel";
 import { Button } from "@/miz/themes/react/components/button/page";
 import { getProfileSidebarData } from "../actions/profile";
 import "../profile.css";
@@ -69,8 +68,7 @@ export default function ProfileLayoutClient({ children }) {
 	const router = useRouter();
 
 	return (
-		<UserLayout>
-			<section className="section justify-content-start align-items-start px-8 py-14">
+		<section className="section justify-content-start align-items-start px-8 py-14">
 				<div className="container w-100 gap-6">
 					<div className="w-100 d-flex justify-content-space-between align-items-center">
 						<h1 className="txt-size-high-title font-weight-bold title-text-color">پروفایل کاربری</h1>
@@ -171,7 +169,6 @@ export default function ProfileLayoutClient({ children }) {
 						</aside>
 					</div>
 				</div>
-			</section>
-		</UserLayout>
+		</section>
 	);
 }

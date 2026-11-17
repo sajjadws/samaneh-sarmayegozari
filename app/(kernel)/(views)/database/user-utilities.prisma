@@ -7,11 +7,11 @@
 //     // user User like wallet in user table
 // }
 model UserUtilities {
-    id           String @id
+    id           String  @id
     firstName    String
     lastName     String
-    nationalCode String @unique @db.VarChar(10)
-    avatar       String
-    userId       String              @unique
-    user         User                @relation(fields: [userId], references: [id])
+    nationalCode String? @unique @db.VarChar(10)
+    avatar       String  @default("/public/media/images/profile.jpg")
+    userId       String  @unique
+    user         User    @relation(fields: [userId], references: [id])
 }
