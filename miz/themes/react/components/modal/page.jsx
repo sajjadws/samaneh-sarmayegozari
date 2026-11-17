@@ -13,7 +13,6 @@ export function Modal({ title, description, open, onOpenChange, children }) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger />
       <DialogContent className="sm:max-w-sm">
-        
         {children}
       </DialogContent>
     </Dialog>

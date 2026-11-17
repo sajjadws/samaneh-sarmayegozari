@@ -2,6 +2,7 @@ enum ProjectStatus {
   FUNDRAISING
   IN_PROGRESS
   COMPLETED
+  DRAFT
 }
 
 model Project {
@@ -9,6 +10,7 @@ model Project {
   title        String @db.VarChar(50)
   description  String @db.VarChar(255)
   durationDate String @map("duration_date")
+  step         String
 
   status        ProjectStatus @default(FUNDRAISING)
   isPublication Boolean       @default(false)
@@ -35,7 +37,6 @@ model ProjectPhase {
   profitAmount     String @default("0")
   incomeAmount     String @default("0")
   ProjectedRevenue String @default("0")
-  
 
   isPublish Boolean       @default(false)
   status    ProjectStatus @default(FUNDRAISING)
@@ -75,6 +76,9 @@ model FileProject {
 
   projectPhaseId String?
   projectPhase   ProjectPhase? @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -134,6 +138,9 @@ model TeamProject {
 
   useId String?
   user  User    @relation(fields: [usrId], references: [id])
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt                DateTime                  @default(now())
   updatedAt                DateTime                  @updatedAt
