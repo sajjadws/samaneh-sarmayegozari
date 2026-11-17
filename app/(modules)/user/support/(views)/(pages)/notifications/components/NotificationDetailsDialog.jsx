@@ -24,7 +24,7 @@ export default function NotificationDetailsDialog({ notification }) {
         open={open}
         onOpenChange={setOpen}
       >
-        <div className="d-flex flex-column gap-8 bg-card-color p-8 radius-all-large w-35 ">
+        <div className="d-flex flex-column gap-8">
           <div>
             <p>{notification.title}</p>
           </div>

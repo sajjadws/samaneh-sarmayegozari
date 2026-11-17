@@ -59,7 +59,7 @@ export const notificationColumns = [
     id: "actions",
     header: "عملیات",
     cell: ({ row }) => (
-      <NotificationDetailsDialog 
+      <NotificationDetailsDialog className="w-fit-content"
         notification={row.original}
       />
     ),
