@@ -56,11 +56,19 @@
 //     @@index([walletId, createdAt])
 // }
 
+<<<<<<< HEAD
 // model InvestmentTransaction {
 //     id     String                      @id @default(cuid())
 //     type   InvestmentTransactionType
 //     amount Decimal                     @db.Decimal(18, 2)
 //     status InvestmentTransactionStatus @default(PENDING)
+=======
+model InvestmentTransaction {
+    id     String                      @id @default(cuid())
+    type   InvestmentTransactionType
+    amount String                     @db.Decimal(18, 2)
+    status InvestmentTransactionStatus @default(PENDING)
+>>>>>>> ae50261069887fdd7eb69d1e2a1a86222f044d3a
 
 //     referenceId String?   @unique
 //     createdAt   DateTime  @default(now())

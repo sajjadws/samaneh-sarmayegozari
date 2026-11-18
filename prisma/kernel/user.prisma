@@ -32,6 +32,7 @@ model User {
     createdAt           DateTime   @default(now())
     updatedAt           DateTime   @updatedAt
 
+<<<<<<< HEAD
     displayUsername     String?
 
     sessions            Session[]
@@ -41,6 +42,14 @@ model User {
     tickets             Ticket[]
     notifications       Notification[]
     sentTicketMessages TicketMessage[] @relation("TicketMessageSender")
+=======
+displayUsername String?
+
+	sessions Session[]
+	accounts Account[]
+
+userRoles UserRole[]
+>>>>>>> ae50261069887fdd7eb69d1e2a1a86222f044d3a
 }
 
 enum UserStatus {
