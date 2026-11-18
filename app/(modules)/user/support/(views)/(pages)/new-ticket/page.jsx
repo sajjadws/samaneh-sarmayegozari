@@ -10,7 +10,6 @@ import {
 import { NewTicketForm } from "./components/new-ticket-form";
 
 import "../../../assets/css/support.css";
-
 export default function NewTicketPage() {
   return (
     <div className="new-ticket-page p-8 d-flex flex-column gap-4">
@@ -32,5 +31,7 @@ export default function NewTicketPage() {
         </CardContent>
       </Card>
     </div>
+
+    
   );
 }
