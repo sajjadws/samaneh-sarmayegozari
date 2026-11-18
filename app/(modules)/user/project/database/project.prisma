@@ -2,6 +2,7 @@ enum ProjectStatus {
   FUNDRAISING
   IN_PROGRESS
   COMPLETED
+  DRAFT
 }
 
 model Project {
@@ -9,6 +10,7 @@ model Project {
   title        String @db.VarChar(50)
   description  String @db.VarChar(255)
   durationDate String @map("duration_date")
+  step         String
 
   status        ProjectStatus @default(FUNDRAISING)
   isPublication Boolean       @default(false)
@@ -31,21 +33,23 @@ model ProjectPhase {
   startDate DateTime? @db.Date
   endDate   DateTime? @db.Date
 
-  totalAmount  String @default("0")
-  profitAmount String @default("0")
-  incomeAmount String @default("0")
+  totalAmount      String @default("0")
+  profitAmount     String @default("0")
+  incomeAmount     String @default("0")
+  ProjectedRevenue String @default("0")
 
   isPublish Boolean       @default(false)
   status    ProjectStatus @default(FUNDRAISING)
 
-  projectId              String
-  project                Project                  @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  phaseInvestments       ProjectPhaseInvestment[]
-  team                   TeamProject[]
-  createdAt              DateTime                 @default(now())
-  updatedAt              DateTime                 @updatedAt
-  InvestmentTransactions InvestmentTransaction[]
-  fileProjects           FileProject[]
+  projectId                String
+  project                  Project                   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  phaseInvestments         ProjectPhaseInvestment[]
+  team                     TeamProject[]
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  InvestmentTransactions   InvestmentTransaction[]
+  fileProjects             FileProject[]
+  teamProjectProjectPhases TeamProjectProjectPhase[]
 }
 
 enum FileType {
@@ -72,6 +76,9 @@ model FileProject {
 
   projectPhaseId String?
   projectPhase   ProjectPhase? @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -124,14 +131,24 @@ model QuestionProject {
 }
 
 model TeamProject {
-  id        String @id @default(uuid())
-  fullName  String @db.VarChar(100)
-  semat     String @db.VarChar(100)
+  id String @id @default(uuid())
+
+  position  String @db.VarChar(100)
   expertise String @db.VarChar(255)
 
-  projectPhaseId String
-  projectPhase   ProjectPhase @relation(fields: [projectPhaseId], references: [id], onDelete: Cascade)
+  userId String?
+  user  User    @relation(fields: [userId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  teamProjectProjectPhases TeamProjectProjectPhase[]
+}
+
+model TeamProjectProjectPhase {
+  id             String @id @default(uuid())
+  teamProjectId  String
+  projectPhaseId String
 }

@@ -271,10 +271,8 @@ dialog {
 .native-select-optgroup,
 .message-header,
 .message-content>div:not(.message-header):not(.message-footer),
-.calendar-caption-label,
 .product-card,
-.data-table-title,
-.data-table-content .table-head {
+.data-table-title {
     font-weight: 700
 }
 
@@ -291,8 +289,6 @@ dialog {
 .message-footer,
 .progress-label,
 .select-item[data-selected],
-.table-footer,
-.table-head,
 .card-title,
 .btn {
     font-weight: 500
@@ -301,7 +297,8 @@ dialog {
 .font-weight-regular,
 .field-description,
 .field-error,
-.popover-description {
+.popover-description,
+.data-table-content .table-head {
     font-weight: 400
 }
 
@@ -354,7 +351,7 @@ dialog {
 }
 
 .font-primary {
-    font-family: var(--font-primary), sans-serif, 'Courier New', Courier, vazirmatn
+    font-family: var(--font-primary), sans-serif, 'Courier New', Courier, monospace
 }
 
 .font-secondary {
@@ -423,13 +420,13 @@ dialog {
 
 .bg-primary-color,
 .tooltip-content,
-.separator,
 .dropdown-submenu-trigger[data-popup-open],
 .dropdown-menu-separator,
 .badge-button,
 .input::file-selector-button,
 .progress-indicator,
 .switch-thumb,
+.data-table-heading,
 .btn-default {
     background-color: var(--primary)
 }
@@ -458,12 +455,12 @@ dialog {
 .combobox-item[data-highlighted],
 .combobox-separator,
 .combobox-chip,
-.calendar-month,
 .input-group,
 .input-group-addon,
 .product-card,
 .select-trigger,
-.select-content {
+.select-content,
+.table-header tr {
     background-color: var(--on-primary)
 }
 
@@ -519,7 +516,6 @@ dialog {
 
 .bg-secondary-light-color,
 .table-footer,
-.table-row:hover,
 .table-row:has([aria-expanded=true]),
 .table-row[data-state=selected],
 .btn-outline:hover,
@@ -595,6 +591,11 @@ input:focus::placeholder,
     background-color: var(--secondary-text)
 }
 
+.section-title-text-color,
+.table-head {
+    color: var(--section-title-text)
+}
+
 .bg-section-title-text-color {
     background-color: var(--section-title-text)
 }
@@ -612,7 +613,6 @@ input:focus::placeholder,
 .combobox-trigger,
 .combobox-content,
 .combobox-chips,
-.calendar-month,
 .input::placeholder,
 .input-group,
 .input-group-addon-inline-start,
@@ -636,12 +636,44 @@ input:focus::placeholder,
     border-color: var(--border)
 }
 
-.bg-border-color,
-.native-select:disabled {
-    background-color: var(--border)
+.border-color,
+.popover-content,
+.popover-trigger,
+.native-select,
+.native-select:hover:not(:disabled),
+.native-select:focus,
+.message-group,
+.message-avatar,
+.message-content,
+.message[data-align=end] .message-content,
+.combobox-trigger,
+.combobox-content,
+.combobox-chips,
+.input::placeholder,
+.input-group,
+.input-group-addon-inline-start,
+.input-group-addon-inline-end,
+.input-group-addon-block-start,
+.input-group-addon-block-end,
+.checkbox,
+.avatar,
+.avatar-badge,
+.avatar-group-count,
+.radio-item,
+.select-trigger,
+.select-content,
+.switch,
+.data-table,
+.data-table-content .table-head,
+.table-header tr,
+.table-footer,
+.table-row,
+.btn-outline {
+    color: var(--border)
 }
 
 .bg-border-color,
+.separator,
 .native-select:disabled {
     background-color: var(--border)
 }
@@ -683,6 +715,7 @@ input:focus::placeholder,
 }
 
 .bg-color,
+.dialog-content,
 .btn-outline {
     background-color: var(--background)
 }
@@ -933,7 +966,6 @@ input:focus::placeholder,
 .combobox-trigger,
 .combobox-content,
 .combobox-chips,
-.calendar-month,
 .input-group,
 .input-group-addon-inline-start,
 .input-group-addon-inline-end,
@@ -1113,13 +1145,13 @@ input:focus::placeholder,
 }
 
 .radius-all-normal,
+.dialog-content,
 .popover-content,
 .popover-trigger,
 .native-select,
 .combobox-trigger,
 .combobox-content,
 .combobox-chips,
-.calendar-month,
 .input,
 .input-group,
 .product-card,
@@ -1269,35 +1301,35 @@ input:focus::placeholder,
 }
 
 .radius-tl-full {
-    border-top-left-radius: 50%
+    border-top-left-radius: 50000px
 }
 
 .radius-tr-full {
-    border-top-right-radius: 50%
+    border-top-right-radius: 50000px
 }
 
 .radius-bl-full {
-    border-bottom-left-radius: 50%
+    border-bottom-left-radius: 50000px
 }
 
 .radius-br-full {
-    border-bottom-right-radius: 50%
+    border-bottom-right-radius: 50000px
 }
 
 .radius-ss-full {
-    border-start-start-radius: 50%
+    border-start-start-radius: 50000px
 }
 
 .radius-se-full {
-    border-start-end-radius: 50%
+    border-start-end-radius: 50000px
 }
 
 .radius-es-full {
-    border-end-start-radius: 50%
+    border-end-start-radius: 50000px
 }
 
 .radius-ee-full {
-    border-end-end-radius: 50%
+    border-end-end-radius: 50000px
 }
 
 .radius-all-full,
@@ -1307,10 +1339,10 @@ input:focus::placeholder,
 .progress-track,
 .radio-item,
 .switch-thumb {
-    border-top-left-radius: 50%;
-    border-top-right-radius: 50%;
-    border-bottom-left-radius: 50%;
-    border-bottom-right-radius: 50%
+    border-top-left-radius: 50000px;
+    border-top-right-radius: 50000px;
+    border-bottom-left-radius: 50000px;
+    border-bottom-right-radius: 50000px
 }
 
 .radius-tl-none {
@@ -1391,7 +1423,6 @@ input:focus::placeholder,
 .combobox-trigger,
 .combobox-content,
 .combobox-chips,
-.calendar-month,
 .input-group,
 .input-group-addon-inline-start,
 .input-group-addon-inline-end,
@@ -1958,10 +1989,6 @@ input:focus::placeholder,
 .combobox-item,
 .combobox-item-indicator,
 .combobox-chips,
-.calendar-month,
-.calendar-month-caption,
-.calendar-caption,
-.calendar-navigation,
 .input-group,
 .input-group-addon,
 .carousel-track,
@@ -2755,7 +2782,8 @@ input:focus::placeholder,
     width: 79%
 }
 
-.w-80 {
+.w-80,
+.dialog-content {
     width: 80%
 }
 
@@ -2932,7 +2960,6 @@ input:focus::placeholder,
 .field[data-orientation=vertical]>*,
 .field[data-orientation=responsive]>*,
 .field-label:has(>[data-slot=field]),
-.dialog-content,
 .dropdown-menu-content,
 .dropdown-menu-separator,
 .badge-page,
@@ -2941,9 +2968,6 @@ input:focus::placeholder,
 .message,
 .message-avatar img,
 .combobox-item,
-.calendar-months,
-.calendar-month,
-.calendar-month-caption,
 .input,
 .input-group,
 .input-group-addon-block-start,
@@ -2962,6 +2986,7 @@ input:focus::placeholder,
 .select-scroll-up-button,
 .select-scroll-down-button,
 .textarea,
+.data-table,
 .table-container,
 .miz-table {
     width: 100%
@@ -4907,7 +4932,8 @@ input:focus::placeholder,
     height: 78%
 }
 
-.h-80 {
+.h-80,
+.dialog-content {
     height: 80%
 }
 
@@ -5081,7 +5107,7 @@ input:focus::placeholder,
 .popover-header,
 .message-group,
 .message-content,
-.calendar-month,
+.combobox-item,
 .carousel-track-vertical,
 .card {
     flex-direction: column
@@ -5122,7 +5148,6 @@ input:focus::placeholder,
 .message-avatar,
 .combobox-clear,
 .combobox-chip-remove,
-.calendar-navigation,
 .input-group-addon,
 .input-group-button,
 .product-card,
@@ -5172,8 +5197,6 @@ input:focus::placeholder,
 
 .justify-content-space-between,
 .combobox-trigger,
-.calendar-month-caption,
-.calendar-caption,
 .select-trigger,
 .select-item,
 .data-table-heading {
@@ -5457,9 +5480,6 @@ input:focus::placeholder,
 .combobox-chips,
 .combobox-chip,
 .combobox-chip-remove,
-.calendar-month-caption,
-.calendar-caption,
-.calendar-navigation,
 .input-group,
 .input-group-addon,
 .input-group-button,
@@ -5845,8 +5865,7 @@ input:focus::placeholder,
 .p-4,
 .toast-content,
 .popover-content,
-.combobox-empty,
-.calendar-month {
+.combobox-empty {
     padding: 1rem
 }
 
@@ -7946,7 +7965,8 @@ input:focus::placeholder,
     padding-right: 1.25rem
 }
 
-.px-6 {
+.px-6,
+.dialog-content {
     padding-left: 1.5rem;
     padding-right: 1.5rem
 }
@@ -8494,7 +8514,8 @@ input:focus::placeholder,
     padding-bottom: 1.75rem
 }
 
-.py-8 {
+.py-8,
+.dialog-content {
     padding-top: 2rem;
     padding-bottom: 2rem
 }
@@ -13669,7 +13690,6 @@ input:focus::placeholder,
 .combobox-item,
 .combobox-chips,
 .combobox-chip,
-.calendar-navigation,
 .input-group-addon,
 .input-group-text {
     gap: 0.5rem
@@ -13682,8 +13702,6 @@ input:focus::placeholder,
 .gap-3,
 .toast-content,
 .message,
-.calendar-month,
-.calendar-month-caption,
 .progress-root,
 .select-item {
     gap: 0.75rem
@@ -16079,7 +16097,6 @@ input:focus::placeholder,
 
 .txt-align-center,
 .combobox-empty,
-.calendar-caption-label,
 .avatar-fallback,
 .data-table-content,
 .data-table-content .data-table-empty {
@@ -50157,7 +50174,7 @@ input:focus::placeholder,
 .data-table-content .table-head {
     border-top-width: 1px;
     border-bottom-width: 1px;
-    color: var(--secondary-text)
+    color: var(--section-title-text) !important
 }
 
 .data-table-content .data-table-number {
@@ -50618,234 +50635,6 @@ input:focus::placeholder,
     outline: none
 }
 
-.calendar-months {
-    direction: rtl;
-    color: #1f2937
-}
-
-.calendar-month {
-    min-width: 260px
-}
-
-.calendar-month-caption {
-    min-height: 40px;
-    direction: rtl
-}
-
-.calendar-caption {
-    flex: 1;
-    min-width: 0
-}
-
-.calendar-caption-label {
-    color: #111827
-}
-
-.calendar-navigation {
-    position: static;
-    flex-shrink: 0
-}
-
-.calendar-navigation button,
-.calendar-navigation .calendar-nav-button {
-    position: static;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 34px;
-    height: 34px;
-    padding: 0;
-    border: 1px solid #e5e7eb;
-    border-radius: 9px;
-    background: #fff;
-    color: #374151;
-    cursor: pointer;
-    transition: background-color .2s ease, border-color .2s ease, color .2s ease
-}
-
-.calendar-navigation button:hover {
-    background: #f3f4f6;
-    border-color: #d1d5db;
-    color: #111827
-}
-
-.calendar-navigation button:focus-visible {
-    outline: 2px solid #6366f1;
-    outline-offset: 2px
-}
-
-.calendar-navigation button:disabled {
-    opacity: .35;
-    cursor: not-allowed
-}
-
-.calendar-month-grid {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 4px;
-    table-layout: fixed
-}
-
-.calendar-weekdays {
-    width: 100%
-}
-
-.calendar-weekday {
-    height: 34px;
-    padding: 4px;
-    font-size: 12px;
-    font-weight: 600;
-    color: #6b7280;
-    text-align: center;
-    vertical-align: middle
-}
-
-.calendar-week {
-    height: 38px
-}
-
-.calendar-day {
-    width: 38px;
-    height: 38px;
-    padding: 0;
-    text-align: center;
-    vertical-align: middle
-}
-
-.calendar-day-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    margin: auto;
-    padding: 0;
-    border: none;
-    border-radius: 10px;
-    background: rgba(0, 0, 0, 0);
-    color: #374151;
-    font-family: inherit;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color .2s ease, color .2s ease, box-shadow .2s ease
-}
-
-.calendar-day-button:hover {
-    background: #f3f4f6
-}
-
-.calendar-day-button:focus-visible {
-    outline: 2px solid #6366f1;
-    outline-offset: 2px
-}
-
-.calendar-day.selected .calendar-day-button,
-.calendar-day-button[aria-selected=true] {
-    background: #4f46e5;
-    color: #fff;
-    font-weight: 700
-}
-
-.calendar-day.selected .calendar-day-button:hover,
-.calendar-day-button[aria-selected=true]:hover {
-    background: #4338ca;
-    color: #fff
-}
-
-.calendar-day.today:not(.selected) .calendar-day-button {
-    border: 1px solid #4f46e5;
-    color: #4f46e5;
-    font-weight: 700
-}
-
-.calendar-day.outside .calendar-day-button {
-    color: #c4c7ce
-}
-
-.calendar-day.disabled .calendar-day-button,
-.calendar-day-button:disabled {
-    color: #d1d5db;
-    background: rgba(0, 0, 0, 0);
-    cursor: not-allowed;
-    opacity: .5
-}
-
-.calendar-day.range_start .calendar-day-button,
-.calendar-day.range_end .calendar-day-button {
-    background: #4f46e5;
-    color: #fff
-}
-
-.calendar-day.range_middle .calendar-day-button {
-    background: #eef2ff;
-    color: #4338ca;
-    border-radius: 0
-}
-
-.calendar-day.hidden {
-    visibility: hidden
-}
-
-.calendar-year-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-    width: 100%
-}
-
-.calendar-year-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    padding: 8px;
-    border: 1px solid #e5e7eb;
-    border-radius: 9px;
-    background: #fff;
-    color: #374151;
-    font-family: inherit;
-    font-size: 13px;
-    cursor: pointer;
-    transition: all .2s ease
-}
-
-.calendar-year-button:hover {
-    background: #f3f4f6;
-    border-color: #c7d2fe
-}
-
-.calendar-year-button.selected {
-    background: #4f46e5;
-    border-color: #4f46e5;
-    color: #fff
-}
-
-@media(max-width: 360px) {
-    .calendar-month {
-        padding: 10px
-    }
-
-    .calendar-month-grid {
-        border-spacing: 2px
-    }
-
-    .calendar-day {
-        width: 34px;
-        height: 34px
-    }
-
-    .calendar-day-button {
-        width: 32px;
-        height: 32px;
-        font-size: 12px
-    }
-
-    .calendar-weekday {
-        font-size: 11px
-    }
-}
-
 .combobox-trigger {
     display: inline-flex;
     transition: background .2s, border-color .2s
@@ -51114,7 +50903,8 @@ input:focus::placeholder,
 .dialog-overlay {
     inset: 0;
     isolation: isolate;
-    z-index: 50
+    z-index: 50;
+    background: rgba(0, 0, 0, .28)
 }
 
 .dialog-content {
