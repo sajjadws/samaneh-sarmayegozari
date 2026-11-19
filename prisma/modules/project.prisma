@@ -1,31 +1,25 @@
 enum ProjectStatus {
-    FUNDRAISING
-    IN_PROGRESS
-    COMPLETED
-    DRAFT
-}
-
-enum Steps {
-    FIRST
-    SECOND
-    THIRD
-    FOURTH
+  FUNDRAISING
+  IN_PROGRESS
+  COMPLETED
+  DRAFT
 }
 
 model Project {
-    id           String @id @default(uuid())
-    title        String @db.VarChar(50)
-    description  String @db.VarChar(255)
-    durationDate String @map("duration_date")
+  id           String @id @default(uuid())
+  title        String @db.VarChar(50)
+  description  String @db.VarChar(255)
+  durationDate String @map("duration_date")
+  step         String
 
-    status        ProjectStatus @default(FUNDRAISING)
-    isPublication Boolean       @default(false)
+  status        ProjectStatus @default(FUNDRAISING)
+  isPublication Boolean       @default(false)
 
-    usrId String
-    user  User   @relation(fields: [usrId], references: [id])
+  usrId String
+  user  User   @relation(fields: [usrId], references: [id])
 
-    phases           ProjectPhase[]
-    questionProjects QuestionProject[]
+  phases           ProjectPhase[]
+  questionProjects QuestionProject[]
 
     teamProjectProjects TeamProjectProject[]
 
@@ -39,20 +33,20 @@ model Project {
 }
 
 model ProjectPhase {
-    id          String @id @default(uuid())
-    title       String @db.VarChar(50)
-    description String @db.VarChar(250)
+  id          String @id @default(uuid())
+  title       String @db.VarChar(50)
+  description String @db.VarChar(250)
 
-    startDate DateTime? @db.Date
-    endDate   DateTime? @db.Date
+  startDate DateTime? @db.Date
+  endDate   DateTime? @db.Date
 
     totalAmount      String @default("0")
     profitAmount     String @default("0")
     incomeAmount     String @default("0")
     ProjectedRevenue String @default("0")
 
-    isPublish Boolean       @default(false)
-    status    ProjectStatus @default(FUNDRAISING)
+  isPublish Boolean       @default(false)
+  status    ProjectStatus @default(FUNDRAISING)
 
     projectId String
     project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -62,78 +56,81 @@ model ProjectPhase {
 }
 
 enum FileType {
-    PDF
-    IMAGE
-    DOCUMENT
-    VIDEO
-    OTHER
+  PDF
+  IMAGE
+  DOCUMENT
+  VIDEO
+  OTHER
 }
 
 enum InvestmentStatus {
-    PENDING
-    ACTIVE
-    COMPLETED
-    CANCELLED
-    REFUNDED
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+  REFUNDED
 }
 
 model FileProject {
-    id       String   @id @default(uuid())
-    fileName String   @db.VarChar(255)
-    filePath String   @db.VarChar(500)
-    fileType FileType
+  id       String   @id @default(uuid())
+  fileName String   @db.VarChar(255)
+  filePath String   @db.VarChar(500)
+  fileType FileType
 
     projectId String?
     project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Investment {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    userId String @unique
-    user   User   @relation(fields: [userId], references: [id])
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
 
     amount       String  @default("0")
     profitAmount Decimal @default(0) @db.Decimal(18, 2)
     returnAmount Decimal @default(0) @db.Decimal(18, 2)
 
-    status                 InvestmentStatus        @default(PENDING)
-    startInvestedDate      DateTime?               @db.Date
-    InvestmentTransactions InvestmentTransaction[]
+  status                 InvestmentStatus        @default(PENDING)
+  startInvestedDate      DateTime?               @db.Date
+  InvestmentTransactions InvestmentTransaction[]
 
     projectInvestments ProjectInvestment[]
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProjectInvestment {
     id String @id @default(uuid())
 
-    investmentId String
-    investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
+  investmentId String
+  investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
 
     projectId String
     project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now())
+  createdAt DateTime @default(now())
 
     @@unique([investmentId, projectId])
 }
 
 model QuestionProject {
-    id          String @id @default(uuid())
-    title       String @db.VarChar(100)
-    description String @db.VarChar(500)
+  id          String @id @default(uuid())
+  title       String @db.VarChar(100)
+  description String @db.VarChar(500)
 
-    projectId String
-    project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TeamProject {
