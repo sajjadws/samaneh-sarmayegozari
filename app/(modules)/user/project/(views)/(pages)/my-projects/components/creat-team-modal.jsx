@@ -42,7 +42,7 @@ const CreateTeamModal = ({ initialMember = null, onSave }) => {
 		defaultValues: initialMember || initialData,
 	});
 
-	const selectedName = watch("fullName");
+	const selectedName = watch("name");
 
 	const onSubmit = async (data) => {
 		try {

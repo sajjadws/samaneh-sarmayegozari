@@ -644,92 +644,300 @@ async function getCurrentUser() {
 	return session.user.id;
 }
 
+
+// اعتبارسنجی اطلاعات اصلی پروژه
+function validateProjectData(values) {
+  const title = String(values.title ?? "").trim();
+  const description = String(values.description ?? "").trim();
+  const durationDate = String(values.durationDate ?? "").trim();
+
+  if (!title || !description || !durationDate) {
+    throw new Error("تمام اطلاعات اصلی طرح الزامی هستند.");
+  }
+
+  if (title.length > 50) {
+    throw new Error("عنوان طرح نباید بیشتر از ۵۰ کاراکتر باشد.");
+  }
+
+  if (description.length > 255) {
+    throw new Error("توضیحات طرح نباید بیشتر از ۲۵۵ کاراکتر باشد.");
+  }
+
+  const duration = Number(durationDate);
+
+  if (!Number.isInteger(duration) || duration < 1 || duration > 600) {
+    throw new Error("مدت زمان اجرا باید عددی بین ۱ تا ۶۰۰ ماه باشد.");
+  }
+
+  return {
+    title,
+    description,
+    durationDate,
+  };
+}
+
+// CREATE: ایجاد پروژه جدید
+export async function createProject(values) {
+  try {
+    const userId = await getCurrentUser();
+
+    const data = validateProjectData(values);
+
+    const project = await prismaDB.project.create({
+      data: {
+        ...data,
+
+        usrId: userId,
+
+        status: "DRAFT",
+        step: "FIRST",
+        isPublication: false,
+      },
+    });
+
+    revalidatePath("/userdashboard/projects/my-projects");
+
+    return {
+      ok: true,
+      data: project,
+      projectId: project.id,
+      message: "طرح با موفقیت ایجاد شد.",
+    };
+  } catch (error) {
+    console.error("Create Project:", error);
+
+    return {
+      ok: false,
+      message: error.message || "خطا در ایجاد طرح.",
+    };
+  }
+}
+
+// READ: دریافت تمام پروژه‌های کاربر واردشده
+export async function getAllProjects() {
+  try {
+    const userId = await getCurrentUser();
+
+    const projects = await prismaDB.project.findMany({
+      where: {
+        usrId: userId,
+      },
+
+      orderBy: {
+        updatedAt: "desc",
+      },
+
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        durationDate: true,
+        status: true,
+        isPublication: true,
+        step: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    return {
+      ok: true,
+      data: projects,
+    };
+  } catch (error) {
+    console.error("Get Projects:", error);
+
+    return {
+      ok: false,
+      message: error.message || "خطا در دریافت پروژه‌ها.",
+      data: [],
+    };
+  }
+}
+
+// READ: دریافت یک پروژه با شناسه
+export async function getProjectById(projectId) {
+  try {
+    const userId = await getCurrentUser();
+
+    const project = await prismaDB.project.findFirst({
+      where: {
+        id: projectId,
+        usrId: userId,
+      },
+    });
+
+    if (!project) {
+      throw new Error("پروژه پیدا نشد.");
+    }
+
+    return {
+      ok: true,
+      data: project,
+    };
+  } catch (error) {
+    console.error("Get Project:", error);
+
+    return {
+      ok: false,
+      message: error.message || "خطا در دریافت پروژه.",
+    };
+  }
+}
+
+// UPDATE: ویرایش اطلاعات اصلی پروژه
+export async function updateProject(projectId, values) {
+  try {
+    const userId = await getCurrentUser();
+
+    const data = validateProjectData(values);
+
+    const existingProject = await prismaDB.project.findFirst({
+      where: {
+        id: projectId,
+        usrId: userId,
+      },
+    });
+
+    if (!existingProject) {
+      throw new Error("پروژه پیدا نشد یا دسترسی به آن ندارید.");
+    }
+
+    const project = await prismaDB.project.update({
+      where: {
+        id: projectId,
+      },
+
+      data,
+    });
+
+    revalidatePath("/userdashboard/projects/my-projects");
+
+    return {
+      ok: true,
+      data: project,
+      message: "اطلاعات طرح با موفقیت ویرایش شد.",
+    };
+  } catch (error) {
+    console.error("Update Project:", error);
+
+    return {
+      ok: false,
+      message: error.message || "خطا در ویرایش طرح.",
+    };
+  }
+}
+
+// DELETE: حذف پروژه
+export async function deleteProject(projectId) {
+  try {
+    const userId = await getCurrentUser();
+
+    const project = await prismaDB.project.findFirst({
+      where: {
+        id: projectId,
+        usrId: userId,
+      },
+
+      select: {
+        id: true,
+      },
+    });
+
+    if (!project) {
+      throw new Error("پروژه پیدا نشد یا دسترسی به آن ندارید.");
+    }
+
+    await prismaDB.project.delete({
+      where: {
+        id: projectId,
+      },
+    });
+
+    revalidatePath("/userdashboard/projects/my-projects");
+    revalidatePath("/");
+
+    return {
+      ok: true,
+      message: "طرح با موفقیت حذف شد.",
+    };
+  } catch (error) {
+    console.error("Delete Project:", error);
+
+    return {
+      ok: false,
+      message:
+        error.code === "P2003"
+          ? "این پروژه دارای تراکنش وابسته است و امکان حذف آن وجود ندارد."
+          : error.message || "خطا در حذف طرح.",
+    };
+  }
+}
+
+
 // ایجاد یا ذخیره اطلاعات هر مرحله
 const STEP_MAP = {
-    BASIC_INFO: "FIRST",
-    TECHNICAL_DETAILS: "SECOND",
-    EXECUTION_TEAM: "THIRD",
-    DOCUMENTS: "FOURTH",
+  BASIC_INFO: "FIRST",
+  TECHNICAL_DETAILS: "SECOND",
+  EXECUTION_TEAM: "THIRD",
+  DOCUMENTS: "FOURTH",
 };
 
-export async function saveProjectStep({ projectId, completedStep, values }) {
-    try {
-        const userId = await getCurrentUser();
+export async function saveProjectStep({
+  projectId,
+  completedStep,
+  values = {},
+}) {
+  try {
+    const userId = await getCurrentUser();
 
-        const step = STEP_MAP[completedStep];
-
-        if (!step) {
-            throw new Error("مرحله نامعتبر است.");
-        }
-
-        let project;
-
-        // مرحله اول: ایجاد پروژه
-        if (!projectId) {
-            if (completedStep !== "BASIC_INFO") {
-                throw new Error("ابتدا اطلاعات اصلی پروژه را ثبت کنید.");
-            }
-
-            const title = values.title?.trim();
-            const description = values.description?.trim();
-            const durationDate = String(values.durationDate ?? "").trim();
-
-            if (!title || !description || !durationDate) {
-                throw new Error("تمام اطلاعات اصلی پروژه الزامی هستند.");
-            }
-
-            project = await prismaDB.project.create({
-                data: {
-                    title,
-                    description,
-                    durationDate,
-                    step: "FIRST",
-                    status: "FUNDRAISING",
-                    isPublication: false,
-                    usrId: userId,
-                },
-            });
-        } else {
-            // مراحل بعدی: به‌روزرسانی پروژه
-
-            const existingProject = await prismaDB.project.findFirst({
-                where: {
-                    id: projectId,
-                    usrId: userId,
-                },
-            });
-
-            if (!existingProject) {
-                throw new Error("پروژه موردنظر پیدا نشد.");
-            }
-
-            project = await prismaDB.project.update({
-                where: {
-                    id: projectId,
-                },
-                data: {
-                    step,
-                },
-            });
-        }
-
-        revalidatePath("/userdashboard/projects/my-projects");
-
-        return {
-            ok: true,
-            projectId: project.id,
-            step: project.step,
-            project,
-            message: "اطلاعات مرحله با موفقیت ذخیره شد.",
-        };
-    } catch (error) {
-        console.error("Save Project Step:", error);
-
-        return {
-            ok: false,
-            message: error.message || "خطا در ذخیره اطلاعات.",
-        };
+    if (!projectId) {
+      throw new Error("شناسه پروژه معتبر نیست.");
     }
+
+    const step = STEP_MAP[completedStep];
+
+    if (!step) {
+      throw new Error("مرحله نامعتبر است.");
+    }
+
+    const existingProject = await prismaDB.project.findFirst({
+      where: {
+        id: projectId,
+        usrId: userId,
+      },
+    });
+
+    if (!existingProject) {
+      throw new Error("پروژه موردنظر پیدا نشد.");
+    }
+
+    const project = await prismaDB.project.update({
+      where: {
+        id: projectId,
+      },
+      data: {
+        step,
+      },
+    });
+
+    revalidatePath("/userdashboard/projects/my-projects");
+
+    return {
+      ok: true,
+      projectId: project.id,
+      step: project.step,
+      data: project,
+      message: "مرحله پروژه با موفقیت ذخیره شد.",
+    };
+  } catch (error) {
+    console.error("Save Project Step:", error);
+
+    return {
+      ok: false,
+      message: error.message || "خطا در ذخیره مرحله پروژه.",
+    };
+  }
 }
 
 export async function createProjectPhase(projectId, values) {
@@ -964,75 +1172,89 @@ export async function deleteProjectTeam(id) {
 }
 
 export async function getIncompleteProjects() {
-    try {
-        const userId = await getCurrentUser();
+  try {
+    const userId = await getCurrentUser();
 
-        const projects = await prismaDB.project.findMany({
-            where: {
-                usrId: userId,
-                step: {
-                    not: "COMPLETED",
-                },
-            },
-            orderBy: {
-                updatedAt: "desc",
-            },
-            select: {
-                id: true,
-                title: true,
-                description: true,
-                durationDate: true,
-                step: true,
-                status: true,
-                updatedAt: true,
-            },
-        });
+    const projects = await prismaDB.project.findMany({
+      where: {
+        usrId: userId,
+        status: "DRAFT",
+      },
+      orderBy: {
+        updatedAt: "desc",
+      },
+      select: {
+        id: true,
+        title: true,
+        description: true,
+        durationDate: true,
+        step: true,
+        status: true,
+        updatedAt: true,
+      },
+    });
 
-        return {
-            ok: true,
-            data: projects,
-        };
-    } catch (error) {
-        console.error("getIncompleteProjects error:", error);
+    return {
+      ok: true,
+      data: projects,
+    };
+  } catch (error) {
+    console.error("Get Incomplete Projects:", error);
 
-        return {
-            ok: false,
-            message: error.message,
-            data: [],
-        };
-    }
+    return {
+      ok: false,
+      message: error.message,
+      data: [],
+    };
+  }
 }
 
 export async function getProjectWizard(projectId) {
-	try {
-		const userId = await getCurrentUser();
+    try {
+        const userId = await getCurrentUser();
 
-		const project = await prismaDB.project.findFirst({
-			where: {
-				id: projectId,
-				usrId: userId,
-			},
-			include: {
-				phases: true,
-				teamMembers: true,
-				fileProjects: true,
-			},
-		});
+        const project = await prismaDB.project.findFirst({
+            where: {
+                id: projectId,
+                usrId: userId,
+            },
+            include: {
+                phases: true,
 
-		if (!project) {
-			throw new Error("پروژه پیدا نشد.");
-		}
+                // رابطه صحیح اعضای تیم
+                teamProjectProjects: {
+                    include: {
+                        teamproject: {
+                            include: {
+                                user: true,
+                            },
+                        },
+                    },
+                },
 
-		return {
-			ok: true,
-			data: project,
-		};
-	} catch (error) {
-		return {
-			ok: false,
-			message: error.message,
-		};
-	}
+                fileProjects: true,
+            },
+        });
+
+        if (!project) {
+            return {
+                ok: false,
+                message: "پروژه موردنظر پیدا نشد.",
+            };
+        }
+
+        return {
+            ok: true,
+            data: project,
+        };
+    } catch (error) {
+        console.error("getProjectWizard error:", error);
+
+        return {
+            ok: false,
+            message: error.message || "خطا در دریافت اطلاعات پروژه.",
+        };
+    }
 }
 
 export async function completeProject(projectId) {

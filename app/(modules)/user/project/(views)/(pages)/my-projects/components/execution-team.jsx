@@ -120,24 +120,20 @@ export default function ExecutionTeam({
 
   const columns = [
     {
-      accessorKey: "fullName",
+      accessorKey: "name",
       header: "نام و نام خانوادگی",
     },
     {
+      accessorKey: "position",
+      header: "سمت در تیم",
+    },
+    {
+      accessorKey: "expertise",
+      header: "تخصص",
+    },
+    {
       accessorKey: "description",
-      header: "توضیحات",
-    },
-    {
-      accessorKey: "startDate",
-      header: "تاریخ شروع",
-    },
-    {
-      accessorKey: "endDate",
-      header: "تاریخ پایان",
-    },
-    {
-      accessorKey: "targetAmount",
-      header: "مبلغ هدف",
+      header: "شرح مسئولیت",
     },
     {
       id: "actions",

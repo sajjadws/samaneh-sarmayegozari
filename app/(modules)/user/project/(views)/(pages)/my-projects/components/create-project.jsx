@@ -12,8 +12,14 @@ import ExecutionTeam from "./execution-team";
 import ProjectDocumentsMedia from "./project-documents-media";
 import ProjectSuccess from "./project-success";
 
-import { saveProjectStep, getProjectWizard, getIncompleteProjects, completeProject } from "../actions/crud";
-
+import {
+	createProject,
+	updateProject,
+	saveProjectStep,
+	getProjectWizard,
+	getIncompleteProjects,
+	completeProject,
+} from "../actions/crud";
 import { toast } from "@/miz/components/react/toast/page";
 
 const initialFormData = {
@@ -72,38 +78,115 @@ export default function CreateProject() {
 		setLoading(true);
 
 		try {
-			const completedStep = stepNames[currentStep];
+			let res;
 
-			const res = await saveProjectStep({
-				projectId,
-				completedStep,
-				values,
-			});
-
-			if (!res?.ok) {
-				throw new Error(res?.message);
-			}
-
-			// نگهداری شناسه پروژه ایجادشده
-			if (res.projectId) {
-				setProjectId(res.projectId);
-			}
-
-			// به‌روزرسانی State فرم
 			if (currentStep === 0) {
+				// اگر پروژه قبلی انتخاب شده باشد، اطلاعات آن را ویرایش کن
+				if (projectId) {
+					res = await updateProject(projectId, values);
+				} else {
+					// بررسی وجود پروژه پیش‌نویس
+					const draftRes = await getIncompleteProjects();
+
+					if (!draftRes?.ok) {
+						throw new Error(draftRes?.message || "دریافت پروژه‌های پیش‌نویس ناموفق بود.");
+					}
+
+					const drafts = draftRes.data || [];
+
+					if (drafts.length > 0) {
+						// ادامه اولین پروژه پیش‌نویس
+						const draft = drafts[0];
+
+						const wizardRes = await getProjectWizard(draft.id);
+
+						if (!wizardRes?.ok) {
+							throw new Error(wizardRes?.message || "بازیابی پروژه ناموفق بود.");
+						}
+
+						const project = wizardRes.data;
+
+						setProjectId(project.id);
+
+						// به‌روزرسانی اطلاعات مرحله اول پروژه قبلی
+						res = await updateProject(project.id, values);
+
+						if (res?.ok) {
+							// اطلاعات مراحل بعدی پروژه را هم در فرم نگه می‌داریم
+							setFormData({
+								...initialFormData,
+								...values,
+								phases: (project.phases || []).map((phase) => ({
+									...phase,
+									targetAmount: phase.totalAmount,
+									expectedRevenue: phase.ProjectedRevenue,
+									expectedProfit: phase.profitAmount,
+								})),
+								teamMembers: [],
+								image: null,
+								images: [],
+								documents: [],
+							});
+
+							// انتقال به مرحله بعد از آخرین مرحله ذخیره‌شده
+							const stepMap = {
+								FIRST: 1,
+								SECOND: 2,
+								THIRD: 3,
+								FOURTH: 3,
+							};
+
+							setCurrentStep(stepMap[project.step] ?? 1);
+
+							toast.add({
+								title: "پروژه پیش‌نویس بازیابی شد.",
+							});
+
+							return;
+						}
+					} else {
+						// در صورت نبود پیش‌نویس، پروژه جدید ایجاد شود
+						res = await createProject(values);
+					}
+				}
+
+				if (!res?.ok) {
+					throw new Error(res?.message || "ذخیره اطلاعات پروژه ناموفق بود.");
+				}
+
+				if (res.projectId || res.data?.id) {
+					setProjectId(res.projectId || res.data.id);
+				}
+
+				setFormData((prev) => ({
+					...prev,
+					...values,
+				}));
+			} else {
+				res = await saveProjectStep({
+					projectId,
+					completedStep: stepNames[currentStep],
+					values,
+				});
+
+				if (!res?.ok) {
+					throw new Error(res?.message || "ذخیره مرحله ناموفق بود.");
+				}
+
 				setFormData((prev) => ({
 					...prev,
 					...values,
 				}));
 			}
 
-			// رفتن به مرحله بعد فقط پس از ذخیره موفق
 			setCurrentStep((prev) => prev + 1);
 
 			toast.add({
 				title: "اطلاعات مرحله با موفقیت ذخیره شد.",
 			});
 		} catch (error) {
+			console.error("Next Project Step:", error);
+
 			toast.add({
 				title: error.message || "خطا در ذخیره اطلاعات",
 			});
@@ -179,73 +262,22 @@ export default function CreateProject() {
 	// بستن و بازنشانی فرم
 	const onClose = () => {
 		setOpen(false);
+		setProjectId(null);
+		setDraftProjects([]);
 		setCurrentStep(0);
 		setShowSuccess(false);
 		setSubmittedProject(null);
 		setFormData(initialFormData);
 	};
 
-	const resumeProject = async (id) => {
-		setLoading(true);
-
-		try {
-			const res = await getProjectWizard(id);
-
-			if (!res.ok) {
-				throw new Error(res.message);
-			}
-
-			const project = res.data;
-
-			setProjectId(project.id);
-
-			setFormData({
-				title: project.title,
-				description: project.description,
-				durationDate: project.durationDate,
-
-				phases: project.phases.map((phase) => ({
-					...phase,
-					targetAmount: phase.totalAmount,
-					expectedRevenue: phase.ProjectedRevenue,
-					expectedProfit: phase.profitAmount,
-				})),
-
-				teamMembers: project.teamMembers,
-
-				image: null,
-				images: [],
-				documents: [],
-			});
-
-			const stepMap = {
-				BASIC_INFO: 1,
-				TECHNICAL_DETAILS: 2,
-				EXECUTION_TEAM: 3,
-				DOCUMENTS: 3,
-			};
-
-			setCurrentStep(stepMap[project.step] ?? 0);
-
-			setShowSuccess(false);
-			setOpen(true);
-		} catch (error) {
-			toast.add({
-				title: error.message || "بازیابی پروژه ناموفق بود.",
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const handleOpen = async () => {
+	
+	const handleOpen = () => {
+		setProjectId(null);
+		setCurrentStep(0);
+		setFormData(initialFormData);
+		setShowSuccess(false);
+		setDraftProjects([]);
 		setOpen(true);
-
-		const res = await getIncompleteProjects();
-
-		if (res.ok) {
-			setDraftProjects(res.data);
-		}
 	};
 
 	return (
@@ -259,25 +291,7 @@ export default function CreateProject() {
 					else setOpen(true);
 				}}
 			>
-				{draftProjects.length > 0 && !projectId && (
-					<div className="mb-6">
-						<h3 className="font-bold mb-3">ادامه ثبت طرح‌های قبلی</h3>
-
-						{draftProjects.map((project) => (
-							<div key={project.id} className="border rounded-md p-3 mb-2 flex justify-between">
-								<div>
-									<p>{project.title}</p>
-
-									<small>آخرین مرحله: {project.step}</small>
-								</div>
-
-								<Button onClick={() => resumeProject(project.id)} disabled={loading}>
-									ادامه ثبت
-								</Button>
-							</div>
-						))}
-					</div>
-				)}
+			
 				<div className="w-100 overflow-y-hidden py-6 px-12">
 					{/* صفحه موفقیت */}
 					{showSuccess ? (

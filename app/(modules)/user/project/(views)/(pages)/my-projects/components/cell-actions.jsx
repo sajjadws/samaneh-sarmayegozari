@@ -1,33 +1,66 @@
+
+"use client";
+
 import { useState } from "react";
-import { Button } from "@/miz/components/react/button/page";
-import { toast } from "@/miz/components/react/toast/page";
-// import { deleteProject } from "../actions/crud";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
+import { Button } from "@/miz/components/react/button/page";
+import { toast } from "@/miz/components/react/toast/page";
+
+import { deleteProject } from "../actions/crud";
+
 export default function CellActions({ cellData }) {
-  const [open, setOpen] = useState(false);
-  const [dOpen, setDOpen] = useState(false);
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const handleDelete = async () => {
-    const res = await deleteProject(cellData?.id);
-    if (res?.ok) {
+    if (loading) return;
+
+    const confirmed = window.confirm(
+      "آیا از حذف این طرح مطمئن هستید؟"
+    );
+
+    if (!confirmed) return;
+
+    setLoading(true);
+
+    try {
+      const res = await deleteProject(cellData.id);
+
+      if (!res?.ok) {
+        throw new Error(res?.message || "حذف پروژه ناموفق بود.");
+      }
+
       toast.add({
-        title: res?.message,
+        title: res.message,
       });
-      setDOpen(false);
+
+      router.refresh();
+    } catch (error) {
+      toast.add({
+        title: error.message || "خطا در حذف پروژه",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <>
-      <div className="flex items-center justify-center gap-2">
-        <Link href={"routes.panel.project(cellData?.id)"}>
-          <Button variant="success">
-            مشاهده جزئیات
-          </Button>
-        </Link>
-      </div>
-    
-    </>
+    <div className="flex items-center justify-center gap-2">
+      <Link href={`/userdashboard/projects/${cellData.id}`}>
+        <Button variant="success">
+          مشاهده جزئیات
+        </Button>
+      </Link>
+
+      <Button
+        variant="destructive"
+        onClick={handleDelete}
+        disabled={loading}
+      >
+        {loading ? "در حال حذف..." : "حذف"}
+      </Button>
+    </div>
   );
 }
