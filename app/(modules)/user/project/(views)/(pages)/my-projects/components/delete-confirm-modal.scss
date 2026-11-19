@@ -1,14 +1,6 @@
 
 .delete-confirm-modal {
-    width: 100%;
     min-width: 320px;
-    padding: 40px 30px;
-    background: #ffffff;
-    border-radius: 36px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
 }
 
 /* آیکون حذف */
@@ -36,31 +28,17 @@
 /* عنوان */
 
 .delete-confirm-title {
-    font-size: 34px;
-    font-weight: 800;
-    color: #123e37;
     margin-bottom: 24px;
 }
 
 /* توضیحات */
 
 .delete-confirm-description {
-    font-size: 22px;
-    line-height: 2;
-    font-weight: 600;
-    color: #7b8985;
     margin-bottom: 65px;
 }
 
 /* دکمه‌ها */
 
-.delete-confirm-actions {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-}
 
 /* دکمه انصراف */
 
@@ -68,33 +46,18 @@
 .delete-submit-btn {
     min-width: 180px;
     min-height: 90px;
-    padding: 15px 35px;
-    border: none;
-    border-radius: 14px;
-    font-size: 28px;
-    font-weight: 700;
-    cursor: pointer;
     transition: all 0.2s ease;
 }
 
-.delete-cancel-btn {
-    background: #21865e;
-    color: #ffffff;
-}
-
 .delete-cancel-btn:hover {
-    background: #176d4b;
+    background: var(--success-light);
 }
 
 /* دکمه حذف */
 
-.delete-submit-btn {
-    background: #df291e;
-    color: #ffffff;
-}
 
 .delete-submit-btn:hover {
-    background: #bd2118;
+    background: var(--danger-light);
 }
 
 /* حالت غیرفعال */

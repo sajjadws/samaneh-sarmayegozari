@@ -41,6 +41,7 @@ model User {
     wallet        Wallet?
     projects      Project[]
     investment    Investment?
+    teamProjects  TeamProject[]
     notifications Notification[]
     tickets       Ticket[]
 }

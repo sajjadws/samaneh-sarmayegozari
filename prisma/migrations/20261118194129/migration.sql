@@ -1,33 +1,3 @@
-/*
-  Warnings:
-
-  - The primary key for the `user` table will be changed. If it partially fails, the table could be left without primary key constraint.
-  - A unique constraint covering the columns `[email]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[phoneNumber]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - A unique constraint covering the columns `[username]` on the table `User` will be added. If there are existing duplicate values, this will fail.
-  - Added the required column `phoneNumber` to the `User` table without a default value. This is not possible if the table is not empty.
-  - Added the required column `updatedAt` to the `User` table without a default value. This is not possible if the table is not empty.
-
-*/
--- AlterTable
-ALTER TABLE `user` DROP PRIMARY KEY,
-    ADD COLUMN `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    ADD COLUMN `displayUsername` VARCHAR(191) NULL,
-    ADD COLUMN `email` VARCHAR(191) NULL,
-    ADD COLUMN `emailVerified` BOOLEAN NOT NULL DEFAULT false,
-    ADD COLUMN `image` VARCHAR(191) NULL,
-    ADD COLUMN `name` VARCHAR(191) NULL,
-    ADD COLUMN `password` VARCHAR(191) NULL,
-    ADD COLUMN `phoneNumber` VARCHAR(191) NOT NULL,
-    ADD COLUMN `phoneNumberVerified` BOOLEAN NOT NULL DEFAULT false,
-    ADD COLUMN `roleId` VARCHAR(191) NULL,
-    ADD COLUMN `status` ENUM('ACTIVE', 'NOT_ACTIVE') NOT NULL DEFAULT 'ACTIVE',
-    ADD COLUMN `updatedAt` DATETIME(3) NOT NULL,
-    ADD COLUMN `userUtilitiesId` VARCHAR(191) NULL,
-    ADD COLUMN `username` VARCHAR(100) NULL,
-    MODIFY `id` VARCHAR(191) NOT NULL,
-    ADD PRIMARY KEY (`id`);
-
 -- CreateTable
 CREATE TABLE `session` (
     `id` VARCHAR(191) NOT NULL,
@@ -144,6 +114,30 @@ CREATE TABLE `UserUtilities` (
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
+CREATE TABLE `User` (
+    `id` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NULL,
+    `email` VARCHAR(191) NULL,
+    `emailVerified` BOOLEAN NOT NULL DEFAULT false,
+    `image` VARCHAR(191) NULL,
+    `phoneNumber` VARCHAR(191) NOT NULL,
+    `phoneNumberVerified` BOOLEAN NOT NULL DEFAULT false,
+    `userUtilitiesId` VARCHAR(191) NULL,
+    `password` VARCHAR(191) NULL,
+    `username` VARCHAR(191) NULL,
+    `status` ENUM('ACTIVE', 'NOT_ACTIVE') NOT NULL DEFAULT 'ACTIVE',
+    `roleId` VARCHAR(191) NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+    `displayUsername` VARCHAR(191) NULL,
+
+    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_phoneNumber_key`(`phoneNumber`),
+    UNIQUE INDEX `User_username_key`(`username`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
 CREATE TABLE `Wallet` (
     `id` VARCHAR(191) NOT NULL,
     `balance` VARCHAR(191) NOT NULL DEFAULT '0',
@@ -210,6 +204,7 @@ CREATE TABLE `Project` (
     `status` ENUM('FUNDRAISING', 'IN_PROGRESS', 'COMPLETED') NOT NULL DEFAULT 'FUNDRAISING',
     `isPublication` BOOLEAN NOT NULL DEFAULT false,
     `usrId` VARCHAR(191) NOT NULL,
+    `step` ENUM('FIRST', 'SECOND', 'THIRD', 'FOURTH') NOT NULL DEFAULT 'FIRST',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -241,7 +236,7 @@ CREATE TABLE `FileProject` (
     `fileName` VARCHAR(255) NOT NULL,
     `filePath` VARCHAR(500) NOT NULL,
     `fileType` ENUM('PDF', 'IMAGE', 'DOCUMENT', 'VIDEO', 'OTHER') NOT NULL,
-    `projectPhaseId` VARCHAR(191) NULL,
+    `projectId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
@@ -252,7 +247,7 @@ CREATE TABLE `FileProject` (
 CREATE TABLE `Investment` (
     `id` VARCHAR(191) NOT NULL,
     `userId` VARCHAR(191) NOT NULL,
-    `amount` DECIMAL(18, 2) NOT NULL,
+    `amount` VARCHAR(191) NOT NULL DEFAULT '0',
     `profitAmount` DECIMAL(18, 2) NOT NULL DEFAULT 0,
     `returnAmount` DECIMAL(18, 2) NOT NULL DEFAULT 0,
     `status` ENUM('PENDING', 'ACTIVE', 'COMPLETED', 'CANCELLED', 'REFUNDED') NOT NULL DEFAULT 'PENDING',
@@ -290,13 +285,23 @@ CREATE TABLE `QuestionProject` (
 -- CreateTable
 CREATE TABLE `TeamProject` (
     `id` VARCHAR(191) NOT NULL,
-    `fullName` VARCHAR(100) NOT NULL,
-    `semat` VARCHAR(100) NOT NULL,
+    `position` VARCHAR(100) NOT NULL,
     `expertise` VARCHAR(255) NOT NULL,
-    `projectPhaseId` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `TeamProjectProject` (
+    `id` VARCHAR(191) NOT NULL,
+    `teamProjectId` VARCHAR(191) NOT NULL,
+    `projectId` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+
+    UNIQUE INDEX `TeamProjectProject_teamProjectId_projectId_key`(`teamProjectId`, `projectId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
@@ -325,15 +330,6 @@ CREATE TABLE `Ticket` (
 
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_email_key` ON `User`(`email`);
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_phoneNumber_key` ON `User`(`phoneNumber`);
-
--- CreateIndex
-CREATE UNIQUE INDEX `User_username_key` ON `User`(`username`);
 
 -- AddForeignKey
 ALTER TABLE `session` ADD CONSTRAINT `session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -375,7 +371,7 @@ ALTER TABLE `Project` ADD CONSTRAINT `Project_usrId_fkey` FOREIGN KEY (`usrId`) 
 ALTER TABLE `ProjectPhase` ADD CONSTRAINT `ProjectPhase_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `FileProject` ADD CONSTRAINT `FileProject_projectPhaseId_fkey` FOREIGN KEY (`projectPhaseId`) REFERENCES `ProjectPhase`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `FileProject` ADD CONSTRAINT `FileProject_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Investment` ADD CONSTRAINT `Investment_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -390,7 +386,13 @@ ALTER TABLE `ProjectPhaseInvestment` ADD CONSTRAINT `ProjectPhaseInvestment_proj
 ALTER TABLE `QuestionProject` ADD CONSTRAINT `QuestionProject_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE `TeamProject` ADD CONSTRAINT `TeamProject_projectPhaseId_fkey` FOREIGN KEY (`projectPhaseId`) REFERENCES `ProjectPhase`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `TeamProject` ADD CONSTRAINT `TeamProject_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TeamProjectProject` ADD CONSTRAINT `TeamProjectProject_teamProjectId_fkey` FOREIGN KEY (`teamProjectId`) REFERENCES `TeamProject`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `TeamProjectProject` ADD CONSTRAINT `TeamProjectProject_projectId_fkey` FOREIGN KEY (`projectId`) REFERENCES `Project`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Notification` ADD CONSTRAINT `Notification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;

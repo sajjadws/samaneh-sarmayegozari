@@ -226,16 +226,9 @@ export default function CreateForm({
   } = form;
 
   // ثبت اطلاعات مرحله اول در State اصلی
-  const onSubmit = (values) => {
-    console.log("اطلاعات مرحله اول:", values);
-
-    updateField("title", values.title);
-    updateField("description", values.description);
-    updateField("durationDate", values.durationDate);
-
-    // رفتن به مرحله بعد
-    nextStep();
-  };
+ const onSubmit = async (values) => {
+  await nextStep(values);
+};
 
   return (
     <div className="px-8 bg-card-color radius-all-normal px-6 py-6">

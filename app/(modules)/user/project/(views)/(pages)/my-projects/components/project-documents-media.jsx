@@ -142,7 +142,7 @@ export default function ProjectDocumentsMedia({
   };
 
   return (
-    <div className="documents-page w-80 overflow-y-hidden" >
+    <div className="documents-page w-100 overflow-y-hidden px-7 py-7 radius-all-small">
       <div className="overflow-y-scroll  h-100 ">
         {/* عنوان */}
       <div className="documents-title">

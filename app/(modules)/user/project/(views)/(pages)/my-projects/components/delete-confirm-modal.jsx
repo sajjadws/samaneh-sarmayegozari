@@ -22,7 +22,7 @@ export default function DeleteConfirmModal({
             onOpenChange={onOpenChange}
             title={title}
         >
-            <div className="delete-confirm-modal" dir="rtl">
+            <div className="delete-confirm-modal w-100 bg-card-color radius-all-large d-flex flex-column justify-content-center align-items-center txt-align-center px-12 py-8" dir="rtl">
 
                 <div className="delete-confirm-icon">
                     <svg
@@ -44,19 +44,19 @@ export default function DeleteConfirmModal({
                     </svg>
                 </div>
 
-                <h2 className="delete-confirm-title">
+                <h2 className="delete-confirm-title font-weight-bold title-text-color txt-size-title">
                     {title}
                 </h2>
 
-                <p className="delete-confirm-description">
+                <p className="delete-confirm-description txt-size-normal lh-8 font-weight-semi-bold secondary-text-color">
                     {description}
                 </p>
 
-                <div className="delete-confirm-actions">
+                <div className="delete-confirm-actions w-100 d-flex align-items-center justify-content-space-between gap-7">
 
                     <button
                         type="button"
-                        className="delete-cancel-btn"
+                        className="delete-cancel-btn px-4 py-10 border-none radius-all-small txt-size-normal font-weight-bold cursor-pointer bg-success-regular-color button-text-color"
                         onClick={() => onOpenChange(false)}
                         disabled={loading}
                     >
@@ -65,7 +65,7 @@ export default function DeleteConfirmModal({
 
                     <button
                         type="button"
-                        className="delete-submit-btn"
+                        className="delete-submit-btn  px-4 py-10 border-none radius-all-small txt-size-normal font-weight-bold cursor-pointer bg-danger-regular-color button-text-color"
                         onClick={handleDelete}
                         disabled={loading}
                     >

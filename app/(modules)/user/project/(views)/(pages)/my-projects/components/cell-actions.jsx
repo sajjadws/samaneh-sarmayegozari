@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/miz/components/react/button/page";
 import { toast } from "@/miz/components/react/toast/page";
-import { deleteProject } from "../actions/crud";
+// import { deleteProject } from "../actions/crud";
 import Link from "next/link";
 
 export default function CellActions({ cellData }) {
