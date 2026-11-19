@@ -1,284 +1,348 @@
-
 "use client";
 
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { createColumnHelper } from "@tanstack/react-table";
-import { IconEdit, IconTrash } from "@tabler/icons-react";
-
-import CreatePhaseModal from "./creat-phase-modal";
-import CreateFormPhase from "./creat-form-phase";
-import DeleteConfirmModal from "./delete-confirm-modal";
-
+import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { DataTable } from "@/miz/components/react/data-table/data-table";
-import { Modal } from "@/miz/components/react/modal/page";
-
-import { Separator } from "@/miz/themes/react/components/separator/page";
 import { Button } from "@/miz/themes/react/components/button/page";
+import { Separator } from "@/miz/themes/react/components/separator/page";
+import DeleteConfirmModal from "./delete-confirm-modal";
+import CreateFormPhase from "./creat-form-phase";
+import { Modal } from "@/miz/themes/react/components/modal/page";
+import CreatePhaseModal from "./creat-phase-modal";
+import { updatePhase, getProjectPhases, deletePhase } from "../actions/crud";
+import { toast } from "@/miz/components/react/toast/page";
+import * as jalaali from "jalaali-js";
 
-export default function TechnicalDetailsProject({
-    formData,
-    updateField,
-    currentStep,
-    nextStep,
-    previousStep,
-}) {
+const columnHelper = createColumnHelper();
 
-    // اطلاعات فازها
-    const phases = formData?.phases ?? [];
+export default function TechnicalDetailsProject({ projectId, nextStep, previousStep, initialData }) {
+	const [phases, setPhases] = useState([]);
+	const [open, setOpen] = useState(false);
 
-    // وضعیت مودال ویرایش
-    const [editOpen, setEditOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
+	const [deleteLoading, setDeleteLoading] = useState(false);
 
-    // وضعیت مودال حذف
-    const [deleteOpen, setDeleteOpen] = useState(false);
+	const [deleteOpen, setDeleteOpen] = useState(false);
+	const [selectedPhase, setSelectedPhase] = useState(null);
 
-    // فاز انتخاب شده
-    const [selectedPhase, setSelectedPhase] = useState(null);
+	// دریافت فازها از دیتابیس
+	const fetchPhases = useCallback(async () => {
+		if (!projectId) return;
 
-    // وضعیت حذف
-    const [loading, setLoading] = useState(false);
+		setLoading(true);
 
+		try {
+			const result = await getProjectPhases(projectId);
 
-    // افزودن فاز جدید
-    const addPhase = (phase) => {
-        const newPhase = {
-            ...phase,
-            id: crypto.randomUUID(),
+			if (!result?.ok) {
+				throw new Error(result?.message || "دریافت فازها ناموفق بود.");
+			}
+
+			setPhases(result.data || []);
+		} catch (error) {
+			console.error("Fetch phases:", error);
+
+			toast.add({
+				title: error.message || "خطا در دریافت فازها",
+			});
+		} finally {
+			setLoading(false);
+		}
+	}, [projectId]);
+
+	useEffect(() => {
+		fetchPhases();
+	}, [fetchPhases]);
+
+	// باز کردن مودال حذف
+	const handleDeleteClick = (phase) => {
+		setSelectedPhase(phase);
+		setDeleteOpen(true);
+	};
+
+	const handleEditClick = (phase) => {
+		setSelectedPhase(phase);
+		setOpen(true);
+	};
+
+	// حذف فاز
+	const handleDelete = async () => {
+		if (!selectedPhase || deleteLoading) return;
+
+		setDeleteLoading(true);
+
+		try {
+			const result = await deletePhase(projectId, selectedPhase.id);
+
+			if (!result?.ok) {
+				throw new Error(result?.message || "حذف فاز ناموفق بود.");
+			}
+
+			toast.add({
+				title: result.message,
+			});
+
+			setDeleteOpen(false);
+			setSelectedPhase(null);
+
+			await fetchPhases();
+		} catch (error) {
+			toast.add({
+				title: error.message || "خطا در حذف فاز",
+			});
+		} finally {
+			setDeleteLoading(false);
+		}
+	};
+
+	// نمایش تاریخ
+	const formatDate = (value) => {
+		if (!value) return "-";
+
+		return new Date(value).toLocaleDateString("fa-IR");
+	};
+
+	function convertToJalaliDate(value) {
+		if (!value) return "";
+
+		let year;
+		let month;
+		let day;
+
+		if (value instanceof Date) {
+			year = value.getUTCFullYear();
+			month = value.getUTCMonth() + 1;
+			day = value.getUTCDate();
+		} else {
+			const date = String(value).split("T")[0];
+			const parts = date.split("-");
+
+			if (parts.length !== 3) return "";
+
+			[year, month, day] = parts.map(Number);
+		}
+
+		const result = jalaali.toJalaali(year, month, day);
+
+		return `${result.jy}/${result.jm}/${result.jd}`;
+	}
+
+	function normalizeJalaliDate(value) {
+		if (!value) return "";
+
+		const date = String(value).trim();
+
+		// تبدیل اعداد فارسی و عربی به انگلیسی
+		const normalized = date
+			.replace(/[۰-۹]/g, (digit) => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit))
+			.replace(/[٠-٩]/g, (digit) => "٠١٢٣٤٥٦٧٨٩".indexOf(digit))
+			.replace(/[-.]/g, "/");
+
+		const parts = normalized.split("/");
+
+		if (parts.length !== 3) return normalized;
+
+		const [year, month, day] = parts;
+
+		return `${year}/${month.padStart(2, "0")}/${day.padStart(2, "0")}`;
+	}
+
+	const handleEditSave = async (values) => {
+    try {
+        if (!selectedPhase?.id) {
+            throw new Error("فازی برای ویرایش انتخاب نشده است.");
+        }
+
+        const formattedValues = {
+            ...values,
+            startDate: normalizeJalaliDate(values.startDate),
+            endDate: normalizeJalaliDate(values.endDate),
         };
 
-        updateField("phases", (prevPhases) => [
-            ...(prevPhases ?? []),
-            newPhase,
-        ]);
-    };
+        console.log("Original values:", values);
+        console.log("Formatted values:", formattedValues);
 
-
-    // باز کردن فرم ویرایش
-    const handleEdit = (phase) => {
-        setSelectedPhase(phase);
-        setEditOpen(true);
-    };
-
-
-    // ذخیره ویرایش فاز
-    const handleEditSave = async (values) => {
-        if (!selectedPhase) return;
-
-        updateField("phases", (prevPhases) =>
-            (prevPhases ?? []).map((phase) =>
-                phase.id === selectedPhase.id
-                    ? {
-                        ...phase,
-                        ...values,
-                        id: phase.id,
-                    }
-                    : phase
-            )
+        const result = await updatePhase(
+            projectId,
+            selectedPhase.id,
+            formattedValues
         );
 
-        setEditOpen(false);
-        setSelectedPhase(null);
-    };
-
-
-    // باز کردن مودال حذف
-    const handleDeleteClick = (phase) => {
-        setSelectedPhase(phase);
-        setDeleteOpen(true);
-    };
-
-
-    // حذف فاز
-    const handleDelete = async () => {
-        if (!selectedPhase) return;
-
-        setLoading(true);
-
-        try {
-            updateField("phases", (prevPhases) =>
-                (prevPhases ?? []).filter(
-                    (phase) => phase.id !== selectedPhase.id
-                )
-            );
-
-            setDeleteOpen(false);
-            setSelectedPhase(null);
-
-        } catch (error) {
-            console.error("خطا در حذف فاز:", error);
-        } finally {
-            setLoading(false);
+        if (!result?.ok) {
+            throw new Error(result?.message || "خطا در ویرایش فاز");
         }
-    };
 
+        toast.add({
+            title: "فاز با موفقیت ویرایش شد.",
+        });
 
-    // تعریف ستون‌های جدول
-    const columnHelper = createColumnHelper();
+        setOpen(false);
+        setSelectedPhase(null);
 
-    const columns = [
+        await fetchPhases();
 
-        columnHelper.accessor("title", {
-            header: "عنوان فاز",
-        }),
+    } catch (error) {
+        console.error("Edit phase error:", error);
 
-        columnHelper.accessor("description", {
-            header: "توضیحات",
-        }),
+        toast.add({
+            title: error.message || "خطا در ویرایش فاز",
+        });
+    }
+};
 
-        columnHelper.accessor("startDate", {
-            header: "تاریخ شروع",
-        }),
+	// ستون‌های جدول
+	const columns = [
+		columnHelper.accessor("title", {
+			header: "عنوان فاز",
+		}),
 
-        columnHelper.accessor("endDate", {
-            header: "تاریخ پایان",
-        }),
+		columnHelper.accessor("description", {
+			header: "توضیحات",
+		}),
 
-        columnHelper.accessor("targetAmount", {
-            header: "مبلغ هدف",
-        }),
+		columnHelper.accessor("startDate", {
+			header: "تاریخ شروع",
+			cell: ({ getValue }) => formatDate(getValue()),
+		}),
 
-        columnHelper.accessor("expectedRevenue", {
-            header: "درآمد پیش‌بینی شده",
-        }),
+		columnHelper.accessor("endDate", {
+			header: "تاریخ پایان",
+			cell: ({ getValue }) => formatDate(getValue()),
+		}),
 
-        columnHelper.accessor("expectedProfit", {
-            header: "سود پیش‌بینی شده",
-        }),
+		columnHelper.accessor("totalAmount", {
+			header: "مبلغ هدف",
+			cell: ({ getValue }) => `${Number(getValue()).toLocaleString("fa-IR")} تومان`,
+		}),
 
-        columnHelper.display({
-            id: "operations",
-            header: "عملیات",
+		columnHelper.accessor("ProjectedRevenue", {
+			header: "درآمد پیش‌بینی شده",
+			cell: ({ getValue }) => `${Number(getValue()).toLocaleString("fa-IR")} تومان`,
+		}),
 
-            cell: ({ row }) => {
+		columnHelper.accessor("profitAmount", {
+			header: "سود پیش‌بینی شده",
+			cell: ({ getValue }) => `${Number(getValue()).toLocaleString("fa-IR")} تومان`,
+		}),
 
-                const phase = row.original;
+		columnHelper.display({
+			id: "operations",
+			header: "عملیات",
+			cell: ({ row }) => {
+				const phase = row.original;
 
-                return (
-                    <div className="flex items-center justify-center gap-2">
+				return (
+					<div className="flex items-center justify-center gap-2">
+						<Button type="button" size="icon" onClick={() => handleEditClick(phase)}>
+							<IconEdit />
+						</Button>
 
-                        {/* ویرایش */}
-                        <Button
-                            type="button"
-                            size="icon"
-                            onClick={() => handleEdit(phase)}
-                        >
-                            <IconEdit />
-                        </Button>
+						<Button
+							type="button"
+							size="icon"
+							variant="destructive"
+							onClick={() => handleDeleteClick(phase)}
+						>
+							<IconTrash />
+						</Button>
+					</div>
+				);
+			},
+		}),
+	];
 
-                        {/* حذف */}
-                        <Button
-                            type="button"
-                            size="icon"
-                            variant="destructive"
-                            onClick={() => handleDeleteClick(phase)}
-                        >
-                            <IconTrash />
-                        </Button>
+	if (!projectId) {
+		return <p className="text-sm">ابتدا اطلاعات اصلی پروژه را ذخیره کنید.</p>;
+	}
 
-                    </div>
-                );
-            },
-        }),
+	return (
+		<div className="px-8 bg-card-color radius-all-normal py-6">
+			<div className="mb-6">
+				<h2 className="text-xl font-bold">اطلاعات فنی طرح</h2>
 
-    ];
+				<p className="mt-2 text-sm">فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.</p>
 
+				<Separator />
+			</div>
 
-    return (
-        <div className="px-8 bg-card-color radius-all-normal py-6">
+			{/* افزودن فاز */}
+			<div className="mb-5">
+				<CreatePhaseModal projectId={projectId} onSaved={fetchPhases} />
+			</div>
 
-            {/* عنوان */}
-            <div className="mb-6">
+			{/* جدول فازها */}
+			{loading ? (
+				<p className="py-5 text-center">در حال دریافت فازها...</p>
+			) : phases.length === 0 ? (
+				<div className="border rounded-md p-5 text-center">هنوز فازی برای این پروژه ثبت نشده است.</div>
+			) : (
+				<DataTable className="w-100" columns={columns} data={phases} options={[]} />
+			)}
 
-                <h2 className="text-xl font-bold">
-                    اطلاعات فنی طرح
-                </h2>
+			{/* مودال حذف */}
+			<DeleteConfirmModal
+				open={deleteOpen}
+				onOpenChange={(value) => {
+					setDeleteOpen(value);
 
-                <p className="mt-2 text-sm">
-                    فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.
-                </p>
+					if (!value) {
+						setSelectedPhase(null);
+					}
+				}}
+				onConfirm={handleDelete}
+				loading={deleteLoading}
+				title="حذف این فاز؟"
+				description="آیا از حذف این فاز اطمینان دارید؟ این عملیات قابل بازگشت نیست."
+			/>
 
-                <Separator />
+			{/* مودال ویرایش فاز */}
+			<Modal
+				open={open}
+				onOpenChange={(value) => {
+					setOpen(value);
 
-            </div>
+					if (!value) {
+						setSelectedPhase(null);
+					}
+				}}
+				title="ویرایش فاز"
+			>
+				{open && selectedPhase && (
+					<CreateFormPhase
+						key={selectedPhase.id}
+						initialData={{
+							...selectedPhase,
 
+							// تبدیل تاریخ میلادی دیتابیس به شمسی
+							startDate: convertToJalaliDate(selectedPhase.startDate),
 
-            {/* افزودن فاز */}
-            <CreatePhaseModal onSave={addPhase} />
+							endDate: convertToJalaliDate(selectedPhase.endDate),
 
+							// هماهنگ کردن نام فیلدهای دیتابیس با فرم
+							targetAmount: String(selectedPhase.totalAmount ?? ""),
+							expectedRevenue: String(selectedPhase.ProjectedRevenue ?? ""),
+							expectedProfit: String(selectedPhase.profitAmount ?? ""),
+						}}
+						onSave={handleEditSave}
+						onCancel={() => {
+							setOpen(false);
+							setSelectedPhase(null);
+						}}
+					/>
+				)}
+			</Modal>
 
-            {/* جدول فازها */}
-            <DataTable
-                className="w-100"
-                columns={columns}
-                data={phases}
-                options={[]}
-            />
+			{/* دکمه‌های مراحل */}
+			<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
+				<Button type="button" onClick={previousStep}>
+					مرحله قبل
+				</Button>
 
-
-            {/* مودال ویرایش فاز */}
-            <Modal
-                open={editOpen}
-                onOpenChange={(value) => {
-                    setEditOpen(value);
-
-                    if (!value) {
-                        setSelectedPhase(null);
-                    }
-                }}
-                title="ویرایش فاز"
-            >
-
-                {selectedPhase && (
-                    <CreateFormPhase
-                        key={selectedPhase.id}
-                        initialData={selectedPhase}
-                        onSave={handleEditSave}
-                        onCancel={() => {
-                            setEditOpen(false);
-                            setSelectedPhase(null);
-                        }}
-                    />
-                )}
-
-            </Modal>
-
-
-            {/* مودال تأیید حذف */}
-            <DeleteConfirmModal
-                open={deleteOpen}
-                onOpenChange={(value) => {
-                    setDeleteOpen(value);
-
-                    if (!value) {
-                        setSelectedPhase(null);
-                    }
-                }}
-                onConfirm={handleDelete}
-                loading={loading}
-                title="حذف این فاز؟"
-                description="آیا از حذف این فاز اطمینان دارید؟ این عملیات قابل بازگشت نیست."
-            />
-
-
-            {/* دکمه‌های مراحل */}
-            <div className="project-modal-footer mt-6 d-flex justify-content-space-between">
-
-                <Button
-                    type="button"
-                    onClick={previousStep}
-                >
-                    مرحله قبل
-                </Button>
-
-                <Button
-                    type="button"
-                    onClick={nextStep}
-                >
-                    مرحله بعد ←
-                </Button>
-
-            </div>
-
-        </div>
-    );
+				<Button type="button" onClick={() => nextStep({})}>
+					مرحله بعد ←
+				</Button>
+			</div>
+		</div>
+	);
 }

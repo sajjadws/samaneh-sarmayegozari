@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState } from "react";
@@ -8,25 +7,29 @@ import { Button } from "@/miz/components/react/button/page";
 
 import CreateFormPhase from "./creat-form-phase";
 
-const CreatePhaseModal = ({ onSave }) => {
+import { createPhase } from "../actions/crud";
+
+export default function CreatePhaseModal({ projectId, onSaved }) {
     const [open, setOpen] = useState(false);
 
-    // ذخیره فاز جدید
     const handleSave = async (values) => {
         try {
-            await onSave?.(values);
+            const result = await createPhase(projectId, values);
 
-            // بعد از ذخیره موفق مودال بسته شود
+            if (!result?.ok) {
+                throw new Error(result?.message || "خطا در ایجاد فاز");
+            }
+
+            alert("فاز با موفقیت ایجاد شد.");
+
             setOpen(false);
 
-        } catch (error) {
-            console.error("خطا در ذخیره فاز:", error);
-        }
-    };
+            await onSaved?.();
 
-    // انصراف از افزودن فاز
-    const handleCancel = () => {
-        setOpen(false);
+        } catch (error) {
+            console.error("Create phase error:", error);
+            alert(error.message || "خطا در ایجاد فاز");
+        }
     };
 
     return (
@@ -40,17 +43,15 @@ const CreatePhaseModal = ({ onSave }) => {
                 onOpenChange={setOpen}
                 title="افزودن فاز جدید"
             >
-                <div className="flex flex-col gap-2">
-
+                {open && (
                     <CreateFormPhase
+                        key="new-phase"
+                        initialData={null}
                         onSave={handleSave}
-                        onCancel={handleCancel}
+                        onCancel={() => setOpen(false)}
                     />
-
-                </div>
+                )}
             </Modal>
         </>
     );
-};
-
-export default CreatePhaseModal;
+}

@@ -58,8 +58,9 @@ import CreateProject from "./components/create-project";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
-
+export const instant = false;
 export default async function ProjectsPage() {
+    
     const fetchData = await getIncompleteProjects();
 
     if (!fetchData.ok) {

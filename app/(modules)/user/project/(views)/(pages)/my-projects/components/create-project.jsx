@@ -270,7 +270,6 @@ export default function CreateProject() {
 		setFormData(initialFormData);
 	};
 
-	
 	const handleOpen = () => {
 		setProjectId(null);
 		setCurrentStep(0);
@@ -291,7 +290,6 @@ export default function CreateProject() {
 					else setOpen(true);
 				}}
 			>
-			
 				<div className="w-100 overflow-y-hidden py-6 px-12">
 					{/* صفحه موفقیت */}
 					{showSuccess ? (
@@ -316,6 +314,7 @@ export default function CreateProject() {
 							{/* مرحله دوم */}
 							{currentStep === 1 && (
 								<TechnicalDetailsProject
+									projectId={projectId}
 									formData={formData}
 									updateField={updateField}
 									currentStep={currentStep}
