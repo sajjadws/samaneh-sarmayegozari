@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { Modal } from "@/miz/themes/react/components/modal/page";
 import { Button } from "@/miz/components/react/button/page";
-
+import { uploadProjectFiles } from "@/lib/validation/uploadProjectFiles";
 import CreateForm from "./create-form";
 import TechnicalDetailsProject from "./technical-details-project";
 import ExecutionTeam from "./execution-team";
@@ -223,41 +223,59 @@ export default function CreateProject() {
 	};
 
 	// ثبت نهایی تمام اطلاعات
-	const handleSubmit = async () => {
-		if (loading || !projectId) return;
+	
+const handleSubmit = async () => {
+  try {
+    setLoading(true);
 
-		setLoading(true);
+    // جدا کردن فایل‌ها از اطلاعات پروژه
+    const {
+      image,
+      images,
+      documents,
+      ...projectData
+    } = formData;
 
-		try {
-			// ثبت مرحله چهارم
-			const stepResult = await saveProjectStep({
-				projectId,
-				completedStep: "DOCUMENTS",
-				values: {},
-			});
+    // مرحله اول: ثبت پروژه و اطلاعات وابسته
+    const res = await createProject(projectData);
 
-			if (!stepResult.ok) {
-				throw new Error(stepResult.message);
-			}
+    if (!res?.ok && !res?.success) {
+      throw new Error(
+        res?.message || "ثبت پروژه با خطا مواجه شد"
+      );
+    }
 
-			// نهایی کردن پروژه
-			const res = await completeProject(projectId);
+    // دریافت شناسه پروژه ایجادشده
+    const project =
+      res?.data?.project ||
+      res?.project ||
+      res?.data;
 
-			if (!res.ok) {
-				throw new Error(res.message);
-			}
+    const projectId = project?.id;
 
-			setSubmittedProject(res.data);
+    if (!projectId) {
+      throw new Error(
+        "پروژه ثبت شد اما شناسه آن دریافت نشد"
+      );
+    }
 
-			setShowSuccess(true);
-		} catch (error) {
-			toast.add({
-				title: error.message || "خطا در ثبت نهایی پروژه",
-			});
-		} finally {
-			setLoading(false);
-		}
-	};
+    // مرحله دوم: آپلود تصاویر و مدارک
+    await uploadProjectFiles(projectId, formData);
+
+    // مرحله سوم: نمایش موفقیت
+    setSuccessProject(project);
+
+  } catch (error) {
+    console.error("Create Project Error:", error);
+
+    // پیام خطا را با سیستم Toast پروژه نمایش بده
+    console.error(error.message);
+
+  } finally {
+    setLoading(false);
+  }
+};
+
 
 	// بستن و بازنشانی فرم
 	const onClose = () => {
@@ -278,6 +296,8 @@ export default function CreateProject() {
 		setDraftProjects([]);
 		setOpen(true);
 	};
+
+	const [successProject, setSuccessProject] = useState(false);
 
 	return (
 		<>
