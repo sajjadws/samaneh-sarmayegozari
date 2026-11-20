@@ -2,7 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
+@use "sass:map";
 
 /* =====================================
    1. DialogOverlay
@@ -10,13 +10,13 @@
 ===================================== */
 
 .dialog-overlay {
-  inset: 0;
-  isolation: isolate;
-  z-index: 50;
+	inset: 0;
+	isolation: isolate;
+	z-index: 50;
+	background: rgba(0, 0, 0, 0.28);
 
-  @extend .position-fixed,
+	@extend .position-fixed;
 }
-
 
 /* =====================================
    2. DialogContent
@@ -24,13 +24,21 @@
 ===================================== */
 
 .dialog-content {
-  z-index: 50;
-  transform: translate(-50%, -50%);
-  outline: none;
+	z-index: 50;
+	transform: translate(-50%, -50%);
+	outline: none;
 
-  @extend .position-fixed, .top-50, .left-50, .w-100;
+	@extend .position-fixed,
+		.top-50,
+		.left-50,
+		.bg-color,
+		.radius-all-normal,
+		.px-6,
+		.py-8,
+		.d-flex,
+		.align-items-start,
+		.justify-content-space-between;
 }
-
 
 /* =====================================
    3. DialogHeader
@@ -38,9 +46,8 @@
 ===================================== */
 
 .dialog-header {
-  @extend .d-flex, .flex-column;
+	@extend .d-flex, .flex-column;
 }
-
 
 /* =====================================
    4. DialogFooter
@@ -48,9 +55,8 @@
 ===================================== */
 
 .dialog-footer {
-  @extend .d-flex, .flex-column-reverse, .gap-2, .flex-md-row, .justify-content-md-flex-end;
+	@extend .d-flex, .flex-column-reverse, .gap-2, .flex-md-row, .justify-content-md-flex-end;
 }
-
 
 /* =====================================
    5. DialogTitle
@@ -58,9 +64,9 @@
 ===================================== */
 
 .dialog-title {
-  /* کلاس cn-font-heading قبلاً اختصاصی بوده است */
+	/* کلاس cn-font-heading قبلاً اختصاصی بوده است */
+	@extend .font-weight-extra-bold;
 }
-
 
 /* =====================================
    6. DialogDescription
@@ -68,9 +74,9 @@
 ===================================== */
 
 .dialog-description {
-  /* در کد اصلی کلاس Tailwind ندارد */
+	/* در کد اصلی کلاس Tailwind ندارد */
+	@extend .font-weight-light;
 }
-
 
 /* =====================================
    7. DialogClose
@@ -78,5 +84,4 @@
 ===================================== */
 
 .dialog-close {
-  /* در کد اصلی فقط کلاس اختصاصی cn-dialog-close وجود دارد */
 }
