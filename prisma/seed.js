@@ -1,121 +1,109 @@
-import { PrismaClient } from "../lib/generated/prisma/client.ts";
-import { PrismaMariaDb } from "@prisma/adapter-mariadb";
+import prismaDB from "../lib/prisma/prismaDB.js";
+import { auth } from "../lib/authentication/auth.js";
+import { PERMISSION_CATALOG, ALL_PERMISSION_NAMES } from "../lib/rbac/config/permissions.js";
 
-const databaseUrl = process.env.DATABASE_URL;
+const roles = [{ name: "superAdmin", title: "مدیر کل" }];
 
-if (!databaseUrl) {
-    throw new Error("DATABASE_URL is not defined");
+async function seedPermissions() {
+	for (const permission of PERMISSION_CATALOG) {
+		await prismaDB.permission.upsert({
+			where: { name: permission.name },
+			update: { title: permission.title },
+			create: permission,
+		});
+	}
+	await prismaDB.permission.deleteMany({ where: { name: { notIn: [...ALL_PERMISSION_NAMES] } } });
 }
 
-const url = new URL(databaseUrl);
+async function seedRoles() {
+	for (const role of roles) {
+		await prismaDB.role.upsert({
+			where: { name: role.name },
+			update: role,
+			create: role,
+		});
+	}
 
-const adapter = new PrismaMariaDb({
-    host: url.hostname,
-    port: Number(url.port || 3306),
-    user: decodeURIComponent(url.username),
-    password: decodeURIComponent(url.password),
-    database: decodeURIComponent(url.pathname.slice(1)),
-    connectionLimit: 5,
-});
+	const allPermissions = await prismaDB.permission.findMany({ select: { id: true, name: true } });
+	const permissionByName = new Map(allPermissions.map((item) => [item.name, item.id]));
 
-const prismaDB = new PrismaClient({ adapter });
+	for (const role of roles) {
+		const roleRecord = await prismaDB.role.findUniqueOrThrow({ where: { name: role.name } });
+		const configured = [];
 
-const permissions = [
-    { name: "projects.read", title: "مشاهده پروژه‌ها" },
-    { name: "projects.create", title: "ایجاد پروژه" },
-    { name: "projects.update", title: "ویرایش پروژه" },
-    { name: "projects.delete", title: "حذف پروژه" },
+		const assignments = configured.map(([name]) => {
+			const permissionId = permissionByName.get(name);
+			if (!permissionId) throw new Error(`Unknown permission in role config: ${name}`);
+			return { roleId: roleRecord.id, permissionId };
+		});
 
-    { name: "users.read", title: "مشاهده کاربران" },
-    { name: "users.create", title: "ایجاد کاربر" },
-    { name: "users.update", title: "ویرایش کاربر" },
-    { name: "users.delete", title: "حذف کاربر" },
-];
+		await prismaDB.$transaction(async (tx) => {
+			await tx.rolePermission.deleteMany({ where: { roleId: roleRecord.id } });
+			if (assignments.length) await tx.rolePermission.createMany({ data: assignments });
+		});
+	}
+}
 
-const roles = [
-    {
-        name: "admin",
-        title: "مدیر کل",
-        isSystem: true,
-        isSuperAdmin: true,
-    },
-    {
-        name: "manager",
-        title: "مدیر پروژه",
-        isSystem: true,
-        isSuperAdmin: false,
-    },
-    {
-        name: "user",
-        title: "کاربر عادی",
-        isSystem: true,
-        isSuperAdmin: false,
-    },
-];
+async function seedSuperAdmin() {
+	const email = "root@gmail.com";
+	const password = "123456789";
+	const username = "root";
+	const name = "Super Admin";
+	const firstName = "Super";
+	const lastName = "Admin";
+
+	let user = await prismaDB.user.findUnique({
+		where: { email },
+		select: { id: true, email: true, username: true },
+	});
+
+	if (!user) {
+		const created = await auth.api.signUpEmail({
+			body: { name, email, username, password },
+			headers: new Headers(),
+		});
+
+		user = created?.user;
+	} else if (user.username !== username) {
+		user = await prismaDB.user.update({
+			where: { id: user.id },
+			data: { username, displayUsername: username },
+		});
+	}
+
+	if (!user?.id) {
+		throw new Error("Better Auth did not return the created superAdmin user.");
+	}
+
+	await prismaDB.$transaction([
+		prismaDB.userUtilities.upsert({
+			where: { userId: user.id },
+			update: {
+				firstName,
+				lastName,
+			},
+			create: {
+				id: "djfhsfjfdg",
+				firstName,
+				lastName,
+				userId: user.id,
+			},
+		}),
+	]);
+
+	console.log(`superAdmin account is ready: ${username}`);
+}
 
 async function main() {
-    // 1. Create permissions
-    for (const permission of permissions) {
-        await prismaDB.permission.upsert({
-            where: { name: permission.name },
-            update: { title: permission.title },
-            create: permission,
-        });
-    }
-
-    // 2. Create roles
-    for (const role of roles) {
-        await prismaDB.role.upsert({
-            where: { name: role.name },
-            update: {
-                title: role.title,
-                isSystem: role.isSystem,
-                isSuperAdmin: role.isSuperAdmin,
-            },
-            create: role,
-        });
-    }
-
-    // 3. Find manager
-    const manager = await prismaDB.role.findUniqueOrThrow({
-        where: { name: "manager" },
-    });
-
-    // 4. Assign permissions to manager
-    const managerPermissions = [
-        "projects.read",
-        "projects.create",
-        "projects.update",
-    ];
-
-    for (const name of managerPermissions) {
-        const permission = await prismaDB.permission.findUniqueOrThrow({
-            where: { name },
-        });
-
-        await prismaDB.rolePermission.upsert({
-            where: {
-                roleId_permissionId: {
-                    roleId: manager.id,
-                    permissionId: permission.id,
-                },
-            },
-            update: {},
-            create: {
-                roleId: manager.id,
-                permissionId: permission.id,
-            },
-        });
-    }
-
-    console.log("RBAC seed completed!");
+	await seedPermissions();
+	await seedRoles();
+	await seedSuperAdmin();
+	console.log("RBAC seed completed!");
 }
 
 main()
-    .catch((error) => {
-        console.error("RBAC seed failed:", error);
-        process.exitCode = 1;
-    })
-    .finally(async () => {
-        await prismaDB.$disconnect();
-    });
+	.catch((error) => {
+		console.error("RBAC seed failed:", error);
+		process.exitCode = 1;
+	})
+	.finally(async () => prismaDB.$disconnect());

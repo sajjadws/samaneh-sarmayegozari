@@ -1,67 +1,80 @@
 "use client";
 
-import { useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import useLoginClient from "@/lib/authentication/is-login-client";
-import { login, signup } from "./user-password";
 import { Controller, useForm } from "react-hook-form";
+import { authClient } from "@/lib/authentication/auth-client";
+import { verifyAdminSession } from "../actions/authentication";
 
 export default function ContentPage() {
-	const router = useRouter();
-	const { session, isPending } = useLoginClient();
-	const form = useForm({
-		// resolver: zodResolver(phoneNumberSchema),
-		// defaultValues: {
-		//     phoneNumber,
-		// },
-		mode: "onChange",
-	});
+    const router = useRouter();
+    const [errorMessage, setErrorMessage] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const form = useForm({
+        defaultValues: { username: "", password: "" },
+        mode: "onChange",
+    });
 
-	useEffect(() => {
-		if (!isPending && !session) {
-			router.replace("/login");
-		}
-	}, [session, isPending, router]);
+    async function handleLogin(values) {
+        setErrorMessage("");
+        setIsSubmitting(true);
 
-	if (isPending || !session) {
-		return null;
-	}
+        try {
+            const { error } = await authClient.signIn.username({
+                username: values.username.trim(),
+                password: values.password,
+            });
 
-	async function handleSignup() {
-		try {
-			const result = await signup();
-			console.log("Signup:", result);
-		} catch (error) {
-			console.error(error);
-		}
-	}
+            if (error) {
+                setErrorMessage(error.message || "نام کاربری یا رمز عبور صحیح نیست.");
+                return;
+            }
 
-	async function handleLogin(values) {
-		try {
-			const result = await login(values);
-			console.log("Login:", result);
-		} catch (error) {
-			console.error(error);
-		}
-	}
+            const access = await verifyAdminSession();
 
-	return (
-		<div className="w-100 d-flex flex-column justify-content-center align-items-center">
-			<h1>hossein</h1>
-			{/* <button onClick={handleSignup}>
-                Signup
-            </button> */}
+            if (!access.ok) {
+                await authClient.signOut();
+                setErrorMessage(access.message);
+                return;
+            }
 
-			{/* <button onClick={handleLogin}>
-                Login
-            </button> */}
-			<form className="d-flex flex-column justify-content-center align-items-center" onSubmit={form.handleSubmit(handleLogin)}>
-				<Controller name="email" control={form.control} defaultValue="email@domain.com" render={({ field, fieldState }) => <input type="email" {...field} />} />
+            router.replace("/admin/dashboard");
+            router.refresh();
+        } catch {
+            await authClient.signOut();
+            setErrorMessage("ورود انجام نشد. دوباره تلاش کنید.");
+        } finally {
+            setIsSubmitting(false);
+        }
+    }
 
-				<Controller name="password" control={form.control} defaultValue="password1234" render={({ field, fieldState }) => <input type="password" {...field} />} />
-
-				<button type="submit">Login</button>
-			</form>
-		</div>
-	);
+    return (
+        <div className="w-100 d-flex flex-column justify-content-center align-items-center">
+            <form
+                className="d-flex flex-column justify-content-center align-items-center gap-3"
+                onSubmit={form.handleSubmit(handleLogin)}
+            >
+                <Controller
+                    name="username"
+                    control={form.control}
+                    rules={{ required: "نام کاربری را وارد کنید." }}
+                    render={({ field }) => (
+                        <input {...field} type="text" autoComplete="username" placeholder="نام کاربری" />
+                    )}
+                />
+                <Controller
+                    name="password"
+                    control={form.control}
+                    rules={{ required: "رمز عبور را وارد کنید." }}
+                    render={({ field }) => (
+                        <input {...field} type="password" defaultValue="123456789" autoComplete="current-password" placeholder="رمز عبور" />
+                    )}
+                />
+                {errorMessage && <p role="alert" className="text-danger">{errorMessage}</p>}
+                <button type="submit" disabled={isSubmitting || !form.formState.isValid}>
+                    {isSubmitting ? "در حال ورود..." : "ورود"}
+                </button>
+            </form>
+        </div>
+    );
 }

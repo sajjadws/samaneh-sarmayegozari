@@ -13,9 +13,8 @@
   inset: 0;
   isolation: isolate;
   z-index: 50;
-  background: rgba(0, 0, 0, 0.28);
 
-  @extend .position-fixed;
+  @extend .position-fixed,
 }
 
 
@@ -29,7 +28,7 @@
   transform: translate(-50%, -50%);
   outline: none;
 
-  @extend .position-fixed, .top-50, .left-50, .w-80, .h-80, .bg-color , .radius-all-normal, .px-6, .py-8;
+  @extend .position-fixed, .top-50, .left-50, .w-100;
 }
 
 
@@ -79,7 +78,5 @@
 ===================================== */
 
 .dialog-close {
-  background-color: red;
+  /* در کد اصلی فقط کلاس اختصاصی cn-dialog-close وجود دارد */
 }
-
-

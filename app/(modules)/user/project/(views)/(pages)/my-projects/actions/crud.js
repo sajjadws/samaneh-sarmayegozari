@@ -72,7 +72,7 @@ export const getAllProjects = async (options = {}) => {
         durationDate: true,
         status: true,
         isPublication: true,
-        usrId: true,
+        userId: true,
         createdAt: true,
         updatedAt: true,
 
@@ -159,7 +159,7 @@ export const getProjectById = async (id) => {
         durationDate: true,
         status: true,
         isPublication: true,
-        usrId: true,
+        userId: true,
         createdAt: true,
         updatedAt: true,
 
@@ -278,7 +278,7 @@ export const createProject = async (values) => {
         isPublication,
 
         // اتصال پروژه به کاربر واردشده
-        usrId: session.user.id,
+        userId: session.user.id,
       },
 
       select: {
@@ -288,7 +288,7 @@ export const createProject = async (values) => {
         durationDate: true,
         status: true,
         isPublication: true,
-        usrId: true,
+        userId: true,
         createdAt: true,
       },
     });
@@ -348,7 +348,7 @@ export const editProject = async (id, values) => {
 
       select: {
         id: true,
-        usrId: true,
+        userId: true,
       },
     });
 
@@ -361,7 +361,7 @@ export const editProject = async (id, values) => {
     }
 
     // بررسی مالکیت پروژه
-    if (existingProject.usrId !== session.user.id) {
+    if (existingProject.userId !== session.user.id) {
       return {
         ok: false,
         status: 403,
@@ -511,7 +511,7 @@ export const deleteProject = async (id) => {
 
       select: {
         id: true,
-        usrId: true,
+        userId: true,
       },
     });
 
@@ -523,7 +523,7 @@ export const deleteProject = async (id) => {
       };
     }
 
-    if (existingProject.usrId !== session.user.id) {
+    if (existingProject.userId !== session.user.id) {
       return {
         ok: false,
         status: 403,

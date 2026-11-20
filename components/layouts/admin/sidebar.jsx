@@ -7,29 +7,35 @@ import { usePathname } from "next/navigation";
 import { getSidebarItems } from "@/components/config/admin/layouts/sidebar";
 import "./sidebar.css";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/miz/components/react/collapsible/page";
+import { filterSidebarItems } from "@/lib/rbac/helper/can-access-sidebar";
 
-export default function Sidebar({ role, ...props }) {
+export default function Sidebar({ permissions, roles, isSuperAdmin, ...props }) {
+	const { asideClassName, titleClassName, linkClassName } = props;
+
+	const access = {
+		permissions,
+		roles,
+		isSuperAdmin,
+	};
+
+	const items = filterSidebarItems(getSidebarItems(), access).sort((a, b) => a.order - b.order);
+
+	const allItems = flattenSidebarItems(items);
+
 	const pathname = usePathname();
 
 	const [isClosed, setIsClosed] = useState(false);
 	const [isOpening, setIsOpening] = useState(false);
 	const [hiddenTitles, setHiddenTitles] = useState(() => new Set());
+	const [isOpen, setIsOpen] = useState(false);
 
-	const { asideClassName, titleClassName, linkClassName } = props;
+	function flattenSidebarItems(items = []) {
+		return items.flatMap((item) => [item, ...flattenSidebarItems(item.subList ?? [])]);
+	}
 
-	const items = [...getSidebarItems()]
-		.filter((item) => {
-			return globalThis.getRole(item.role) === globalThis.getRole(role);
-		})
-		.sort((a, b) => a.order - b.order);
-
-	const allItems = flattenSidebarItems(items);
-
-	const activeHref = allItems
-		.filter((item) => {
-			return pathname === item.link || pathname.startsWith(`${item.link}/`);
-		})
-		.sort((a, b) => b.link.length - a.link.length)[0]?.link;
+	function isActive(href) {
+		return pathname === href || pathname.startsWith(`${href}/`);
+	}
 
 	useEffect(() => {
 		const mediaQuery = window.matchMedia("(max-width: 768px)");
@@ -43,7 +49,6 @@ export default function Sidebar({ role, ...props }) {
 		}
 
 		handleScreenChange(mediaQuery);
-
 		mediaQuery.addEventListener("change", handleScreenChange);
 
 		return () => {
@@ -51,21 +56,11 @@ export default function Sidebar({ role, ...props }) {
 		};
 	}, []);
 
-	function flattenSidebarItems(items = []) {
-		return items.flatMap((item) => [item, ...flattenSidebarItems(item.subList ?? [])]);
-	}
-
-	function isActive(href) {
-		return pathname === href || pathname.startsWith(`${href}/`);
-	}
-
 	function handleCloseSideBar() {
-		if (window.matchMedia("(max-width: 768px)").matches) {
-			return;
-		}
+		if (window.matchMedia("(max-width: 768px)").matches) return;
+
 		if (isClosed) {
 			setHiddenTitles(new Set());
-
 			setIsClosed(false);
 			setIsOpening(true);
 		} else {
@@ -85,35 +80,77 @@ export default function Sidebar({ role, ...props }) {
 			});
 		}
 	}
-	const [isOpen, setIsOpen] = useState(false);
+
 	return (
-		<aside className={utils.cn("sidebar d-flex flex-column gap-3 p-3 bg-primary-color align-items-md-center", asideClassName, isClosed && "close", isOpening && "opening")}>
+		<aside
+			className={utils.cn(
+				"sidebar d-flex flex-column gap-3 p-3 bg-primary-color align-items-md-center",
+				asideClassName,
+				isClosed && "close",
+				isOpening && "opening",
+			)}
+		>
 			<i className="icon icon-menu-1 txt-size-mid-title on-primary-color" onClick={handleCloseSideBar} />
 
 			{items.map((item) =>
 				item.subList?.length > 0 ? (
-					<Collapsible key={item.link} open={isOpen} onOpenChange={setIsOpen} className="d-flex flex-column gap-2">
+					<Collapsible
+						key={item.link}
+						open={isOpen}
+						onOpenChange={setIsOpen}
+						className="d-flex flex-column gap-2"
+					>
 						<CollapsibleTrigger
 							nativeButton={false}
 							render={
-								<div className={utils.cn("link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden", linkClassName, isActive(item.link) ? "bg-on-primary-color primary-color" : "on-primary-color")}>
+								<div
+									className={utils.cn(
+										"link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden",
+										linkClassName,
+										isActive(item.link) ? "bg-on-primary-color primary-color" : "on-primary-color",
+									)}
+								>
 									<i className={utils.cn("icon", item.icon, "txt-size-mid-title")} />
 
-									<span className={utils.cn("title txt-size-normal d-md-none", titleClassName, hiddenTitles.has(item.link) ? "d-none" : "d-inline")} onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}>
+									<span
+										className={utils.cn(
+											"title txt-size-normal d-md-none",
+											titleClassName,
+											hiddenTitles.has(item.link) ? "d-none" : "d-inline",
+										)}
+										onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
+									>
 										{item.label}
 									</span>
 
-									<i className={utils.cn("icon icon-arrow-left-2 txt-size-mid-title")} />
+									<i className="icon icon-arrow-left-2 txt-size-mid-title" />
 								</div>
 							}
 						/>
 
 						<CollapsibleContent className="d-flex flex-column gap-2">
 							{item.subList.map((subItem) => (
-								<Link key={subItem.link} href={subItem.link} className={utils.cn("link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden w-80", linkClassName, isActive(subItem.link) ? "bg-on-primary-color primary-color" : "on-primary-color")}>
+								<Link
+									key={subItem.link}
+									href={subItem.link}
+									className={utils.cn(
+										"link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden w-80",
+										linkClassName,
+										isActive(subItem.link)
+											? "bg-on-primary-color primary-color"
+											: "on-primary-color",
+									)}
+								>
 									<i className={utils.cn("icon", subItem.icon, "txt-size-mid-title")} />
 
-									<span className={utils.cn("title txt-size-subtitle d-md-none", titleClassName, hiddenTitles.has(subItem.link) ? "d-none" : "d-inline")} onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}>
+									<span
+										className={utils.cn(
+											"title txt-size-subtitle d-md-none",
+											titleClassName,
+											hiddenTitles.has(subItem.link) ? "d-none" : "d-inline",
+										)}
+										onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}
+									>
 										{subItem.label}
 									</span>
 								</Link>
@@ -121,10 +158,25 @@ export default function Sidebar({ role, ...props }) {
 						</CollapsibleContent>
 					</Collapsible>
 				) : (
-					<Link key={item.link} href={item.link} className={utils.cn("link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden", linkClassName, isActive(item.link) ? "bg-on-primary-color primary-color" : "on-primary-color")}>
+					<Link
+						key={item.link}
+						href={item.link}
+						className={utils.cn(
+							"link-item d-flex align-items-center p-2 gap-2 radius-all-normal overflow-hidden",
+							linkClassName,
+							isActive(item.link) ? "bg-on-primary-color primary-color" : "on-primary-color",
+						)}
+					>
 						<i className={utils.cn("icon", item.icon, "txt-size-mid-title")} />
 
-						<span className={utils.cn("title txt-size-normal d-md-none", titleClassName, hiddenTitles.has(item.link) ? "d-none" : "d-inline")} onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}>
+						<span
+							className={utils.cn(
+								"title txt-size-normal d-md-none",
+								titleClassName,
+								hiddenTitles.has(item.link) ? "d-none" : "d-inline",
+							)}
+							onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
+						>
 							{item.label}
 						</span>
 					</Link>

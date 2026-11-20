@@ -2,9 +2,11 @@
 
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
+// import * as DialogPrimitive from "@base-ui/react/dialog";
 import { cn } from "cn"
 
 import { Button } from "../button/page"
+// import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
 
 
 function Dialog({ ...props }) {
@@ -47,8 +49,9 @@ function DialogContent({
         className={cn("dialog-content", className)}
         {...props}
       >
+        {children}
 
-        {/* {showCloseButton && (
+        {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
             render={
@@ -59,11 +62,16 @@ function DialogContent({
               />
             }
           >
-            <span className="txt-normall">Close</span>
+            {/* <IconPlaceholder
+              lucide="XIcon"
+              tabler="IconX"
+              hugeicons="Cancel01Icon"
+              phosphor="XIcon"
+              remixicon="RiCloseLine"
+            /> */}
+            <span className="sr-only">Close</span>
           </DialogPrimitive.Close>
-        )} */}
-        
-          {children}
+        )}
       </DialogPrimitive.Popup>
     </DialogPortal>
   )
@@ -75,9 +83,7 @@ function DialogHeader({ className, ...props }) {
       data-slot="dialog-header"
       className={cn("dialog-header", className)}
       {...props}
-    >
-
-    </div>
+    />
   )
 }
 
@@ -95,6 +101,11 @@ function DialogFooter({
     >
       {children}
 
+      {showCloseButton && (
+        <DialogPrimitive.Close render={<Button variant="outline" />}>
+          Close
+        </DialogPrimitive.Close>
+      )}
     </div>
   )
 }
