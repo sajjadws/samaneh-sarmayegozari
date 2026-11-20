@@ -27,7 +27,7 @@ model Wallet {
     userId       String              @unique
     user         User                @relation(fields: [userId], references: [id])
     transactions WalletTransaction[]
-    bankAcounts  BankAccount[]
+    bankAccounts  BankAccount[]
 }
 
 model BankAccount {
@@ -59,7 +59,7 @@ model WalletTransaction {
 model InvestmentTransaction {
     id     String                      @id @default(cuid())
     type   InvestmentTransactionType
-    amount String                     @db.Decimal(18, 2)
+    amount Decimal                     @db.Decimal(18, 2)
     status InvestmentTransactionStatus @default(PENDING)
 
     referenceId String?   @unique

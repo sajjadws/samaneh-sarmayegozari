@@ -1,8 +1,9 @@
 npm run build-miz
 npm run build-module
 
-<!-- Arabpour -->
+node --env-file=.env --experimental-strip-types prisma/seed.js
+node --env-file=.env --import=tsx prisma/seed.js
 
-1:
-login admin
-http://localhost:3000/admin/login
+git rm --cached public/css/miz.min.css
+git rm --cached public/css/style.min.css
+git rm -r --cached .

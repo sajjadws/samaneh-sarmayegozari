@@ -42,6 +42,9 @@ next-env.d.ts
 
 # prisma
 /lib/generated/prisma
+/prisma/*
+!/prisma/schema.prisma
+!/prisma/seed.js
 
 # packages
 /package-lock.json
@@ -49,3 +52,7 @@ next-env.d.ts
 # public
 /public/css/*
 /public/modules/*
+
+# miz
+/public/css/miz.min.css
+/public/css/style.min.css

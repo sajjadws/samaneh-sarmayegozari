@@ -1,6 +1,6 @@
 "use client";
 
-import { getHeaderItems } from "@/components/config/website/layouts/header";
+import { getHeaderItems } from "@/components/config/admin/layouts/header";
 import "./header.css";
 import "@/lib/globals-client";
 import { Button } from "@/miz/themes/react/components/button/page";

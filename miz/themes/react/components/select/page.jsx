@@ -44,7 +44,7 @@ function SelectTrigger({
     >
       {children}
 
-      <SelectPrimitive.Icon
+      {/* <SelectPrimitive.Icon
         render={
           <ChevronDown
             lucide="ChevronDownIcon"
@@ -56,7 +56,7 @@ function SelectTrigger({
           />
           
         }
-      />
+      /> */}
     </SelectPrimitive.Trigger>
   )
 }
