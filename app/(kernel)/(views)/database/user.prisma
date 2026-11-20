@@ -1,10 +1,11 @@
 model User {
     id                  String           @id @default(cuid())
+    name                String?
+    image               String?
     email               String?          @unique
     emailVerified       Boolean          @default(false)
     phoneNumber         String?          @unique
     phoneNumberVerified Boolean          @default(false)
-    password            String?
     username            String?          @unique
     displayUsername     String?
     roleId              String?
