@@ -1,5 +1,5 @@
 const { PrismaClient } = require("@prisma/client");
-const { PERMISSIONS } = require("./permissions");
+const { PERMISSIONS } = require("../lib/rbac/permissions");
 
 const prisma = new PrismaClient();
 
