@@ -1,32 +1,33 @@
 model Role {
     id          String           @id @default(cuid())
-    name        String           @unique
+    perm        String           @unique
     title       String
     description String?
     permissions RolePermission[]
+    users       User[]
     createdAt   DateTime         @default(now())
     updatedAt   DateTime         @updatedAt
 }
 
 model Permission {
-    id             String           @id @default(cuid())
-    name           String           @unique
-    title          String
-    description    String?
-    roles          RolePermission[]
-    userPermission UserPermission[]
-    createdAt      DateTime         @default(now())
-    updatedAt      DateTime         @updatedAt
+    id              String           @id @default(cuid())
+    perm            String           @unique
+    title           String
+    description     String?
+    roles           RolePermission[]
+    userPermissions UserPermission[]
+    createdAt       DateTime         @default(now())
+    updatedAt       DateTime         @updatedAt
 }
 
 model UserPermission {
     id           String     @id @default(cuid())
     userId       String
-    permissionId String
-    assignedAt   DateTime   @default(now())
-    assignedBy   String?
     user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    permissionId String
     permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+    assignedAt   DateTime   @default(now())
+    assignedBy   User?
 
     @@unique([userId, permissionId])
     @@index([userId])

@@ -1,7 +1,7 @@
 // "use client";
 
 // import UserLayout from "@/app/(kernel)/layouts/user-panel";
-import { PERMISSIONS } from "@/lib/rbac/config/permissions";
+import { PERMISSIONS } from "@/lib/rbac/permissions";
 // import { useRouter } from "next/navigation";
 
 // import "./user.css";

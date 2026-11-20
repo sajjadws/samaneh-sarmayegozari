@@ -1,5 +1,5 @@
 import UserPanel from "@/app/(kernel)/layouts/user-panel";
-import { PERMISSIONS } from "@/lib/rbac/config/permissions";
+import { PERMISSIONS } from "@/lib/rbac/permissions";
 // import "./user.css";
 
 export default function UsersLayout({ children }) {

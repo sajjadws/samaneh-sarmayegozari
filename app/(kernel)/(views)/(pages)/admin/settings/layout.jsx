@@ -4,7 +4,7 @@
 import Header from "@/components/layouts/admin/header";
 import Sidebar from "@/components/layouts/admin/sidebar";
 import UserLayout from "@/app/(kernel)/layouts/user-panel";
-import { PERMISSIONS } from "@/lib/rbac/config/permissions";
+import { PERMISSIONS } from "@/lib/rbac/permissions";
 
 export default function UsersLayout({ children }) {
     // const [theme, setTheme] = useState("light");

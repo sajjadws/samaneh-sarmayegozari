@@ -14,8 +14,8 @@ model Session {
 
 model Account {
     id                    String    @id
-    user                  User      @relation(fields: [userId], references: [id])
     userId                String
+    user                  User      @relation(fields: [userId], references: [id])
     accountId             String
     providerId            String
     accessToken           String?
@@ -40,10 +40,4 @@ model Verification {
     updatedAt  DateTime
 
     @@index([identifier])
-}
-
-model AddToUser {
-    displayUsername String?
-    sessions        Session[]
-    accounts        Account[]
 }
