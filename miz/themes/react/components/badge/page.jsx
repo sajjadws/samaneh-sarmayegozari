@@ -1,40 +1,11 @@
-function BadgePage() {
+function Badge({ variant = "default", children, className = "" }) {
   return (
-    <div className="badge-page">
-
-      <div className="badge-wrapper badge-button">
-
-        <p>button</p>
-
-        <span className="badge-top">
-          <i className="fa-solid fa-house badge-icon"></i>
-        </span>
-
-      </div>
-
-    </div>
+    <span
+      className={`badge badge-${variant} ${className}`}
+    >
+      {children}
+    </span>
   );
 }
 
-function BadgeInside() {
-  return (
-    <div className="badge-page">
-
-      <div className="badge-wrapper badge-button">
-
-        <span className="badge-inside">
-          <i className="fa-solid fa-house badge-icon"></i>
-        </span>
-
-        <p>button</p>
-
-      </div>
-
-    </div>
-  );
-}
-
-export {
-  BadgeInside,
-  BadgePage
-};
+export { Badge };

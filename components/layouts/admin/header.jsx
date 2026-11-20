@@ -4,13 +4,21 @@ import { getHeaderItems } from "@/components/config/admin/layouts/header";
 import "./header.css";
 import "@/lib/globals-client";
 import { Button } from "@/miz/themes/react/components/button/page";
-import { useEffect } from "react";
-import Link from "next/link";
-import { router } from "better-auth/api";
-import { routes } from "@/lib/routes/routes";
+import { useEffect, useState } from "react";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuGroup,
+} from "@/miz/themes/react/components/dropdown-menu/page";
+import NotificationDropdown from "./NotificationDropdown";
 
 export default function Header({ role, theme, setTheme }) {
 	const items = getHeaderItems().sort((a,b) => a.order - b.order);
+
 	function handelThemeWebSite(event){
 		setTheme((event.target.checked) ? "light" : "dark");
 	}
@@ -36,13 +44,13 @@ export default function Header({ role, theme, setTheme }) {
 			</div>
 			<div className="d-flex align-items-center gap-6">
 				<input type="checkbox" checked={(theme == "light") ? true : false} onChange={(event) => handelThemeWebSite(event)}/>
-				<Link href={routes.admin.panel.settings}>
-					<i className="icon icon-setting-2 txt-size-mid-title"></i>
-				</Link>
-				<div className="position-relative">
-					<i className="icon icon-notification txt-size-mid-title"></i>
-					<span className="badge bg-danger-regular-color aspect-ratio-1x1 radius-all-full h-50 d-flex justify-content-center align-items-center txt-size-small white-color position-absolute top-0 inset-start-0">3</span>
-				</div>
+				<i className="icon icon-setting-2 txt-size-mid-title"></i>
+				
+				
+				<NotificationDropdown />
+
+
+				
 				<div className="d-flex gap-2 align-items-center">
 					<div className="d-flex flex-column ">
 						<span className="text-color">test</span>
