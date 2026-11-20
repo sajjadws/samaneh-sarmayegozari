@@ -8,7 +8,7 @@ model User {
     username            String?          @unique
     displayUsername     String?
     roleId              String?
-    role                Role?            @relation(fields: [roleId], references: [id], onDelete: SetNull)
+    role                Role?            @relation(fields: [roleId], references: [id])
     status              UserStatus       @default(ACTIVE)
     wallet              Wallet?
     userInformation     UserInformation?
@@ -16,7 +16,8 @@ model User {
     sessions            Session[]
     accounts            Account[]
     teamProjects        TeamProject[]
-    userPermission      UserPermission[]
+    userPermission      UserPermission[] @relation("userPermissions")
+    assignedPermissions UserPermission[] @relation("assignedPermissions")
     createdAt           DateTime         @default(now())
     updatedAt           DateTime         @updatedAt
 }

@@ -23,15 +23,17 @@ model Permission {
 model UserPermission {
     id           String     @id @default(cuid())
     userId       String
-    user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    user         User       @relation("userPermissions", fields: [userId], references: [id], onDelete: Cascade)
     permissionId String
     permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+    assignedById String
+    assignedBy   User       @relation("assignedPermissions", fields: [assignedById], references: [id])
     assignedAt   DateTime   @default(now())
-    assignedBy   User?
 
     @@unique([userId, permissionId])
     @@index([userId])
     @@index([permissionId])
+    @@index([assignedById])
 }
 
 model RolePermission {
