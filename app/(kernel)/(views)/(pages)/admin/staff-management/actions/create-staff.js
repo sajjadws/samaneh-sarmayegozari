@@ -4,7 +4,7 @@ import crypto from "node:crypto";
 import { auth } from "@/lib/authentication/auth";
 import prismaDB from "@/lib/prisma/prismaDB";
 import { authorizeAction, PERMISSIONS } from "@/lib/rbac";
-import { authorizationResult } from "@/lib/rbac/errors/authorization-error";
+import { authorizationResult } from "@/lib/rbac/helper/authorization-error";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";

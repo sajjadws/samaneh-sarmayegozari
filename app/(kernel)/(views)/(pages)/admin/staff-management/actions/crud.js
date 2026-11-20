@@ -3,7 +3,7 @@
 import prismaDB from "@/lib/prisma/prismaDB";
 import { authorizeAction, PERMISSIONS } from "@/lib/rbac";
 import { applyPermissionScope } from "@/lib/rbac/policies/scope-policy";
-import { authorizationResult } from "@/lib/rbac/errors/authorization-error";
+import { authorizationResult } from "@/lib/rbac/helper/authorization-error";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 

@@ -9,44 +9,6 @@ import "./sidebar.css";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/miz/components/react/collapsible/page";
 import { filterSidebarItems } from "@/lib/rbac/helper/can-access-sidebar";
 
-// function filterSidebarItems(items, permissions, isSuperAdmin) {
-//     return items
-//         .map((item) => {
-//             const allowed =
-//                 isSuperAdmin ||
-//                 !item.permission ||
-//                 Boolean(permissions?.[item.permission]?.allowed);
-
-//             const subList = item.subList?.length
-//                 ? filterSidebarItems(item.subList, permissions, isSuperAdmin)
-//                 : [];
-
-//             if (!allowed && subList.length === 0) {
-//                 return null;
-//             }
-
-//             return {
-//                 ...item,
-//                 subList,
-//             };
-//         })
-//         .filter(Boolean);
-// }
-
-// export default function Sidebar({
-//     permissions = {},
-//     isSuperAdmin = false,
-//     ...props
-// }) {
-//     const pathname = usePathname();
-
-//     const [isClosed, setIsClosed] = useState(false);
-//     const [isOpening, setIsOpening] = useState(false);
-//     const [hiddenTitles, setHiddenTitles] = useState(() => new Set());
-//     const [isOpen, setIsOpen] = useState(false);
-
-//     const { asideClassName, titleClassName, linkClassName } = props;
-
 export default function Sidebar({ permissions, roles, isSuperAdmin, ...props }) {
 	const { asideClassName, titleClassName, linkClassName } = props;
 

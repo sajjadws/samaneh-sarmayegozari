@@ -1,19 +1,15 @@
-import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
 import ContentPage from "./components/content";
 import { getAdminLoginStatus } from "./actions/authentication";
-import { connection } from "next/server";
 
 export default async function LoginAdminPage() {
-    await connection();
-    const status = await getAdminLoginStatus();
+	const data = await getAdminLoginStatus();
 
-    if (status.authenticated && !status.isAdmin) notFound();
-    if (status.isAdmin) redirect("/admin/dashboard");
+console.log('dataaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', data)
 
-    return (
-        <Suspense>
-            <ContentPage />
-        </Suspense>
-    );
+	return (
+		<Suspense fallback={<div>loading...</div>}>
+			<ContentPage />
+		</Suspense>
+	);
 }

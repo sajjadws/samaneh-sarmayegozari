@@ -5,7 +5,7 @@ enum ProjectStatus {
 }
 
 model Project {
-  id           String @id @default(uuid())
+  id           String @id @default(cuid())
   title        String @db.VarChar(50)
   description  String @db.VarChar(255)
   durationDate String @map("duration_date")
@@ -24,7 +24,7 @@ model Project {
 }
 
 model ProjectPhase {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   title       String @db.VarChar(50)
   description String @db.VarChar(250)
 
@@ -65,7 +65,7 @@ enum InvestmentStatus {
 }
 
 model FileProject {
-  id       String   @id @default(uuid())
+  id       String   @id @default(cuid())
   fileName String   @db.VarChar(255)
   filePath String   @db.VarChar(500)
   fileType FileType
@@ -78,7 +78,7 @@ model FileProject {
 }
 
 model Investment {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
@@ -98,7 +98,7 @@ model Investment {
 }
 
 model ProjectPhaseInvestment {
-  id String @id @default(uuid())
+  id String @id @default(cuid())
 
   investmentId String
   investment   Investment @relation(fields: [investmentId], references: [id], onDelete: Cascade)
@@ -112,7 +112,7 @@ model ProjectPhaseInvestment {
 }
 
 model QuestionProject {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   title       String @db.VarChar(100)
   description String @db.VarChar(500)
 
@@ -124,7 +124,7 @@ model QuestionProject {
 }
 
 model TeamProject {
-  id        String @id @default(uuid())
+  id        String @id @default(cuid())
   fullName  String @db.VarChar(100)
   semat     String @db.VarChar(100)
   expertise String @db.VarChar(255)

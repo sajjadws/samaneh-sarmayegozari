@@ -3,7 +3,7 @@
 import prismaDB from "@/lib/prisma/prismaDB";
 import { authorize } from "@/lib/rbac/authorize";
 import { PERMISSIONS } from "@/lib/rbac/config/permissions";
-import { authorizationResult } from "@/lib/rbac/errors/authorization-error";
+import { authorizationResult } from "@/lib/rbac/helper/authorization-error";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
@@ -162,11 +162,19 @@ export async function assignUserRole(userId, roleId) {
 	try {
 		const actor = await authorize({ permission: PERMISSIONS.ROLES.ASSIGN });
 		if (!userId || !roleId) return result(false, 400, "کاربر و نقش الزامی هستند");
-		const role = await prismaDB.role.findUnique({ where: { id: roleId }, select: { id: true, name: true, isSuperAdmin: true, isSystem: true } });
+		const role = await prismaDB.role.findUnique({
+			where: { id: roleId },
+			select: { id: true, name: true, isSuperAdmin: true, isSystem: true },
+		});
 		if (!role) return result(false, 404, "نقش پیدا نشد");
-		if (role.isSuperAdmin || role.name === "admin") return result(false, 403, "تخصیص نقش SuperAdmin از این مسیر مجاز نیست");
-		if (role.isSystem && !actor.isSuperAdmin) return result(false, 403, "فقط SuperAdmin می‌تواند نقش سیستمی را تخصیص دهد");
-		const target = await prismaDB.userRole.findUnique({ where: { userId }, select: { role: { select: { isSuperAdmin: true } } } });
+		if (role.isSuperAdmin || role.name === "admin")
+			return result(false, 403, "تخصیص نقش SuperAdmin از این مسیر مجاز نیست");
+		if (role.isSystem && !actor.isSuperAdmin)
+			return result(false, 403, "فقط SuperAdmin می‌تواند نقش سیستمی را تخصیص دهد");
+		const target = await prismaDB.userRole.findUnique({
+			where: { userId },
+			select: { role: { select: { isSuperAdmin: true } } },
+		});
 		if (target?.role?.isSuperAdmin) return result(false, 403, "تغییر نقش حساب SuperAdmin از این مسیر مجاز نیست");
 		const assignment = await prismaDB.userRole.upsert({
 			where: { userId },

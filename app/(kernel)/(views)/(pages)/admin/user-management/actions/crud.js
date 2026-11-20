@@ -2,7 +2,7 @@
 
 import prismaDB from "@/lib/prisma/prismaDB";
 import { authorizeAction, applyPermissionScope, PERMISSIONS } from "@/lib/rbac";
-import { authorizationResult } from "@/lib/rbac/errors/authorization-error";
+import { authorizationResult } from "@/lib/rbac/helper/authorization-error";
 import { auth } from "@/lib/authentication/auth";
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";

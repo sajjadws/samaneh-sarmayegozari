@@ -9,8 +9,7 @@ model Session {
     createdAt DateTime @db.DateTime(3)
     updatedAt DateTime @db.DateTime(3)
 
-    @@index([userId], map: "session_userId_idx")
-    @@map("session")
+    @@index([userId])
 }
 
 model Account {
@@ -29,8 +28,7 @@ model Account {
     createdAt             DateTime  @db.DateTime(3)
     updatedAt             DateTime  @db.DateTime(3)
 
-    @@index([userId], map: "account_userId_idx")
-    @@map("account")
+    @@index([userId])
 }
 
 model Verification {
@@ -41,6 +39,5 @@ model Verification {
     createdAt  DateTime @db.DateTime(3)
     updatedAt  DateTime @db.DateTime(3)
 
-    @@index([identifier], map: "verification_identifier_idx")
-    @@map("verification")
+    @@index([identifier])
 }
