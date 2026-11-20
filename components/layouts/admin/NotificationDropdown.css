@@ -1,0 +1,8 @@
+.dropdown-menu-content {
+    width: 400px;
+    border-color: var(--border) !important;
+}
+
+.dropdown-menu-item {
+    border-color: var(--border) !important;
+}

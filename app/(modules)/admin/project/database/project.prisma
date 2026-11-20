@@ -14,7 +14,7 @@ model Project {
   isPublication Boolean       @default(false)
 
   userId String
-  user  User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
 
   phases           ProjectPhase[]
   questionProjects QuestionProject[]
