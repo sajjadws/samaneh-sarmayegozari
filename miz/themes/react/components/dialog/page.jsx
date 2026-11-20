@@ -2,11 +2,10 @@
 
 import * as React from "react"
 import { Dialog as DialogPrimitive } from "@base-ui/react/dialog"
-// import * as DialogPrimitive from "@base-ui/react/dialog";
 import { cn } from "cn"
 
 import { Button } from "../button/page"
-// import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
+import { XCircle, XCircleIcon } from "lucide-react"
 
 
 function Dialog({ ...props }) {
@@ -49,8 +48,9 @@ function DialogContent({
         className={cn("dialog-content", className)}
         {...props}
       >
-        {children}
 
+        {children}
+        
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"
@@ -58,20 +58,16 @@ function DialogContent({
               <Button
                 variant="ghost"
                 className="dialog-close"
-                size="icon-sm"
+                size={10}
               />
             }
           >
-            {/* <IconPlaceholder
-              lucide="XIcon"
-              tabler="IconX"
-              hugeicons="Cancel01Icon"
-              phosphor="XIcon"
-              remixicon="RiCloseLine"
-            /> */}
-            <span className="sr-only">Close</span>
+            <XCircle className="txt-size-high-title"/>
+
           </DialogPrimitive.Close>
         )}
+        
+          
       </DialogPrimitive.Popup>
     </DialogPortal>
   )
@@ -83,7 +79,9 @@ function DialogHeader({ className, ...props }) {
       data-slot="dialog-header"
       className={cn("dialog-header", className)}
       {...props}
-    />
+    >
+
+    </div>
   )
 }
 
@@ -101,11 +99,6 @@ function DialogFooter({
     >
       {children}
 
-      {showCloseButton && (
-        <DialogPrimitive.Close render={<Button variant="outline" />}>
-          Close
-        </DialogPrimitive.Close>
-      )}
     </div>
   )
 }
