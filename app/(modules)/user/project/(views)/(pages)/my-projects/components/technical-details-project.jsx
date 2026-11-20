@@ -16,6 +16,12 @@ import * as jalaali from "jalaali-js";
 
 const columnHelper = createColumnHelper();
 
+const steps = [
+  "اطلاعات اصلی طرح",
+  "اطلاعات فنی",
+  "تیم مجری",
+  "اسناد و تصاویر",
+];
 export default function TechnicalDetailsProject({ projectId, nextStep, previousStep, initialData }) {
 	const [phases, setPhases] = useState([]);
 	const [open, setOpen] = useState(false);
@@ -149,47 +155,42 @@ export default function TechnicalDetailsProject({ projectId, nextStep, previousS
 	}
 
 	const handleEditSave = async (values) => {
-    try {
-        if (!selectedPhase?.id) {
-            throw new Error("فازی برای ویرایش انتخاب نشده است.");
-        }
+		try {
+			if (!selectedPhase?.id) {
+				throw new Error("فازی برای ویرایش انتخاب نشده است.");
+			}
 
-        const formattedValues = {
-            ...values,
-            startDate: normalizeJalaliDate(values.startDate),
-            endDate: normalizeJalaliDate(values.endDate),
-        };
+			const formattedValues = {
+				...values,
+				startDate: normalizeJalaliDate(values.startDate),
+				endDate: normalizeJalaliDate(values.endDate),
+			};
 
-        console.log("Original values:", values);
-        console.log("Formatted values:", formattedValues);
+			console.log("Original values:", values);
+			console.log("Formatted values:", formattedValues);
 
-        const result = await updatePhase(
-            projectId,
-            selectedPhase.id,
-            formattedValues
-        );
+			const result = await updatePhase(projectId, selectedPhase.id, formattedValues);
 
-        if (!result?.ok) {
-            throw new Error(result?.message || "خطا در ویرایش فاز");
-        }
+			if (!result?.ok) {
+				throw new Error(result?.message || "خطا در ویرایش فاز");
+			}
 
-        toast.add({
-            title: "فاز با موفقیت ویرایش شد.",
-        });
+			toast.add({
+				title: "فاز با موفقیت ویرایش شد.",
+			});
 
-        setOpen(false);
-        setSelectedPhase(null);
+			setOpen(false);
+			setSelectedPhase(null);
 
-        await fetchPhases();
+			await fetchPhases();
+		} catch (error) {
+			console.error("Edit phase error:", error);
 
-    } catch (error) {
-        console.error("Edit phase error:", error);
-
-        toast.add({
-            title: error.message || "خطا در ویرایش فاز",
-        });
-    }
-};
+			toast.add({
+				title: error.message || "خطا در ویرایش فاز",
+			});
+		}
+	};
 
 	// ستون‌های جدول
 	const columns = [
@@ -257,91 +258,113 @@ export default function TechnicalDetailsProject({ projectId, nextStep, previousS
 	}
 
 	return (
-		<div className="px-8 bg-card-color radius-all-normal py-6">
-			<div className="mb-6">
-				<h2 className="text-xl font-bold">اطلاعات فنی طرح</h2>
+		<div className="d-flex flex-column gap-7 w-100">
+			
+				<h2 className="txt-size-mid-titile font-weight-bold">ایجاد طرح سرمایه گذاری جدید</h2>
+				<div className="documents-steps d-flex align-items-center w-100">
+					{steps.map((step, index) => (
+						<div className=" d-flex align-items-center grow-1 w-sm-100" key={step}>
+							<div
+								className={`documents-step ${
+									index === 0 ? "completed" : index === 1 ? "active" : "pending"
+								}`}
+							>
+								{step}
+							</div>
 
-				<p className="mt-2 text-sm">فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.</p>
+							{index !== steps.length - 1 && (
+								<div className="documents-step-arrow position-relative d-md-none">
+									<span></span>
+								</div>
+							)}
+						</div>
+					))}
+				</div>
+		
+			<div className="px-8 bg-card-color radius-all-normal py-6">
+				<div className="mb-6">
+					<h2 className="text-xl font-bold">اطلاعات فنی طرح</h2>
+					<p className="mt-2 text-sm">فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.</p>
+					<Separator />
+				</div>
 
-				<Separator />
-			</div>
+				{/* افزودن فاز */}
+				<div className="mb-5">
+					<CreatePhaseModal projectId={projectId} onSaved={fetchPhases} />
+				</div>
 
-			{/* افزودن فاز */}
-			<div className="mb-5">
-				<CreatePhaseModal projectId={projectId} onSaved={fetchPhases} />
-			</div>
-
-			{/* جدول فازها */}
-			{loading ? (
-				<p className="py-5 text-center">در حال دریافت فازها...</p>
-			) : phases.length === 0 ? (
-				<div className="border rounded-md p-5 text-center">هنوز فازی برای این پروژه ثبت نشده است.</div>
-			) : (
-				<DataTable className="w-100" columns={columns} data={phases} options={[]} />
-			)}
-
-			{/* مودال حذف */}
-			<DeleteConfirmModal
-				open={deleteOpen}
-				onOpenChange={(value) => {
-					setDeleteOpen(value);
-
-					if (!value) {
-						setSelectedPhase(null);
-					}
-				}}
-				onConfirm={handleDelete}
-				loading={deleteLoading}
-				title="حذف این فاز؟"
-				description="آیا از حذف این فاز اطمینان دارید؟ این عملیات قابل بازگشت نیست."
-			/>
-
-			{/* مودال ویرایش فاز */}
-			<Modal
-				open={open}
-				onOpenChange={(value) => {
-					setOpen(value);
-
-					if (!value) {
-						setSelectedPhase(null);
-					}
-				}}
-				title="ویرایش فاز"
-			>
-				{open && selectedPhase && (
-					<CreateFormPhase
-						key={selectedPhase.id}
-						initialData={{
-							...selectedPhase,
-
-							// تبدیل تاریخ میلادی دیتابیس به شمسی
-							startDate: convertToJalaliDate(selectedPhase.startDate),
-
-							endDate: convertToJalaliDate(selectedPhase.endDate),
-
-							// هماهنگ کردن نام فیلدهای دیتابیس با فرم
-							targetAmount: String(selectedPhase.totalAmount ?? ""),
-							expectedRevenue: String(selectedPhase.ProjectedRevenue ?? ""),
-							expectedProfit: String(selectedPhase.profitAmount ?? ""),
-						}}
-						onSave={handleEditSave}
-						onCancel={() => {
-							setOpen(false);
-							setSelectedPhase(null);
-						}}
-					/>
+				{/* جدول فازها */}
+				{loading ? (
+					<p className="py-5 text-center">در حال دریافت فازها...</p>
+				) : phases.length === 0 ? (
+					<div className="border rounded-md p-5 text-center">هنوز فازی برای این پروژه ثبت نشده است.</div>
+				) : (
+					<DataTable className="w-100" columns={columns} data={phases} options={[]} />
 				)}
-			</Modal>
 
-			{/* دکمه‌های مراحل */}
-			<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
-				<Button type="button" onClick={previousStep}>
-					مرحله قبل
-				</Button>
+				{/* مودال حذف */}
+				<DeleteConfirmModal
+					open={deleteOpen}
+					onOpenChange={(value) => {
+						setDeleteOpen(value);
 
-				<Button type="button" onClick={() => nextStep({})}>
-					مرحله بعد ←
-				</Button>
+						if (!value) {
+							setSelectedPhase(null);
+						}
+					}}
+					onConfirm={handleDelete}
+					loading={deleteLoading}
+					title="حذف این فاز؟"
+					description="آیا از حذف این فاز اطمینان دارید؟ این عملیات قابل بازگشت نیست."
+				/>
+
+				{/* مودال ویرایش فاز */}
+				<Modal
+					open={open}
+					onOpenChange={(value) => {
+						setOpen(value);
+
+						if (!value) {
+							setSelectedPhase(null);
+						}
+					}}
+					title="ویرایش فاز"
+				>
+					{open && selectedPhase && (
+						<CreateFormPhase
+							key={selectedPhase.id}
+							initialData={{
+								...selectedPhase,
+
+								// تبدیل تاریخ میلادی دیتابیس به شمسی
+								startDate: convertToJalaliDate(selectedPhase.startDate),
+
+								endDate: convertToJalaliDate(selectedPhase.endDate),
+
+								// هماهنگ کردن نام فیلدهای دیتابیس با فرم
+								targetAmount: String(selectedPhase.totalAmount ?? ""),
+								expectedRevenue: String(selectedPhase.ProjectedRevenue ?? ""),
+								expectedProfit: String(selectedPhase.profitAmount ?? ""),
+							}}
+							onSave={handleEditSave}
+							onCancel={() => {
+								setOpen(false);
+								setSelectedPhase(null);
+							}}
+						/>
+					)}
+				</Modal>
+
+				{/* دکمه‌های مراحل */}
+				<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
+					<Button type="button" onClick={previousStep}>
+						مرحله قبل
+					</Button>
+
+					<Button type="button" onClick={() => nextStep({})}>
+						مرحله بعد ←
+					</Button>
+				</div>
 			</div>
 		</div>
 	);

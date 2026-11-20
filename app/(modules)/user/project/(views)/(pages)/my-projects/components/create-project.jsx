@@ -11,7 +11,7 @@ import TechnicalDetailsProject from "./technical-details-project";
 import ExecutionTeam from "./execution-team";
 import ProjectDocumentsMedia from "./project-documents-media";
 import ProjectSuccess from "./project-success";
-
+import { Plus } from "lucide-react";
 import {
 	createProject,
 	updateProject,
@@ -223,59 +223,44 @@ export default function CreateProject() {
 	};
 
 	// ثبت نهایی تمام اطلاعات
-	
-const handleSubmit = async () => {
-  try {
-    setLoading(true);
 
-    // جدا کردن فایل‌ها از اطلاعات پروژه
-    const {
-      image,
-      images,
-      documents,
-      ...projectData
-    } = formData;
+	const handleSubmit = async () => {
+		try {
+			setLoading(true);
 
-    // مرحله اول: ثبت پروژه و اطلاعات وابسته
-    const res = await createProject(projectData);
+			// جدا کردن فایل‌ها از اطلاعات پروژه
+			const { image, images, documents, ...projectData } = formData;
 
-    if (!res?.ok && !res?.success) {
-      throw new Error(
-        res?.message || "ثبت پروژه با خطا مواجه شد"
-      );
-    }
+			// مرحله اول: ثبت پروژه و اطلاعات وابسته
+			const res = await createProject(projectData);
 
-    // دریافت شناسه پروژه ایجادشده
-    const project =
-      res?.data?.project ||
-      res?.project ||
-      res?.data;
+			if (!res?.ok && !res?.success) {
+				throw new Error(res?.message || "ثبت پروژه با خطا مواجه شد");
+			}
 
-    const projectId = project?.id;
+			// دریافت شناسه پروژه ایجادشده
+			const project = res?.data?.project || res?.project || res?.data;
 
-    if (!projectId) {
-      throw new Error(
-        "پروژه ثبت شد اما شناسه آن دریافت نشد"
-      );
-    }
+			const projectId = project?.id;
 
-    // مرحله دوم: آپلود تصاویر و مدارک
-    await uploadProjectFiles(projectId, formData);
+			if (!projectId) {
+				throw new Error("پروژه ثبت شد اما شناسه آن دریافت نشد");
+			}
 
-    // مرحله سوم: نمایش موفقیت
-    setSuccessProject(project);
+			// مرحله دوم: آپلود تصاویر و مدارک
+			await uploadProjectFiles(projectId, formData);
 
-  } catch (error) {
-    console.error("Create Project Error:", error);
+			// مرحله سوم: نمایش موفقیت
+			setSuccessProject(project);
+		} catch (error) {
+			console.error("Create Project Error:", error);
 
-    // پیام خطا را با سیستم Toast پروژه نمایش بده
-    console.error(error.message);
-
-  } finally {
-    setLoading(false);
-  }
-};
-
+			// پیام خطا را با سیستم Toast پروژه نمایش بده
+			console.error(error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	// بستن و بازنشانی فرم
 	const onClose = () => {
@@ -301,7 +286,10 @@ const handleSubmit = async () => {
 
 	return (
 		<>
-			<Button onClick={handleOpen}>ایجاد طرح جدید</Button>
+			<Button onClick={handleOpen}>
+				<Plus />
+				ایجاد طرح جدید
+			</Button>
 
 			<Modal
 				open={open}
