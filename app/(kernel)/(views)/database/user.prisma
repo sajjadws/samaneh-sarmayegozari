@@ -32,3 +32,9 @@ model UserInformation {
     createdAt    DateTime @default(now())
     updatedAt    DateTime @updatedAt
 }
+
+enum UserStatus {
+    ACTIVE
+    DEACTIVE
+    SUSPENSE
+}
