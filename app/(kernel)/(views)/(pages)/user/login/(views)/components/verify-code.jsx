@@ -33,12 +33,15 @@ export default function VerifyCode({ userData, handleChangeStep }) {
 			title: res?.message,
 		});
 
-		if(res?.ok){
-			setTimeout(() => {
-				router.push("/");
-				// router.push(routes.user.panel);
-			}, 1000);
-		}
+		// if(res?.ok){
+		// 	setTimeout(() => {
+		// 		router.push("/");
+		// 		// router.push(routes.user.panel);
+		// 	}, 1000);
+		// }
+
+		// handleChangeStep(3, res?.data)
+		handleChangeStep(3);
 	}
 
 	return (
