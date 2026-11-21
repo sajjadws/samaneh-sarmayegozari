@@ -16,16 +16,16 @@ export async function getAdminLoginStatus() {
 		include: { role: true },
 	});
 
+	console.log("user.role", user.role);
 
-
-	const isAdmin = user.role?.name === "superAdmin";
+	const isAdmin = user.role?.perm === "SUPERADMIN";
 	return { authenticated: true, isAdmin };
 }
 
 export async function verifyAdminSession() {
 	try {
 		const status = await getAdminLoginStatus();
-		
+
 		return status.isAdmin
 			? { ok: true }
 			: { ok: false, message: "این حساب کاربری اجازه ورود به پنل مدیریت را ندارد." };

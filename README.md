@@ -7,3 +7,6 @@ node --env-file=.env --import=tsx prisma/seed.js
 git rm --cached public/css/miz.min.css
 git rm --cached public/css/style.min.css
 git rm -r --cached .
+
+username: "superadmin",
+password: "admin1234",
