@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { Modal } from "@/miz/components/react/modal/page";
 import { Button } from "@/miz/components/react/button/page";
-
+import { Plus } from "lucide-react";
 import CreateFormPhase from "./creat-form-phase";
 
 import { createPhase } from "../actions/crud";
@@ -35,6 +35,7 @@ export default function CreatePhaseModal({ projectId, onSaved }) {
     return (
         <>
             <Button onClick={() => setOpen(true)}>
+            <Plus />
                 افزودن فاز جدید
             </Button>
 

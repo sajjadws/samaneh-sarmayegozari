@@ -9,13 +9,9 @@ import { Button } from "@/miz/themes/react/components/button/page";
 import { toast } from "@/miz/components/react/toast/page";
 import { IconTrash, IconEdit } from "@tabler/icons-react";
 import { createProjectTeam, updateProjectTeam, deleteProjectTeam } from "../actions/crud";
+import { MoveLeft, MoveRight, Plus } from "lucide-react";
 
-const steps = [
-  "اطلاعات اصلی طرح",
-  "اطلاعات فنی",
-  "تیم مجری",
-  "اسناد و تصاویر",
-];
+const steps = ["اطلاعات اصلی طرح", "اطلاعات فنی", "تیم مجری", "اسناد و تصاویر"];
 
 export default function ExecutionTeam({ projectId, teamMembers = [], onRefresh, nextStep, previousStep }) {
 	const [editOpen, setEditOpen] = useState(false);
@@ -116,10 +112,12 @@ export default function ExecutionTeam({ projectId, teamMembers = [], onRefresh, 
 	];
 
 	return (
-		<div className="d-flex flex-column gap-7 w-100">
-				<div className="documents-steps d-flex align-items-center w-100">
+		<div className="scroll-form overflow-hidden width-modal">
+			<div className="d-flex flex-column gap-7 w-100 overflow-y-scroll">
+        <h2 className="txt-size-mid-titile font-weight-bold">ایجاد طرح سرمایه گذاری جدید</h2>
+				<div className="documents-steps d-flex align-items-center justify-content-space-between w-100">
 					{steps.map((step, index) => (
-						<div className="d-flex align-items-center grow-1 w-sm-100" key={step}>
+						<div className="d-flex align-items-center w-fit-content w-sm-100" key={step}>
 							<div
 								className={`documents-step ${
 									index < 2 ? "completed" : index === 2 ? "active" : "pending"
@@ -136,51 +134,58 @@ export default function ExecutionTeam({ projectId, teamMembers = [], onRefresh, 
 						</div>
 					))}
 				</div>
-			<div className="px-8 py-6 bg-card-color radius-all-normal">
-				<div className="mb-6">
-					<h2 className="text-xl font-bold"> تیم مجری</h2>
-					<p className="mt-2 text-sm"> اعضای تیم، اطلاعات تخصصی و مسئولیت هر یک را معرفی کنید.</p>
+				<div className="bg-card-color radius-all-normal px-6 py-6 d-flex flex-column gap-6">
+					<div className="d-flex flex-column gap-1">
+						<h2 className="txt-size-title font-weight-bold"> تیم مجری</h2>
+						<p className="txt-size-normal text-color font-weight-medium mb-2"> اعضای تیم، اطلاعات تخصصی و مسئولیت هر یک را معرفی کنید.</p>
+						<Separator />
+					</div>
 
-					<Separator />
-				</div>
+					{/* دکمه افزودن عضو */}
+					<div className="d-flex justify-content-end">
+						<Button
+							onClick={() => {
+								setSelectedMember(null);
+								setCreateOpen(true);
+							}}
+						>
+            <Plus />
+							افزودن عضو جدید
+						</Button>
+					</div>
 
-				{/* دکمه افزودن عضو */}
-				<div className="mb-4">
-					<Button
-						onClick={() => {
-							setSelectedMember(null);
-							setCreateOpen(true);
+					{/* جدول اعضای تیم */}
+					<DataTable className="w-100" columns={columns} data={teamMembers} options={[]} />
+
+					{/* مودال افزودن */}
+					<CreateTeamModal open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreateSave} />
+
+					{/* مودال ویرایش */}
+					<CreateTeamModal
+						open={editOpen}
+						onOpenChange={(value) => {
+							setEditOpen(value);
+
+							if (!value) {
+								setSelectedMember(null);
+							}
 						}}
-					>
-						افزودن عضو جدید
-					</Button>
-				</div>
+						initialMember={selectedMember}
+						onSave={handleEditSave}
+					/>
 
-				{/* جدول اعضای تیم */}
-				<DataTable className="w-100" columns={columns} data={teamMembers} options={[]} />
+					{/* دکمه‌های مرحله */}
+					<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
+						<Button onClick={previousStep}>
+							<MoveRight />
+							مرحله قبل
+						</Button>
 
-				{/* مودال افزودن */}
-				<CreateTeamModal open={createOpen} onOpenChange={setCreateOpen} onSave={handleCreateSave} />
-
-				{/* مودال ویرایش */}
-				<CreateTeamModal
-					open={editOpen}
-					onOpenChange={(value) => {
-						setEditOpen(value);
-
-						if (!value) {
-							setSelectedMember(null);
-						}
-					}}
-					initialMember={selectedMember}
-					onSave={handleEditSave}
-				/>
-
-				{/* دکمه‌های مرحله */}
-				<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
-					<Button onClick={previousStep}>مرحله قبل</Button>
-
-					<Button onClick={nextStep}>مرحله بعد ←</Button>
+						<Button onClick={nextStep}>
+							مرحله بعد
+							<MoveLeft />
+						</Button>
+					</div>
 				</div>
 			</div>
 		</div>

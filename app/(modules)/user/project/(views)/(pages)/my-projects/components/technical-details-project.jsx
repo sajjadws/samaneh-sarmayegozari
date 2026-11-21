@@ -13,15 +13,11 @@ import CreatePhaseModal from "./creat-phase-modal";
 import { updatePhase, getProjectPhases, deletePhase } from "../actions/crud";
 import { toast } from "@/miz/components/react/toast/page";
 import * as jalaali from "jalaali-js";
+import { MoveLeft, MoveRight } from "lucide-react";
 
 const columnHelper = createColumnHelper();
 
-const steps = [
-  "اطلاعات اصلی طرح",
-  "اطلاعات فنی",
-  "تیم مجری",
-  "اسناد و تصاویر",
-];
+const steps = ["اطلاعات اصلی طرح", "اطلاعات فنی", "تیم مجری", "اسناد و تصاویر"];
 export default function TechnicalDetailsProject({ projectId, nextStep, previousStep, initialData }) {
 	const [phases, setPhases] = useState([]);
 	const [open, setOpen] = useState(false);
@@ -258,46 +254,44 @@ export default function TechnicalDetailsProject({ projectId, nextStep, previousS
 	}
 
 	return (
-		<div className="d-flex flex-column gap-7 w-100">
-			
-				<h2 className="txt-size-mid-titile font-weight-bold">ایجاد طرح سرمایه گذاری جدید</h2>
-				<div className="documents-steps d-flex align-items-center w-100">
-					{steps.map((step, index) => (
-						<div className=" d-flex align-items-center grow-1 w-sm-100" key={step}>
-							<div
-								className={`documents-step ${
-									index === 0 ? "completed" : index === 1 ? "active" : "pending"
-								}`}
-							>
-								{step}
-							</div>
-
-							{index !== steps.length - 1 && (
-								<div className="documents-step-arrow position-relative d-md-none">
-									<span></span>
-								</div>
-							)}
+		<div className="scroll-form overflow-hidden width-modal">
+			<div className="d-flex flex-column gap-7 w-100 overflow-y-scroll">
+			<h2 className="txt-size-mid-titile font-weight-bold">ایجاد طرح سرمایه گذاری جدید</h2>
+			<div className="documents-steps d-flex align-items-center justify-content-space-between w-100">
+				{steps.map((step, index) => (
+					<div className=" d-flex align-items-center w-fit-content w-sm-100" key={step}>
+						<div
+							className={`documents-step ${
+								index === 0 ? "completed" : index === 1 ? "active" : "pending"
+							}`}
+						>
+							{step}
 						</div>
-					))}
-				</div>
-		
-			<div className="px-8 bg-card-color radius-all-normal py-6">
-				<div className="mb-6">
-					<h2 className="text-xl font-bold">اطلاعات فنی طرح</h2>
-					<p className="mt-2 text-sm">فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.</p>
+
+						{index !== steps.length - 1 && (
+							<div className="documents-step-arrow position-relative d-md-none">
+								<span></span>
+							</div>
+						)}
+					</div>
+				))}
+			</div>
+
+			<div className="bg-card-color radius-all-normal px-6 py-6 shadow-light d-flex flex-column gap-6">
+				<div className="d-flex flex-column gap-1">
+					<h2 className="txt-size-title font-weight-bold">اطلاعات فنی طرح</h2>
+					<p className="txt-size-normal text-color font-weight-medium mb-2">فازهای اجرای طرح و زمان‌بندی هر فاز را مشخص کنید.</p>
 					<Separator />
 				</div>
 
 				{/* افزودن فاز */}
-				<div className="mb-5">
+				<div className="d-flex justify-content-end">
 					<CreatePhaseModal projectId={projectId} onSaved={fetchPhases} />
 				</div>
 
 				{/* جدول فازها */}
 				{loading ? (
 					<p className="py-5 text-center">در حال دریافت فازها...</p>
-				) : phases.length === 0 ? (
-					<div className="border rounded-md p-5 text-center">هنوز فازی برای این پروژه ثبت نشده است.</div>
 				) : (
 					<DataTable className="w-100" columns={columns} data={phases} options={[]} />
 				)}
@@ -356,16 +350,20 @@ export default function TechnicalDetailsProject({ projectId, nextStep, previousS
 				</Modal>
 
 				{/* دکمه‌های مراحل */}
-				<div className="project-modal-footer mt-6 d-flex justify-content-space-between">
+				<div className="project-modal-footer d-flex justify-content-space-between">
 					<Button type="button" onClick={previousStep}>
+						<MoveRight />
 						مرحله قبل
 					</Button>
 
 					<Button type="button" onClick={() => nextStep({})}>
-						مرحله بعد ←
+						مرحله بعد 
+						<MoveLeft />
 					</Button>
 				</div>
 			</div>
 		</div>
+		</div>
+		
 	);
 }
