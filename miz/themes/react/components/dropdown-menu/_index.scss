@@ -3,8 +3,6 @@
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
 
-
-
 /* =====================================
    1. DropdownMenuContent
    استایل محتوای اصلی منوی کشویی
@@ -16,14 +14,13 @@
   overflow-y: auto;
   outline: none;
 
-  @extend .overflow-x-hidden, .z-index-10, .w-100 ;
+  @extend .overflow-x-hidden, .z-index-10, .w-100;
 }
 
 /* مخفی شدن محتوای منو هنگام بسته شدن */
 .dropdown-menu-content[data-closed] {
   @extend .overflow-hidden;
 }
-
 
 /* =====================================
    2. DropdownMenuContent
@@ -33,9 +30,8 @@
 .dropdown-menu-positioner {
   isolation: isolate;
   outline: none;
-  @extend  .z-index-10;
+  @extend .z-index-10;
 }
-
 
 /* =====================================
    3. DropdownMenuItem
@@ -61,7 +57,6 @@
   flex-shrink: 0;
 }
 
-
 /* =====================================
    4. DropdownMenuSubTrigger
    استایل بازکننده زیرمنو
@@ -75,7 +70,6 @@
 
 /* زمانی که زیرمنو باز است */
 .dropdown-submenu-trigger[data-popup-open] {
-
   @extend .bg-primary-color, .on-primary-color;
 }
 
@@ -84,7 +78,6 @@
   pointer-events: none;
   flex-shrink: 0;
 }
-
 
 /* =====================================
    5. DropdownMenuCheckboxItem
@@ -115,7 +108,6 @@
   pointer-events: none;
 }
 
-
 /* =====================================
    6. DropdownMenuRadioItem
    استایل آیتم رادیویی
@@ -124,7 +116,7 @@
 .dropdown-radio-item {
   outline: none;
 
-  @extend  .d-flex, .position-relative, .align-items-center, .cursor-default, .user-select-none;
+  @extend .d-flex, .position-relative, .align-items-center, .cursor-default, .user-select-none;
 }
 
 /* رادیو غیرفعال */
@@ -139,7 +131,6 @@
   flex-shrink: 0;
 }
 
-
 /* =====================================
    7. DropdownMenuSeparator
    خط جداکننده آیتم‌ها
@@ -149,7 +140,6 @@
   @extend .w-100, .bg-primary-color;
 }
 
-
 /* =====================================
    8. DropdownMenuSubContent
    محتوای زیرمنو
@@ -158,7 +148,6 @@
 .dropdown-submenu-content {
   width: auto;
 }
-
 
 /* =====================================
    9. DropdownMenuShortcut

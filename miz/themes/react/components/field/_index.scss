@@ -2,7 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
+@use "sass:map";
 
 /* =========================================
    1. FieldSet
@@ -13,7 +13,6 @@
   @extend .d-flex, .flex-column;
 }
 
-
 /* =========================================
    2. FieldLegend
    عنوان مجموعه فیلدها
@@ -22,7 +21,6 @@
 .field-legend {
   /* استایل اختصاصی در کد اصلی مشخص نشده است */
 }
-
 
 /* =========================================
    3. FieldGroup
@@ -36,7 +34,6 @@
   @extend .d-flex, .w-100, .flex-column;
 }
 
-
 /* =========================================
    4. Field
    نگهدارنده اصلی هر فیلد
@@ -45,7 +42,6 @@
 .field {
   @extend .d-flex, .w-100;
 }
-
 
 /* حالت عمودی Field */
 
@@ -60,7 +56,6 @@
 .field[data-orientation="vertical"] > .sr-only {
   width: auto;
 }
-
 
 /* حالت افقی Field */
 
@@ -79,11 +74,9 @@
 }
 
 /* فاصله عمودی برای checkbox و radio */
-.field[data-orientation="horizontal"]:has(> [data-slot="field-content"])
-  > :is([role="checkbox"], [role="radio"]) {
+.field[data-orientation="horizontal"]:has(> [data-slot="field-content"]) > :is([role="checkbox"], [role="radio"]) {
   margin-top: 1px;
 }
-
 
 /* حالت واکنش‌گرا Field */
 
@@ -112,17 +105,14 @@
     @extend .align-items-flex-start;
   }
 
-  .field[data-orientation="responsive"]
-    > [data-slot="field-label"] {
+  .field[data-orientation="responsive"] > [data-slot="field-label"] {
     flex: auto;
   }
 
-  .field[data-orientation="responsive"]:has(> [data-slot="field-content"])
-    > :is([role="checkbox"], [role="radio"]) {
+  .field[data-orientation="responsive"]:has(> [data-slot="field-content"]) > :is([role="checkbox"], [role="radio"]) {
     margin-top: 1px;
   }
 }
-
 
 /* =========================================
    5. FieldContent
@@ -134,7 +124,6 @@
 
   @extend .d-flex, .grow-1, .flex-column;
 }
-
 
 /* =========================================
    6. FieldLabel
@@ -150,16 +139,14 @@
   @extend .d-flex, .w-100, .flex-column;
 }
 
-
 /* =========================================
    7. FieldTitle
    عنوان داخلی فیلد
 ========================================= */
 
 .field-title {
-  @extend .d-flex,  .w-fit-content, .align-items-center;
+  @extend .d-flex, .w-fit-content, .align-items-center;
 }
-
 
 /* =========================================
    8. FieldDescription
@@ -172,8 +159,7 @@
 }
 
 /* وقتی فیلد حالت افقی دارد */
-.field-group:has(.field[data-orientation="horizontal"])
-  .field-description {
+.field-group:has(.field[data-orientation="horizontal"]) .field-description {
   @extend .txt-wrap-balance;
 }
 
@@ -197,7 +183,6 @@
   color: var(--primary);
 }
 
-
 /* =========================================
    9. FieldSeparator
    جداکننده بین فیلدها
@@ -206,7 +191,6 @@
 .field-separator {
   @extend .position-relative;
 }
-
 
 /* =========================================
    10. FieldSeparatorLine
@@ -218,7 +202,6 @@
   @extend .position-absolute, .top-50;
 }
 
-
 /* =========================================
    11. FieldSeparatorContent
    متن وسط جداکننده
@@ -228,9 +211,8 @@
   margin-right: auto;
   margin-left: auto;
   background-color: var(--background);
-  @extend .position-relative, .d-block,  .w-fit-content;
+  @extend .position-relative, .d-block, .w-fit-content;
 }
-
 
 /* =========================================
    12. FieldError
@@ -240,7 +222,6 @@
 .field-error {
   @extend .font-weight-regular;
 }
-
 
 /* =========================================
    13. FieldErrorList

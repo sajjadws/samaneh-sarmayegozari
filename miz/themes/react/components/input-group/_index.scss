@@ -2,20 +2,27 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
-
+@use "sass:map";
 
 /* =====================================
    INPUT GROUP
 ===================================== */
 
 .input-group {
-  transition: border-color 0.2s, box-shadow 0.2s;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
 
-  @extend .d-flex , .align-items-center , .position-relative , .w-100 , .bw-1 , .border-style-solid , .border-color , .radius-all-normal , .bg-on-primary-color ; 
+  @extend .d-flex,
+    .align-items-center,
+    .position-relative,
+    .w-100,
+    .bw-1,
+    .border-style-solid,
+    .border-color,
+    .radius-all-normal,
+    .bg-on-primary-color;
 }
-
 
 /* Focus State */
 
@@ -23,57 +30,55 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 
-
 /* Textarea Layout */
 
-.input-group:has(textarea) {  
-  
-  @extend .flex-wrap , .align-items-stretch;
+.input-group:has(textarea) {
+  @extend .flex-wrap, .align-items-stretch;
 }
-
 
 /* =====================================
    INPUT GROUP ADDON
 ===================================== */
 
 .input-group-addon {
-
-  @extend .d-flex , .user-select-none , .align-items-center , .justify-content-center , .gap-2 , .py-0 , .px-3 , .text-color , .bg-on-primary-color , .cursor-text , .px-md-2 ; 
+  @extend .d-flex,
+    .user-select-none,
+    .align-items-center,
+    .justify-content-center,
+    .gap-2,
+    .py-0,
+    .px-3,
+    .text-color,
+    .bg-on-primary-color,
+    .cursor-text,
+    .px-md-2;
 }
-
 
 /* Inline Start */
 
 .input-group-addon-inline-start {
   order: -1;
 
-  @extend .bw-1 , .border-style-solid , .border-color  ;
+  @extend .bw-1, .border-style-solid, .border-color;
 }
-
 
 /* Inline End */
 
 .input-group-addon-inline-end {
-
-  @extend .order-1 , .bw-1 , .border-style-solid , .border-color ;
+  @extend .order-1, .bw-1, .border-style-solid, .border-color;
 }
-
 
 /* Block Start */
 
 .input-group-addon-block-start {
-
-  @extend .w-100 , .justify-content-start , .p-3 , .bw-1 , .border-color , .border-style-solid ; 
+  @extend .w-100, .justify-content-start, .p-3, .bw-1, .border-color, .border-style-solid;
 }
-
 
 /* Block End */
 
 .input-group-addon-block-end {
-
-   @extend .w-100 , .justify-content-start , .p-3 , .bw-1 , .border-color , .border-style-solid ;
+  @extend .w-100, .justify-content-start, .p-3, .bw-1, .border-color, .border-style-solid;
 }
-
 
 /* =====================================
    INPUT GROUP BUTTON
@@ -82,38 +87,35 @@
 .input-group-button {
   border: none;
   box-shadow: none;
- 
-  @extend .align-items-center , .justify-content-center , .gap-1 , .cursor-pointer;
-}
 
+  @extend .align-items-center, .justify-content-center, .gap-1, .cursor-pointer;
+}
 
 /* Button Sizes */
 
 .input-group-button-xs {
   min-height: 26px;
 
-  @extend .py-1 , .px-2; 
+  @extend .py-1, .px-2;
 }
 
 .input-group-button-sm {
   min-height: 32px;
 
-  @extend .py-2 , .px-3; 
+  @extend .py-2, .px-3;
 }
 
 .input-group-button-icon-xs {
   width: 26px;
 
-  @extend .aspect-ratio-1x1 , .p-1; 
+  @extend .aspect-ratio-1x1, .p-1;
 }
 
 .input-group-button-icon-sm {
   width: 32px;
 
-  @extend .aspect-ratio-1x1 , .p-2; 
-
+  @extend .aspect-ratio-1x1, .p-2;
 }
-
 
 /* =====================================
    INPUT GROUP TEXT
@@ -123,7 +125,7 @@
   display: inline-flex;
   color: #6b7280;
 
-  @extend .align-items-center , .gap-2 , .txt-white-space-nowrap ;
+  @extend .align-items-center, .gap-2, .txt-white-space-nowrap;
 }
 
 .input-group-text svg {
@@ -131,9 +133,8 @@
   flex-shrink: 0;
   pointer-events: none;
 
-  @extend .aspect-ratio-1x1 ;
+  @extend .aspect-ratio-1x1;
 }
-
 
 /* =====================================
    INPUT GROUP INPUT
@@ -154,7 +155,6 @@
   box-shadow: none;
 }
 
-
 /* =====================================
    INPUT GROUP TEXTAREA
 ===================================== */
@@ -169,7 +169,7 @@
   box-shadow: none;
   background: transparent;
 
-  @extend .w-100 , .p-3 ;
+  @extend .w-100, .p-3;
 }
 
 .input-group-textarea:focus {
@@ -177,15 +177,11 @@
   box-shadow: none;
 }
 
-
 /* =====================================
    DISABLED STATE
 ===================================== */
 
 .input-group:has(input:disabled),
 .input-group:has(textarea:disabled) {
-
-  @extend .opacity-5 , .cursor-not-allowed;
+  @extend .opacity-5, .cursor-not-allowed;
 }
-
-

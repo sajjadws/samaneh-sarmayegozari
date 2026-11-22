@@ -102,56 +102,30 @@
 //   EmptyMedia,
 // }
 
-
-import { cva } from "class-variance-authority"
-import { cn } from "cn"
+import { cva } from "class-variance-authority";
+import { cn } from "cn";
 
 function Empty({ className, ...props }) {
-  return (
-    <div
-      data-slot="empty"
-      className={cn(
-        "empty-container",
-        className
-      )}
-      {...props}
-    />
-  )
+  return <div data-slot="empty" className={cn("empty-container", className)} {...props} />;
 }
 
 function EmptyHeader({ className, ...props }) {
-  return (
-    <div
-      data-slot="empty-header"
-      className={cn(
-        "empty-header",
-        className
-      )}
-      {...props}
-    />
-  )
+  return <div data-slot="empty-header" className={cn("empty-header", className)} {...props} />;
 }
 
-const emptyMediaVariants = cva(
-  "empty-media",
-  {
-    variants: {
-      variant: {
-        default: "empty-media-default",
-        icon: "empty-media-icon",
-      },
+const emptyMediaVariants = cva("empty-media", {
+  variants: {
+    variant: {
+      default: "empty-media-default",
+      icon: "empty-media-icon",
     },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+  },
+  defaultVariants: {
+    variant: "default",
+  },
+});
 
-function EmptyMedia({
-  className,
-  variant = "default",
-  ...props
-}) {
+function EmptyMedia({ className, variant = "default", ...props }) {
   return (
     <div
       data-slot="empty-icon"
@@ -159,50 +133,19 @@ function EmptyMedia({
       className={cn(emptyMediaVariants({ variant, className }))}
       {...props}
     />
-  )
+  );
 }
 
 function EmptyTitle({ className, ...props }) {
-  return (
-    <div
-      data-slot="empty-title"
-      className={cn("empty-title", className)}
-      {...props}
-    />
-  )
+  return <div data-slot="empty-title" className={cn("empty-title", className)} {...props} />;
 }
 
 function EmptyDescription({ className, ...props }) {
-  return (
-    <div
-      data-slot="empty-description"
-      className={cn(
-        "empty-description",
-        className
-      )}
-      {...props}
-    />
-  )
+  return <div data-slot="empty-description" className={cn("empty-description", className)} {...props} />;
 }
 
 function EmptyContent({ className, ...props }) {
-  return (
-    <div
-      data-slot="empty-content"
-      className={cn(
-        "empty-content",
-        className
-      )}
-      {...props}
-    />
-  )
+  return <div data-slot="empty-content" className={cn("empty-content", className)} {...props} />;
 }
 
-export {
-  Empty,
-  EmptyHeader,
-  EmptyTitle,
-  EmptyDescription,
-  EmptyContent,
-  EmptyMedia,
-}
+export { Empty, EmptyHeader, EmptyTitle, EmptyDescription, EmptyContent, EmptyMedia };

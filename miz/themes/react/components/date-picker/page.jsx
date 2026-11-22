@@ -2,17 +2,11 @@
 
 import { useMemo, useState } from "react";
 
-import {
-  DayPicker,
-  getDateLib,
-} from "react-day-picker/persian";
+import { DayPicker, getDateLib } from "react-day-picker/persian";
 
 import { useDayPicker } from "react-day-picker";
 
-import {
-  ChevronLeftIcon,
-  ChevronRightIcon,
-} from "lucide-react";
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 
 function PersianCalendar({
   className = "",
@@ -37,15 +31,9 @@ function PersianCalendar({
     };
   });
 
-  const {
-    onNextClick,
-    onPrevClick,
-    startMonth,
-    endMonth,
-  } = props;
+  const { onNextClick, onPrevClick, startMonth, endMonth } = props;
 
-  const columnsDisplayed =
-    navView === "years" ? 1 : numberOfMonths;
+  const columnsDisplayed = navView === "years" ? 1 : numberOfMonths;
 
   const calendarClassNames = useMemo(
     () => ({
@@ -56,10 +44,8 @@ function PersianCalendar({
       month: "calendar-month",
       caption: "calendar-caption",
       caption_label: "calendar-caption-label",
-      button_next:
-        "calendar-nav-button calendar-next-button",
-      button_previous:
-        "calendar-nav-button calendar-previous-button",
+      button_next: "calendar-nav-button calendar-next-button",
+      button_previous: "calendar-nav-button calendar-previous-button",
       nav: "calendar-navigation",
       month_grid: "calendar-month-grid",
       week: "calendar-week",
@@ -74,7 +60,7 @@ function PersianCalendar({
       disabled: "calendar-disabled",
       hidden: "calendar-hidden",
     }),
-    []
+    [],
   );
 
   return (
@@ -91,67 +77,31 @@ function PersianCalendar({
       classNames={calendarClassNames}
       components={{
         Chevron: ({ orientation }) => {
-          const Icon =
-            orientation === "left"
-              ? ChevronLeftIcon
-              : ChevronRightIcon;
+          const Icon = orientation === "left" ? ChevronLeftIcon : ChevronRightIcon;
 
           return <Icon className="calendar-chevron" />;
         },
 
         // دکمه‌های جابه‌جایی ماه و بازه سال
         Nav: ({ className: navClassName }) => {
-          const {
-            nextMonth,
-            previousMonth,
-            goToMonth,
-          } = useDayPicker();
+          const { nextMonth, previousMonth, goToMonth } = useDayPicker();
 
-          const range =
-            displayYears.to - displayYears.from + 1;
+          const range = displayYears.to - displayYears.from + 1;
 
-          const firstDayOfRange = dateLib.newDate(
-            displayYears.from,
-            0,
-            1
-          );
+          const firstDayOfRange = dateLib.newDate(displayYears.from, 0, 1);
 
-          const lastDayOfRange = dateLib.newDate(
-            displayYears.to,
-            11,
-            31
-          );
+          const lastDayOfRange = dateLib.newDate(displayYears.to, 11, 31);
 
           const isPreviousDisabled =
             navView === "years"
-              ? (
-                  (startMonth &&
-                    dateLib.isBefore(
-                      lastDayOfRange,
-                      startMonth
-                    )) ||
-                  (endMonth &&
-                    dateLib.isAfter(
-                      firstDayOfRange,
-                      endMonth
-                    ))
-                )
+              ? (startMonth && dateLib.isBefore(lastDayOfRange, startMonth)) ||
+                (endMonth && dateLib.isAfter(firstDayOfRange, endMonth))
               : !previousMonth;
 
           const isNextDisabled =
             navView === "years"
-              ? (
-                  (startMonth &&
-                    dateLib.isBefore(
-                      lastDayOfRange,
-                      startMonth
-                    )) ||
-                  (endMonth &&
-                    dateLib.isAfter(
-                      firstDayOfRange,
-                      endMonth
-                    ))
-                )
+              ? (startMonth && dateLib.isBefore(lastDayOfRange, startMonth)) ||
+                (endMonth && dateLib.isAfter(firstDayOfRange, endMonth))
               : !nextMonth;
 
           const handlePreviousClick = () => {
@@ -187,11 +137,7 @@ function PersianCalendar({
           };
 
           return (
-            <nav
-              className={`calendar-navigation ${
-                navClassName || ""
-              }`}
-            >
+            <nav className={`calendar-navigation ${navClassName || ""}`}>
               <button
                 type="button"
                 className="calendar-nav-button calendar-previous-button"
@@ -218,11 +164,7 @@ function PersianCalendar({
         // عنوان ماه و انتخاب سال
         CaptionLabel: ({ children, ...captionProps }) => {
           if (!showYearSwitcher) {
-            return (
-              <span {...captionProps}>
-                {children}
-              </span>
-            );
+            return <span {...captionProps}>{children}</span>;
           }
 
           return (
@@ -230,18 +172,12 @@ function PersianCalendar({
               type="button"
               className="calendar-year-switcher"
               onClick={() => {
-                setNavView((prev) =>
-                  prev === "days" ? "years" : "days"
-                );
+                setNavView((prev) => (prev === "days" ? "years" : "days"));
               }}
             >
               {navView === "days"
                 ? children
-                : `${dateLib.formatNumber(
-                    displayYears.from
-                  )} - ${dateLib.formatNumber(
-                    displayYears.to
-                  )}`}
+                : `${dateLib.formatNumber(displayYears.from)} - ${dateLib.formatNumber(displayYears.to)}`}
             </button>
           );
         },
@@ -251,85 +187,41 @@ function PersianCalendar({
           const { goToMonth, selected } = useDayPicker();
 
           if (navView === "years") {
-            const currentYear = dateLib.getYear(
-              dateLib.today()
-            );
+            const currentYear = dateLib.getYear(dateLib.today());
 
             return (
-              <div
-                className={`calendar-year-grid ${
-                  className || ""
-                }`}
-                {...gridProps}
-              >
+              <div className={`calendar-year-grid ${className || ""}`} {...gridProps}>
                 {Array.from(
                   {
-                    length:
-                      displayYears.to -
-                      displayYears.from +
-                      1,
+                    length: displayYears.to - displayYears.from + 1,
                   },
                   (_, index) => {
-                    const year =
-                      displayYears.from + index;
+                    const year = displayYears.from + index;
 
-                    const yearStart = dateLib.newDate(
-                      year,
-                      0,
-                      1
-                    );
+                    const yearStart = dateLib.newDate(year, 0, 1);
 
-                    const yearEnd = dateLib.newDate(
-                      year,
-                      11,
-                      31
-                    );
+                    const yearEnd = dateLib.newDate(year, 11, 31);
 
-                    const isBefore =
-                      startMonth &&
-                      dateLib.isBefore(
-                        yearEnd,
-                        startMonth
-                      );
+                    const isBefore = startMonth && dateLib.isBefore(yearEnd, startMonth);
 
-                    const isAfter =
-                      endMonth &&
-                      dateLib.isAfter(
-                        yearStart,
-                        endMonth
-                      );
+                    const isAfter = endMonth && dateLib.isAfter(yearStart, endMonth);
 
-                    const isDisabled =
-                      Boolean(isBefore || isAfter);
+                    const isDisabled = Boolean(isBefore || isAfter);
 
-                    const isCurrentYear =
-                      year === currentYear;
+                    const isCurrentYear = year === currentYear;
 
                     return (
                       <button
                         key={year}
                         type="button"
                         disabled={isDisabled}
-                        className={`calendar-year-button ${
-                          isCurrentYear
-                            ? "calendar-current-year"
-                            : ""
-                        }`}
+                        className={`calendar-year-button ${isCurrentYear ? "calendar-current-year" : ""}`}
                         onClick={() => {
-                          const baseDate =
-                            selected instanceof Date
-                              ? selected
-                              : dateLib.today();
+                          const baseDate = selected instanceof Date ? selected : dateLib.today();
 
-                          const month =
-                            dateLib.getMonth(baseDate);
+                          const month = dateLib.getMonth(baseDate);
 
-                          const targetDate =
-                            dateLib.newDate(
-                              year,
-                              month,
-                              1
-                            );
+                          const targetDate = dateLib.newDate(year, month, 1);
 
                           goToMonth(targetDate);
                           setNavView("days");
@@ -338,17 +230,14 @@ function PersianCalendar({
                         {dateLib.formatNumber(year)}
                       </button>
                     );
-                  }
+                  },
                 )}
               </div>
             );
           }
 
           return (
-            <table
-              className={className}
-              {...gridProps}
-            >
+            <table className={className} {...gridProps}>
               {children}
             </table>
           );

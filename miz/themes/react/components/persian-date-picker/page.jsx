@@ -6,12 +6,7 @@ import persian_fa from "react-date-object/locales/persian_fa";
 
 import "react-multi-date-picker/styles/layouts/prime.css";
 
-export default function PersianDatePicker({
-  value,
-  onChange,
-  placeholder = "تاریخ را انتخاب کنید",
-  disabled = false,
-}) {
+export default function PersianDatePicker({ value, onChange, placeholder = "تاریخ را انتخاب کنید", disabled = false }) {
   return (
     <DatePicker
       calendar={persian}
@@ -28,9 +23,7 @@ export default function PersianDatePicker({
         }
 
         // تبدیل تاریخ شمسی انتخاب‌شده به تاریخ میلادی
-        const gregorianDate = date
-          .convert("gregorian")
-          .format("YYYY-MM-DD");
+        const gregorianDate = date.convert("gregorian").format("YYYY-MM-DD");
 
         // ارسال رشته تاریخ میلادی به فرم
         onChange?.(gregorianDate);

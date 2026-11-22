@@ -2,7 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
+@use "sass:map";
 
 $accordion-height-scroll: 500px;
 $accordion-rotate-icon: 180deg;
@@ -16,70 +16,75 @@ $accordion-zebra-custom-classes: ".bg-secondary-light-color, .secondary-color";
 $accordion-zebra-nth-child: "2n-1";
 
 .accordion-group {
-    @extend #{$accordion-group-custom-classes};
+  @extend #{$accordion-group-custom-classes};
 
-    &.accordion-compact{
-        gap: 0;
-        overflow: hidden;
-        @extend .gap-0, .overflow-hidden;
-
-        .accordion{
-            @extend .radius-all-none;
-        }
-    }
-
-    &.accordion-outline {
-        .accordion {
-            background-color: transparent !important;
-        }
-    }
+  &.accordion-compact {
+    gap: 0;
+    overflow: hidden;
+    @extend .gap-0, .overflow-hidden;
 
     .accordion {
-        @extend .w-100, #{$accordion-custom-classes};
+      @extend .radius-all-none;
+    }
+  }
 
-        .accordion-box {
-            transition: $accordion-transition;
-            min-width: 100%;
-            grid-template-rows: 0fr 0fr;
-            @extend .d-grid, .cursor-pointer, #{$accordion-box-custom-classes};
+  &.accordion-outline {
+    .accordion {
+      background-color: transparent !important;
+    }
+  }
 
-            .accordion-header {
-                @extend .w-100, .d-flex, .flex-row, .justify-content-space-between, .align-items-center, #{$accordion-header-custom-classes};
+  .accordion {
+    @extend .w-100, #{$accordion-custom-classes};
 
-                &.accordion-header>i {
-                    transition: $accordion-transition;
-                }
-            }
+    .accordion-box {
+      transition: $accordion-transition;
+      min-width: 100%;
+      grid-template-rows: 0fr 0fr;
+      @extend .d-grid, .cursor-pointer, #{$accordion-box-custom-classes};
 
-            & .accordion-body {
-                @extend .overflow-hidden, #{$accordion-body-custom-classes};
-            }
+      .accordion-header {
+        @extend .w-100,
+          .d-flex,
+          .flex-row,
+          .justify-content-space-between,
+          .align-items-center,
+          #{$accordion-header-custom-classes};
+
+        &.accordion-header > i {
+          transition: $accordion-transition;
         }
+      }
 
-        &.active .accordion-box {
-            grid-template-rows: 0fr 1fr;
-
-            .accordion-header>i {
-                transform: rotate($accordion-rotate-icon);
-            }
-        }
-
-        & .accordion-body * {
-            transition: $accordion-transition;
-            @extend .opacity-0;
-        }
-
-        &.active .accordion-body * {
-            @extend .opacity-#{calc(1 / map.get($conf-opacity, factor))};
-        }
+      & .accordion-body {
+        @extend .overflow-hidden, #{$accordion-body-custom-classes};
+      }
     }
 
-    &.scroll-accordion {
-        max-height: $accordion-height-scroll;
-        @extend .overflow-y-scroll;
+    &.active .accordion-box {
+      grid-template-rows: 0fr 1fr;
+
+      .accordion-header > i {
+        transform: rotate($accordion-rotate-icon);
+      }
     }
 
-    &.accordion-zebra .accordion:nth-child(#{$accordion-zebra-nth-child}) {
-        @extend #{$accordion-zebra-custom-classes};
+    & .accordion-body * {
+      transition: $accordion-transition;
+      @extend .opacity-0;
     }
+
+    &.active .accordion-body * {
+      @extend .opacity-#{calc(1 / map.get($conf-opacity, factor))};
+    }
+  }
+
+  &.scroll-accordion {
+    max-height: $accordion-height-scroll;
+    @extend .overflow-y-scroll;
+  }
+
+  &.accordion-zebra .accordion:nth-child(#{$accordion-zebra-nth-child}) {
+    @extend #{$accordion-zebra-custom-classes};
+  }
 }

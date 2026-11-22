@@ -4,11 +4,11 @@
 
 Many utility classes are generated from Sass maps. Common map settings include:
 
-| Key | Purpose |
-|---|---|
-| `count` | Number of steps or maximum generated suffix |
-| `unit` | CSS value unit, such as `rem` |
-| `factor` | Converts a class suffix into a CSS value |
+| Key          | Purpose                                                    |
+| ------------ | ---------------------------------------------------------- |
+| `count`      | Number of steps or maximum generated suffix                |
+| `unit`       | CSS value unit, such as `rem`                              |
+| `factor`     | Converts a class suffix into a CSS value                   |
 | `responsive` | Generates breakpoint variants instead of only a base class |
 
 The exact meaning of each key depends on the consuming generator. Inspect that generator when changing a configuration value.
@@ -17,13 +17,13 @@ The exact meaning of each key depends on the consuming generator. Inspect that g
 
 The map in `sass/config/_responsive.scss` is ordered as follows:
 
-| Name | Value |
-|---|---:|
+| Name  |    Value |
+| ----- | -------: |
 | `xxl` | `1920px` |
-| `xl` | `1280px` |
-| `lg` | `1024px` |
-| `md` | `767px` |
-| `sm` | `478px` |
+| `xl`  | `1280px` |
+| `lg`  | `1024px` |
+| `md`  |  `767px` |
+| `sm`  |  `478px` |
 
 Values in the header and section spacing lists must align with the breakpoint order; generators access these lists by index.
 
@@ -87,8 +87,8 @@ A palette key alone does not guarantee that a corresponding class is generated; 
 
 ```js
 export const config = {
-    theme: 'react',
-    output: `/assets/js/mizchin.min.js`,
+  theme: "react",
+  output: `/assets/js/mizchin.min.js`,
 };
 ```
 

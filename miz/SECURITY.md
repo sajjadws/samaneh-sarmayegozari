@@ -4,7 +4,7 @@
 
 If you discover a security vulnerability in the EazyMizy project or website, please report it responsibly by contacting us directly:
 
-- **Email:** mizframework59@gmail.com 
+- **Email:** mizframework59@gmail.com
 
 Please include:
 

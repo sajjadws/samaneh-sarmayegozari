@@ -1,14 +1,14 @@
 class Masonry {
-    constructor() {
-        this.init();
-    }
+  constructor() {
+    this.init();
+  }
 
-    init() {
-        document.querySelectorAll('.masonry').forEach(masonry => {
-            const columnCount = masonry.dataset.masonryColumnCount;
-            masonry.style.setProperty('--masonry-column-count', columnCount);
-        });
-    }
+  init() {
+    document.querySelectorAll(".masonry").forEach((masonry) => {
+      const columnCount = masonry.dataset.masonryColumnCount;
+      masonry.style.setProperty("--masonry-column-count", columnCount);
+    });
+  }
 }
 
 new Masonry();

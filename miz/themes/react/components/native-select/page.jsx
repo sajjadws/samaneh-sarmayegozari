@@ -1,22 +1,9 @@
 import * as React from "react";
 
-function NativeSelect({
-  className = "",
-  size = "default",
-  ...props
-}) {
+function NativeSelect({ className = "", size = "default", ...props }) {
   return (
-    <div
-      className={`native-select-wrapper ${className}`}
-      data-slot="native-select-wrapper"
-      data-size={size}
-    >
-      <select
-        data-slot="native-select"
-        data-size={size}
-        className="native-select"
-        {...props}
-      />
+    <div className={`native-select-wrapper ${className}`} data-slot="native-select-wrapper" data-size={size}>
+      <select data-slot="native-select" data-size={size} className="native-select" {...props} />
 
       {/* آیکون فلش انتخاب */}
       <svg
@@ -38,34 +25,12 @@ function NativeSelect({
   );
 }
 
-function NativeSelectOption({
-  className = "",
-  ...props
-}) {
-  return (
-    <option
-      data-slot="native-select-option"
-      className={`native-select-option ${className}`}
-      {...props}
-    />
-  );
+function NativeSelectOption({ className = "", ...props }) {
+  return <option data-slot="native-select-option" className={`native-select-option ${className}`} {...props} />;
 }
 
-function NativeSelectOptGroup({
-  className = "",
-  ...props
-}) {
-  return (
-    <optgroup
-      data-slot="native-select-optgroup"
-      className={`native-select-optgroup ${className}`}
-      {...props}
-    />
-  );
+function NativeSelectOptGroup({ className = "", ...props }) {
+  return <optgroup data-slot="native-select-optgroup" className={`native-select-optgroup ${className}`} {...props} />;
 }
 
-export {
-  NativeSelect,
-  NativeSelectOptGroup,
-  NativeSelectOption,
-};
+export { NativeSelect, NativeSelectOptGroup, NativeSelectOption };

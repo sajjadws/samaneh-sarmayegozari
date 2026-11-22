@@ -2,8 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
+@use "sass:map";
 
 /* استایل اصلی جداکننده */
 .separator {
@@ -22,5 +21,4 @@
 .separator[data-orientation="vertical"] {
   width: 1px;
   align-self: stretch;
-
 }

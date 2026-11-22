@@ -3,7 +3,6 @@
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
 
-
 /* =========================
    Persian Calendar
 ========================= */
@@ -12,13 +11,22 @@
   direction: rtl;
   color: #1f2937;
 
-  @extend .w-100 ;
+  @extend .w-100;
 }
 
 .calendar-month {
   min-width: 260px;
 
-  @extend .d-flex , .flex-column , .gap-3 , .w-100 , .p-4 , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-normal ;
+  @extend .d-flex,
+    .flex-column,
+    .gap-3,
+    .w-100,
+    .p-4,
+    .bg-on-primary-color,
+    .bw-1,
+    .border-style-solid,
+    .border-color,
+    .radius-all-normal;
 }
 
 /* =========================
@@ -29,20 +37,20 @@
   min-height: 40px;
   direction: rtl;
 
-  @extend .d-flex , .align-items-center , .gap-3 , .w-100 , .justify-content-space-between;
+  @extend .d-flex, .align-items-center, .gap-3, .w-100, .justify-content-space-between;
 }
 
 .calendar-caption {
   flex: 1;
   min-width: 0;
 
-  @extend .d-flex , .align-items-center , .justify-content-space-between;
+  @extend .d-flex, .align-items-center, .justify-content-space-between;
 }
 
 .calendar-caption-label {
   color: #111827;
 
-  @extend .font-weight-bold , .txt-align-center ;
+  @extend .font-weight-bold, .txt-align-center;
 }
 
 /* =========================
@@ -53,7 +61,7 @@
   position: static;
   flex-shrink: 0;
 
-  @extend .d-flex , .align-items-center , .justify-content-center , .gap-2 ;
+  @extend .d-flex, .align-items-center, .justify-content-center, .gap-2;
 }
 
 .calendar-navigation button,

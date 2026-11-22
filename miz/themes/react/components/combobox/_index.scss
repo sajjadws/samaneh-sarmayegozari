@@ -2,18 +2,30 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
+@use "sass:map";
 
 /* Main Trigger */
 .combobox-trigger {
   display: inline-flex;
-  transition: background 0.2s, border-color 0.2s;
-  @extend .align-items-center , .justify-content-space-between , .gap-2 , .cursor-pointer , .bw-1 , .border-style-solid , .border-color , .radius-all-normal , .py-2 , .px-3 , .bg-on-primary-color , .primary-color ;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+  @extend .align-items-center,
+    .justify-content-space-between,
+    .gap-2,
+    .cursor-pointer,
+    .bw-1,
+    .border-style-solid,
+    .border-color,
+    .radius-all-normal,
+    .py-2,
+    .px-3,
+    .bg-on-primary-color,
+    .primary-color;
 }
 
 .combobox-trigger:hover {
-  @extend .bg-on-primary-color ;
+  @extend .bg-on-primary-color;
 }
 
 /* Trigger Icon */
@@ -21,7 +33,7 @@
   width: 16px;
   pointer-events: none;
   flex-shrink: 0;
-  @extend .aspect-ratio-1x1 ;
+  @extend .aspect-ratio-1x1;
 }
 
 /* Input */
@@ -34,20 +46,28 @@
   display: inline-flex;
   border: none;
   background: transparent;
-  @extend .align-items-center , .justify-content-center , .cursor-pointer , .p-1 ;
+  @extend .align-items-center, .justify-content-center, .cursor-pointer, .p-1;
 }
 
 .combobox-clear-icon {
   width: 14px;
   pointer-events: none;
-  @extend .aspect-ratio-1x1 ;
+  @extend .aspect-ratio-1x1;
 }
 
 /* Dropdown Content */
 .combobox-content {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
   transform-origin: var(--transform-origin);
-  @extend .position-relative , .z-index-5 , .overflow-hidden , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .radius-all-normal , .p-1;
+  @extend .position-relative,
+    .z-index-5,
+    .overflow-hidden,
+    .bg-on-primary-color,
+    .bw-1,
+    .border-style-solid,
+    .border-color,
+    .radius-all-normal,
+    .p-1;
 }
 
 .combobox-content[data-chips="true"] {
@@ -64,67 +84,85 @@
 /* Items */
 .combobox-item {
   outline: none;
-  @extend .user-select-none , .position-relative , .d-flex  , .align-items-center , .w-100 , .gap-2 , .py-2 , .px-3 , .cursor-pointer , .primary-color , .radius-all-small ;
+  @extend .user-select-none,
+    .position-relative,
+    .d-flex,
+    .align-items-center,
+    .w-100,
+    .gap-2,
+    .py-2,
+    .px-3,
+    .cursor-pointer,
+    .primary-color,
+    .radius-all-small;
 }
 
 .combobox-item:hover,
 .combobox-item[data-highlighted] {
-  @extend .bg-on-primary-color ; 
+  @extend .bg-on-primary-color;
 }
 
 .combobox-item[data-disabled] {
   pointer-events: none;
-  @extend .opacity-5 ;
+  @extend .opacity-5;
 }
 
 /* Item Indicator */
 .combobox-item-indicator {
   margin-left: auto;
-  @extend .d-flex  , .align-items-center ;
+  @extend .d-flex, .align-items-center;
 }
 
 .combobox-item-indicator-icon {
   width: 16px;
   pointer-events: none;
-  @extend .aspect-ratio-1x1 ;
+  @extend .aspect-ratio-1x1;
 }
 
 /* Group */
 .combobox-group {
-  @extend .p-1 ;
+  @extend .p-1;
 }
 
 /* Label */
 .combobox-label {
-  @extend .py-1 , .px-3 , .primary-color , .font-weight-semi-bold ;
+  @extend .py-1, .px-3, .primary-color, .font-weight-semi-bold;
 }
 
 /* Empty State */
 .combobox-empty {
-  @extend .p-4 , .txt-align-center , .primary-color ;
+  @extend .p-4, .txt-align-center, .primary-color;
 }
 
 /* Separator */
 .combobox-separator {
   height: 1px;
-  @extend .my-1 , .bg-on-primary-color ;
+  @extend .my-1, .bg-on-primary-color;
 }
 
 /* Chips Container */
 .combobox-chips {
-  @extend .d-flex  , .align-items-center , .flex-wrap  , .gap-2  , .p-1 , .bw-1 , .border-style-solid , .border-color , .radius-all-normal ;
+  @extend .d-flex,
+    .align-items-center,
+    .flex-wrap,
+    .gap-2,
+    .p-1,
+    .bw-1,
+    .border-style-solid,
+    .border-color,
+    .radius-all-normal;
 }
 
 /* Single Chip */
 .combobox-chip {
   display: inline-flex;
-  @extend .align-items-center , .gap-2 , .py-1 , .px-2 , .radius-all-small , .bg-on-primary-color , .primary-color ;
+  @extend .align-items-center, .gap-2, .py-1, .px-2, .radius-all-small, .bg-on-primary-color, .primary-color;
 }
 
 /* Chip Remove */
 .combobox-chip-remove {
   border: none;
-  @extend .align-items-center , .justify-content-center , .cursor-pointer , .p-1 ;
+  @extend .align-items-center, .justify-content-center, .cursor-pointer, .p-1;
 }
 
 /* Chips Input */

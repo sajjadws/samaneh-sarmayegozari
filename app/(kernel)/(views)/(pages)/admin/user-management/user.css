@@ -1,7 +1,0 @@
-.return-link{
-    transition: 300ms ease-in-out;
-}
-
-.return-link:hover{
-    color: var(--secondary);
-}

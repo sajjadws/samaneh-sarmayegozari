@@ -2,8 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
+@use "sass:map";
 
 /* موقعیت‌دهی کانتینر Tooltip */
 .tooltip-positioner {
@@ -22,7 +21,6 @@
 
 /* فلش Tooltip */
 .tooltip-arrow {
-
   fill: var(--foreground);
   @extend .position-relative, .z-index-10, .bg-secondary-color;
 }
@@ -32,7 +30,6 @@
 /* Tooltip در پایین */
 .tooltip-arrow[data-side="bottom"] {
   top: 0.25rem;
-  
 }
 
 /* Tooltip در سمت چپ */

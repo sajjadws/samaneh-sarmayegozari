@@ -1,40 +1,21 @@
+"use client";
 
-"use client"
+import * as React from "react";
+import { Select as SelectPrimitive } from "@base-ui/react/select";
+import { cn } from "cn";
+import { ChevronDown, ChevronLeft } from "lucide-react";
 
-import * as React from "react"
-import { Select as SelectPrimitive } from "@base-ui/react/select"
-import { cn } from "cn"
-import { ChevronDown, ChevronLeft } from "lucide-react"
-
-
-const Select = SelectPrimitive.Root
+const Select = SelectPrimitive.Root;
 
 function SelectGroup({ className, ...props }) {
-  return (
-    <SelectPrimitive.Group
-      data-slot="select-group"
-      className={cn("select-group", className)}
-      {...props}
-    />
-  )
+  return <SelectPrimitive.Group data-slot="select-group" className={cn("select-group", className)} {...props} />;
 }
 
 function SelectValue({ className, ...props }) {
-  return (
-    <SelectPrimitive.Value
-      data-slot="select-value"
-      className={cn("select-value", className)}
-      {...props}
-    />
-  )
+  return <SelectPrimitive.Value data-slot="select-value" className={cn("select-value", className)} {...props} />;
 }
 
-function SelectTrigger({
-  className,
-  size = "default",
-  children,
-  ...props
-}) {
+function SelectTrigger({ className, size = "default", children, ...props }) {
   return (
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
@@ -58,7 +39,7 @@ function SelectTrigger({
         }
       /> */}
     </SelectPrimitive.Trigger>
-  )
+  );
 }
 
 function SelectContent({
@@ -89,41 +70,25 @@ function SelectContent({
         >
           <SelectScrollUpButton />
 
-          <SelectPrimitive.List className="select-list">
-            {children}
-          </SelectPrimitive.List>
+          <SelectPrimitive.List className="select-list">{children}</SelectPrimitive.List>
 
           <SelectScrollDownButton />
         </SelectPrimitive.Popup>
       </SelectPrimitive.Positioner>
     </SelectPrimitive.Portal>
-  )
+  );
 }
 
 function SelectLabel({ className, ...props }) {
-  return (
-    <SelectPrimitive.GroupLabel
-      data-slot="select-label"
-      className={cn("select-label", className)}
-      {...props}
-    />
-  )
+  return <SelectPrimitive.GroupLabel data-slot="select-label" className={cn("select-label", className)} {...props} />;
 }
 
 function SelectItem({ className, children, ...props }) {
   return (
-    <SelectPrimitive.Item
-      data-slot="select-item"
-      className={cn("select-item", className)}
-      {...props}
-    >
-      <SelectPrimitive.ItemText className="select-item-text">
-        {children}
-      </SelectPrimitive.ItemText>
+    <SelectPrimitive.Item data-slot="select-item" className={cn("select-item", className)} {...props}>
+      <SelectPrimitive.ItemText className="select-item-text">{children}</SelectPrimitive.ItemText>
 
-      <SelectPrimitive.ItemIndicator
-        render={<span className="select-item-indicator" />}
-      >
+      <SelectPrimitive.ItemIndicator render={<span className="select-item-indicator" />}>
         <ChevronLeft
           lucide="CheckIcon"
           tabler="IconCheck"
@@ -134,17 +99,13 @@ function SelectItem({ className, children, ...props }) {
         />
       </SelectPrimitive.ItemIndicator>
     </SelectPrimitive.Item>
-  )
+  );
 }
 
 function SelectSeparator({ className, ...props }) {
   return (
-    <SelectPrimitive.Separator
-      data-slot="select-separator"
-      className={cn("select-separator", className)}
-      {...props}
-    />
-  )
+    <SelectPrimitive.Separator data-slot="select-separator" className={cn("select-separator", className)} {...props} />
+  );
 }
 
 function SelectScrollUpButton({ className, ...props }) {
@@ -162,7 +123,7 @@ function SelectScrollUpButton({ className, ...props }) {
         remixicon="RiArrowUpSLine"
       />
     </SelectPrimitive.ScrollUpArrow>
-  )
+  );
 }
 
 function SelectScrollDownButton({ className, ...props }) {
@@ -180,8 +141,7 @@ function SelectScrollDownButton({ className, ...props }) {
         remixicon="RiArrowDownSLine"
       />
     </SelectPrimitive.ScrollDownArrow>
-
-  )
+  );
 }
 
 export {
@@ -195,4 +155,4 @@ export {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-}
+};

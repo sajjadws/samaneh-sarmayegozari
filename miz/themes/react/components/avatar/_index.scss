@@ -2,8 +2,7 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
+@use "sass:map";
 
 /* =====================================
    Avatar frame
@@ -12,7 +11,15 @@
 .avatar {
   width: 60px;
 
-  @extend .bw-1 , .border-style-solid , .border-color , .position-relative , .d-flex , .align-items-center , .justify-content-center , .aspect-ratio-1x1 , .radius-all-full ;
+  @extend .bw-1,
+    .border-style-solid,
+    .border-color,
+    .position-relative,
+    .d-flex,
+    .align-items-center,
+    .justify-content-center,
+    .aspect-ratio-1x1,
+    .radius-all-full;
 }
 
 /* =====================================
@@ -34,23 +41,26 @@
 //   height: 48px;
 // }
 
-
 /* =====================================
    Avatar Image
 ===================================== */
 
 .avatar-image {
-
-  @extend .w-100 , .aspect-ratio-1x1 , .object-cover , .d-block;
+  @extend .w-100, .aspect-ratio-1x1, .object-cover, .d-block;
 }
-
 
 /* =====================================
    Avatar Fallback (name)
 ===================================== */
 
 .avatar-fallback {
-  @extend .d-flex , .w-100 , .aspect-ratio-1x1 , .align-items-center , .justify-content-center , .txt-align-center , .user-select-none ;
+  @extend .d-flex,
+    .w-100,
+    .aspect-ratio-1x1,
+    .align-items-center,
+    .justify-content-center,
+    .txt-align-center,
+    .user-select-none;
 }
 
 /* Small Avatar Fallback */
@@ -59,7 +69,6 @@
 //   font-size: 12px;
 // }
 
-
 /* =====================================
    Avatar Badge (online)
 ===================================== */
@@ -67,7 +76,20 @@
 .avatar-badge {
   width: 15px;
 
-  @extend .bw-1 , .bg-success-regular-color , .border-style-solid , .border-color , .position-absolute , .right-0 , .bottom-0 , .z-index-1 , .d-flex , .align-items-center , .justify-content-center , .radius-all-full , .aspect-ratio-1x1 , .user-select-none ;
+  @extend .bw-1,
+    .bg-success-regular-color,
+    .border-style-solid,
+    .border-color,
+    .position-absolute,
+    .right-0,
+    .bottom-0,
+    .z-index-1,
+    .d-flex,
+    .align-items-center,
+    .justify-content-center,
+    .radius-all-full,
+    .aspect-ratio-1x1,
+    .user-select-none;
 }
 
 /* Badge Sizes */
@@ -87,14 +109,12 @@
 //   height: 12px;
 // }
 
-
 /* =====================================
    Avatar Group
 ===================================== */
 
 .avatar-group {
-
-  @extend .d-flex , .align-items-center , .gap-0 , .pis-2 ;
+  @extend .d-flex, .align-items-center, .gap-0, .pis-2;
 }
 
 /* Overlapping Avatars */
@@ -103,7 +123,7 @@
   margin-left: -8px;
   border-color: var(--bg-primary-color, white);
 
-  @extend .bw-2 , .border-style-solid , .border-primary-color ;
+  @extend .bw-2, .border-style-solid, .border-primary-color;
 }
 
 /* =====================================
@@ -113,5 +133,12 @@
 .avatar-group-count {
   flex-shrink: 0;
 
-  @extend .border-color , .position-absolute , .d-flex , .align-items-center , .justify-content-center , .bw-2 , .border-style-solid , .radius-all-full  ;
+  @extend .border-color,
+    .position-absolute,
+    .d-flex,
+    .align-items-center,
+    .justify-content-center,
+    .bw-2,
+    .border-style-solid,
+    .radius-all-full;
 }

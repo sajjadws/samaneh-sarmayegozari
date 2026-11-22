@@ -16,40 +16,40 @@ This conversion applies to settings that define a factor and unit; check the fin
 
 ## Padding
 
-| Prefix | Property |
-|---|---|
-| `p` | `padding` |
-| `pt` | `padding-top` |
-| `pb` | `padding-bottom` |
-| `pl` | `padding-left` |
-| `pr` | `padding-right` |
-| `px` | left and right |
-| `py` | top and bottom |
-| `pis` | `padding-inline-start` |
-| `pie` | `padding-inline-end` |
+| Prefix | Property               |
+| ------ | ---------------------- |
+| `p`    | `padding`              |
+| `pt`   | `padding-top`          |
+| `pb`   | `padding-bottom`       |
+| `pl`   | `padding-left`         |
+| `pr`   | `padding-right`        |
+| `px`   | left and right         |
+| `py`   | top and bottom         |
+| `pis`  | `padding-inline-start` |
+| `pie`  | `padding-inline-end`   |
 
 ## Margin
 
-| Prefix | Property |
-|---|---|
-| `m` | `margin` |
-| `mt` | `margin-top` |
-| `mb` | `margin-bottom` |
-| `ml` | `margin-left` |
-| `mr` | `margin-right` |
-| `mx` | left and right |
-| `my` | top and bottom |
-| `mis` | `margin-inline-start` |
-| `mie` | `margin-inline-end` |
+| Prefix | Property              |
+| ------ | --------------------- |
+| `m`    | `margin`              |
+| `mt`   | `margin-top`          |
+| `mb`   | `margin-bottom`       |
+| `ml`   | `margin-left`         |
+| `mr`   | `margin-right`        |
+| `mx`   | left and right        |
+| `my`   | top and bottom        |
+| `mis`  | `margin-inline-start` |
+| `mie`  | `margin-inline-end`   |
 
 ## Gap and column gap
 
-| Prefix | Property |
-|---|---|
-| `gap` | `gap` |
-| `g` | `column-gap` and `row-gap` |
-| `gx` | `column-gap` |
-| `gy` | `row-gap` |
+| Prefix | Property                   |
+| ------ | -------------------------- |
+| `gap`  | `gap`                      |
+| `g`    | `column-gap` and `row-gap` |
+| `gx`   | `column-gap`               |
+| `gy`   | `row-gap`                  |
 
 In addition to standard properties, the `g`, `gx`, and `gy` maps also set CSS custom properties such as `--gx` or `--gy`. Layouts such as `.row` consume these variables; search for their consumers before changing their behavior.
 

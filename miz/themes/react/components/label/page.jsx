@@ -1,17 +1,10 @@
+"use client";
 
-"use client"
-
-import * as React from "react"
-import { cn } from "cn"
+import * as React from "react";
+import { cn } from "cn";
 
 function Label({ className, ...props }) {
-  return (
-    <label
-      data-slot="label"
-      className={cn("form-label", className)}
-      {...props}
-    />
-  )
+  return <label data-slot="label" className={cn("form-label", className)} {...props} />;
 }
 
-export { Label }
+export { Label };

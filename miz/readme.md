@@ -13,48 +13,49 @@
 
 ## 📌 Introduction
 
-MIZ is a **powerful frontend CSS framework** built with **Sass**, designed to give developers **speed and full control** over their projects.  
+MIZ is a **powerful frontend CSS framework** built with **Sass**, designed to give developers **speed and full control** over their projects.
 
-It combines:  
-- a **page builder (Mizban)** 🏗️  
+It combines:
+
+- a **page builder (Mizban)** 🏗️
 - **css cleaner base on used classes** 🎈
-- a **component library (Mizoon)** 🧩  
-- **custom theme creation** 🎨  
+- a **component library (Mizoon)** 🧩
+- **custom theme creation** 🎨
 - **structured design & full Sass-based customization** ⚡
 
 MIZ is **open-source**, lightweight, and fully **customizable**, allowing you to create **efficient and maintainable front-end projects**.
 
 ## 🛠 Features
 
-| Feature | Description |
-|---------|-------------|
-| 🏗️ Mizban Page Builder | Visual page builder for fast prototyping |
-| 🎈 Css Cleaner | Clean unused classes from output css |
-| 🧩 Mizoon Components | Reusable UI components library |
-| ⚡ Sass-based framework | Fully Sass-based, flexible, and customizable |
-| 🎨 Customizable themes | Create your own themes easily |
-| 🚀 Lightweight & optimized | Fast, minimal, and efficient CSS output |
-| 🌍 Open-source | Community-driven and MIT licensed |
+| Feature                    | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| 🏗️ Mizban Page Builder     | Visual page builder for fast prototyping     |
+| 🎈 Css Cleaner             | Clean unused classes from output css         |
+| 🧩 Mizoon Components       | Reusable UI components library               |
+| ⚡ Sass-based framework    | Fully Sass-based, flexible, and customizable |
+| 🎨 Customizable themes     | Create your own themes easily                |
+| 🚀 Lightweight & optimized | Fast, minimal, and efficient CSS output      |
+| 🌍 Open-source             | Community-driven and MIT licensed            |
 
 ## 📘 Documentation
 
-Whether you're a beginner or expert, MIZ offers clear and practical documentation to guide you through installation, structure, and customization.  
+Whether you're a beginner or expert, MIZ offers clear and practical documentation to guide you through installation, structure, and customization.
 
 Explore the docs to start building with MIZ:  
 👉 [**Get Started with MIZ**](https://eazymizy.com/docs/get-started/install)
 
 You’ll find detailed guides on:
 
-- [**Framework setup & usage**](https://eazymizy.com/docs/get-started/install)  
-- [**Mizoon components**](https://eazymizy.com/docs/components/accordion)  
-- [**Mizban page builder**](https://eazymizy.com/mizban-studio)  
+- [**Framework setup & usage**](https://eazymizy.com/docs/get-started/install)
+- [**Mizoon components**](https://eazymizy.com/docs/components/accordion)
+- [**Mizban page builder**](https://eazymizy.com/mizban-studio)
 - [**Theme customization and structure**](https://eazymizy.com/docs/customize/color)
 
 ## 🧩 Components & Page Builder
 
 MIZ includes:
 
-- **Mizoon Components**: Reusable UI elements for faster development. [Learn more](https://eazymizy.com/docs/components/accordion)  
+- **Mizoon Components**: Reusable UI elements for faster development. [Learn more](https://eazymizy.com/docs/components/accordion)
 - **Mizban Page Builder**: Visual page builder for fast prototyping and structured design. [Learn more](https://eazymizy.com/mizban-studio)
 
 ## 🧾 Changelog
@@ -64,7 +65,7 @@ Stay updated with the latest improvements, features, and fixes via the [MIZ Chan
 ## 🤝 About FAP Group
 
 With the motto **"Don't start from zero"**, the **FAP group** set out to build a front-end framework called **MIZ** —  
-making front-end development more **enjoyable**, **structured**, and **simple**.  
+making front-end development more **enjoyable**, **structured**, and **simple**.
 
 Help us in the challenging journey of **simplification** 🙂
 

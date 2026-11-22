@@ -2,37 +2,38 @@
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use 'sass:map';
-
-
+@use "sass:map";
 
 .progress-root {
-
-  @extend .d-flex , .flex-wrap , .gap-3 , .w-100 ;
+  @extend .d-flex, .flex-wrap, .gap-3, .w-100;
 }
 
 /* Track */
 .progress-track {
   height: 8px;
 
-  @extend .position-relative , .d-flex , .align-items-center , .w-100 , .overflow-hidden , .bg-divider-color , .radius-all-full ; 
+  @extend .position-relative,
+    .d-flex,
+    .align-items-center,
+    .w-100,
+    .overflow-hidden,
+    .bg-divider-color,
+    .radius-all-full;
 }
 
 /* Indicator */
 .progress-indicator {
   transition: width 0.3s ease;
 
-  @extend .h-100 , .bg-primary-color ;
+  @extend .h-100, .bg-primary-color;
 }
 
 /* Label */
 .progress-label {
-
-  @extend .title-text-color , .font-weight-medium ;
+  @extend .title-text-color, .font-weight-medium;
 }
 
 /* Value */
 .progress-value {
-
-  @extend .title-text-color ;
+  @extend .title-text-color;
 }

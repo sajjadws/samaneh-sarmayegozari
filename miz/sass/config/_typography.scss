@@ -1,60 +1,42 @@
 $conf-font-prefix: "txt";
-$conf-font-size:(
-    sizes:(
-        small : 12px,
-        subtitle : 14px,
-        normal : 16px,
-        title : 20px,
-        mid-title : 24px,
-        high-title : 32px,
-        big-title : 40px,
-        extra-title : 48px,
-    ),
-    responsive:true
+$conf-font-size: (
+  sizes: (
+    small: 12px,
+    subtitle: 14px,
+    normal: 16px,
+    title: 20px,
+    mid-title: 24px,
+    high-title: 32px,
+    big-title: 40px,
+    extra-title: 48px,
+  ),
+  responsive: true,
 );
 
 $conf-fonts: (
-    "primary": (
-        "defaults":"sans-serif, 'Courier New', Courier, monospace",
-        "folder": "vazirmatn",
-        "font-types": (
-            "black": (
-                "Vazir-Black.woff2",
-            
-            ),
-            "bold": (
-                "Vazir-Bold.woff2",
-               
-            ),
-            "light": (
-                "Vazir-Light.woff2",
-               
-            ),
-            "medium": (
-                "Vazir-Medium.woff2",
-              
-            ),
-            "regular": (
-                "Vazir-Regular.woff2",
-           
-            ),
-            "thin": (
-                "Vazir-Thin.woff2",
-             
-            )
-        )
+  "primary": (
+    "defaults": "sans-serif, 'Courier New', Courier, monospace",
+    "folder": "vazirmatn",
+    "font-types": (
+      "black": ("Vazir-Black.woff2",),
+      "bold": ("Vazir-Bold.woff2",),
+      "light": ("Vazir-Light.woff2",),
+      "medium": ("Vazir-Medium.woff2",),
+      "regular": ("Vazir-Regular.woff2",),
+      "thin": ("Vazir-Thin.woff2",),
     ),
-    "secondary": (
-        "defaults":"sans-serif, 'Courier New', Courier, monospace",
-        // "folder": "product-sans",
-        "folder": "PTSans",
-        "font-types": (
-            // "bold": (
-            //     "PTSans-Bold.ttf"
-            // ),
-            // "regular": (
-            //     "PTSans-Regular.ttf"
-            // ),
-        )
-    )
+  ),
+  "secondary": (
+    "defaults": "sans-serif, 'Courier New', Courier, monospace",
+    // "folder": "product-sans",
+    "folder": "PTSans",
+    "font-types": (
+      // "bold": (
+      //     "PTSans-Bold.ttf"
+      // ),
+      // "regular": (
+      //     "PTSans-Regular.ttf"
+       // ),
+    ),
+  ),
 );
