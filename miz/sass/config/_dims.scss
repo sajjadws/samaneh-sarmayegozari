@@ -1,36 +1,46 @@
-$border-radius: (
-  extra-small: 2px,
-  small: 8px,
-  normal: 10px,
-  medium: 16px,
-  large: 20px,
-  extra-large: 100px,
-  full: 50%,
-  none: 0px,
+$border-radius:(
+    extra-small:2px,
+    small:8px,
+    normal:10px,
+    medium:16px,
+    large:20px,
+    extra-large:100px,
+    full:50000px,
+    none:0px,
 );
 
-$conf-opacity: (
-  factor: 0.1,
+$conf-opacity:(
+    factor:0.1
 );
 
-$conf-ellipsis: (
-  count: 10,
+$conf-ellipsis:(
+    count:10
 );
 
-$conf-z-index: (
-  max: 10,
-  min: 0,
-  step: 1,
+$conf-z-index:(
+    max:10,
+    min:0,
+    step:1
 );
 
-$conf-aspect-ratio: (
-  nominator: 4,
-  denominator: 3,
-  step: 1,
+$conf-aspect-ratio:(
+    nominator:4,
+    denominator:3,
+    step:1
 );
 
-$conf-border-thickness: (
-  last-width: 10,
+$conf-border-thickness:(
+    last-width:10
 );
 
-$conf-cursor: (default, pointer, text, not-allowed, move, grab, grabbing, wait, progress);
+$conf-cursor:(
+    default,
+    pointer,
+    text,
+    not-allowed,
+    move,
+    grab,
+    grabbing,
+    wait,
+    progress,
+);

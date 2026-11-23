@@ -1,7 +1,8 @@
 @use "../../config/_typography" as *;
+@use "sass:map";
 
 @function get-font-size($value) {
-  $result: map.get(map.get($conf-font-size, "size"), $value);
+  $result: map.get(map.get($conf-font-size, "sizes"), $value);
   @return $result;
 }
 

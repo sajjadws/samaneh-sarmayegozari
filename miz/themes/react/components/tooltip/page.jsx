@@ -60,21 +60,30 @@
 
 // export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }
 
-"use client";
+"use client"
 
-import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip";
-import { cn } from "cn";
+import { Tooltip as TooltipPrimitive } from "@base-ui/react/tooltip"
+import { cn } from "cn"
 
-function TooltipProvider({ delay = 0, ...props }) {
-  return <TooltipPrimitive.Provider data-slot="tooltip-provider" delay={delay} {...props} />;
+function TooltipProvider({
+  delay = 0,
+  ...props
+}) {
+  return (
+    <TooltipPrimitive.Provider
+      data-slot="tooltip-provider"
+      delay={delay}
+      {...props}
+    />
+  )
 }
 
 function Tooltip({ ...props }) {
-  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />
 }
 
 function TooltipTrigger({ ...props }) {
-  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />;
+  return <TooltipPrimitive.Trigger data-slot="tooltip-trigger" {...props} />
 }
 
 function TooltipContent({
@@ -95,13 +104,20 @@ function TooltipContent({
         sideOffset={sideOffset}
         className="tooltip-positioner"
       >
-        <TooltipPrimitive.Popup data-slot="tooltip-content" className={cn("tooltip-content", className)} {...props}>
+        <TooltipPrimitive.Popup
+          data-slot="tooltip-content"
+          className={cn(
+            "tooltip-content",
+            className
+          )}
+          {...props}
+        >
           {children}
           <TooltipPrimitive.Arrow className="tooltip-arrow" />
         </TooltipPrimitive.Popup>
       </TooltipPrimitive.Positioner>
     </TooltipPrimitive.Portal>
-  );
+  )
 }
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider }

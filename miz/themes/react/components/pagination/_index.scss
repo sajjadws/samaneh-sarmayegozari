@@ -1,128 +1,83 @@
-@use "../../../../sass/config/_dims" as *;
-@use "../../../../sass/config/_typography" as *;
-@use "../../../../sass/kernel" as *;
-@use "../../config" as *;
-@use "sass:map";
-
-/* =========================================
-   1. Pagination
-   کامپوننت اصلی صفحه‌بندی
-========================================= */
-
 .pagination {
-  margin-left: auto;
-  margin-right: auto;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   width: 100%;
 
-  @extend .d-flex, .w-100, .justify-content-center;
-}
+   // Content
+   &-content {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+   }
 
-/* =========================================
-   2. PaginationContent
-   لیست نگهدارنده شماره صفحات
-========================================= */
+   // Item
+   &-item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+   }
 
-.pagination-content {
-  @extend .d-flex, .align-items-center;
-}
+   // Link
+   &-link {
+      &[data-active="true"] {
+         pointer-events: none;
+         background-color: var(--primary);
+         color: var(--on-primary);
+         border-color: var(--primary);
 
-/* =========================================
-   3. PaginationItem
-   هر آیتم صفحه‌بندی
-========================================= */
+         &:hover {
+            background-color: var(--primary);
+            color: var(--primary-foreground);
+         }
+      }
+   }
 
-/* در کد اصلی کلاس Tailwind ندارد */
+   // Previous & Next
+   &-previous,
+   &-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+   }
 
-/* =========================================
-   4. PaginationLink
-   لینک شماره صفحه
-========================================= */
+   &-previous {
+      .pagination-icon {
+         order: -1;
+      }
+   }
 
-.pagination-link[data-active="true"] {
-  /* استایل صفحه انتخاب‌شده */
-}
+   &-next {
+      .pagination-icon {
+         order: 1;
+      }
+   }
 
-/* در کد اصلی کلاس Tailwind ندارد.
-   استایل دکمه از کامپوننت Button می‌آید.
-*/
+   // Icon
+   &-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+   }
 
-/* =========================================
-   5. PaginationPrevious
-   دکمه صفحه قبلی
-========================================= */
+   // Ellipsis
+   &-ellipsis {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      color: var(--muted-foreground);
 
-.pagination-previous {
-  /* کلاس اختصاصی برای دکمه صفحه قبلی */
-}
-
-/* =========================================
-   6. PaginationNext
-   دکمه صفحه بعدی
-========================================= */
-
-.pagination-next {
-  /* کلاس اختصاصی برای دکمه صفحه بعدی */
-}
-
-/* =========================================
-   7. PaginationPreviousText
-   متن دکمه صفحه قبلی
-========================================= */
-
-.pagination-previous-text {
-  @extend .d-none;
-}
-
-/* =========================================
-   8. PaginationNextText
-   متن دکمه صفحه بعدی
-========================================= */
-
-.pagination-next-text {
-  @extend .d-none;
-}
-
-/* =========================================
-   9. PaginationEllipsis
-   نمایش سه نقطه بین صفحات
-========================================= */
-
-.pagination-ellipsis {
-  @extend .d-flex, .align-items-center, .justify-content-center;
-}
-
-/* =========================================
-   10. PaginationIcon
-   آیکون‌های قبلی و بعدی
-========================================= */
-
-/* cn-rtl-flip کلاس اختصاصی پروژه است.
-   برای حفظ رفتار آن باید تعریف CSS آن بررسی شود.
-*/
-
-/* =========================================
-   11. Responsive
-   نمایش متن دکمه‌ها در صفحات بزرگ‌تر
-========================================= */
-
-@media (min-width: 640px) {
-  .pagination-previous-text,
-  .pagination-next-text {
-    display: block;
-  }
-}
-
-/* =========================================
-   12. Screen Reader Only
-   متن قابل خواندن برای صفحه‌خوان
-========================================= */
-
-.sr-only {
-  width: 1px;
-  height: 1px;
-  margin: -1px;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-
-  @extend .position-absolute, .p-0, .overflow-hidden;
+      svg {
+         width: 16px;
+         height: 16px;
+      }
+   }
 }

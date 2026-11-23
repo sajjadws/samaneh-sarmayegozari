@@ -1,87 +1,72 @@
-@use "../../../../sass/config/_dims" as *;
-@use "../../../../sass/config/_typography" as *;
-@use "../../../../sass/kernel" as *;
-@use "../../config" as *;
-@use "sass:map";
 
-/* کانتینر اصلی بخش Empty */
-.empty-container {
-  display: flex;
-  flex: 1 1 0%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.empty {
+    display: flex;
+    width: 100%;
+    min-height: 240px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    padding: 32px 24px;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-lg);
+    text-align: center;
 
-  width: 100%;
-  min-width: 0;
+    &-header {
+        display: flex;
+        max-width: 400px;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
 
-  text-align: center;
-  text-wrap: balance;
-}
+    &-media {
+        display: flex;
+        width: 48px;
+        height: 48px;
+        align-items: center;
+        justify-content: center;
+        color: var(--muted-foreground);
 
-/* سربرگ Empty */
-.empty-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+        &[data-variant="icon"] {
+            border-radius: var(--radius-md);
+            background-color: var(--muted);
+        }
 
-  max-width: 24rem;
-}
+        &[data-variant="illustration"] {
+            width: 100%;
+            height: auto;
+            max-width: 240px;
+            background: transparent;
+        }
 
-/* بخش رسانه یا آیکون */
-.empty-media {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-}
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    }
 
-/* جلوگیری از کلیک‌پذیری SVG داخل آیکون */
-.empty-media svg {
-  pointer-events: none;
-  flex-shrink: 0;
-}
+    &-title {
+        margin: 0;
+        color: var(--text);
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 1.5;
+    }
 
-/* حالت پیش‌فرض رسانه */
-.empty-media-default {
-  /* استایل اختصاصی حالت default را اینجا قرار بده */
-}
+    &-description {
+        max-width: 360px;
+        margin: 0;
+        color: var(--muted-foreground);
+        font-size: 14px;
+        line-height: 1.8;
+    }
 
-/* حالت آیکون */
-.empty-media-icon {
-  /* استایل اختصاصی حالت icon را اینجا قرار بده */
-}
-
-/* عنوان Empty */
-.empty-title {
-  /* استایل عنوان */
-}
-
-/* توضیحات Empty */
-.empty-description {
-  color: var(--muted-foreground);
-}
-
-/* لینک‌های داخل توضیحات */
-.empty-description a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-/* حالت هاور لینک‌ها */
-.empty-description a:hover {
-  color: var(--primary);
-}
-
-/* محتوای Empty */
-.empty-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  width: 100%;
-  max-width: 24rem;
-  min-width: 0;
-
-  text-wrap: balance;
+    &-content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
 }

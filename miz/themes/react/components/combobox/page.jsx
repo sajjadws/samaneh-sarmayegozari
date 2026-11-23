@@ -1,35 +1,36 @@
-"use client";
-
-import * as React from "react";
+import { useRef } from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 
-import { Button } from "../button/page";
-import { InputGroup, InputGroupAddon, InputGroupButton, InputGroupInput } from "../input-group/page";
-import { IconPlaceholder } from "@tabler/icons-react";
+function Combobox({ className, ...props }) {
+  return <ComboboxPrimitive.Root data-slot="combobox" className={utils.cn("combobox", className)} {...props} />;
+}
 
-const Combobox = ComboboxPrimitive.Root;
-
-function ComboboxValue(props) {
-  return <ComboboxPrimitive.Value data-slot="combobox-value" {...props} />;
+function ComboboxValue({ className, ...props }) {
+  return (
+    <ComboboxPrimitive.Value data-slot="combobox-value" className={utils.cn("combobox-value", className)} {...props} />
+  );
 }
 
 function ComboboxTrigger({ className, children, ...props }) {
   return (
     <ComboboxPrimitive.Trigger
       data-slot="combobox-trigger"
-      className={`combobox-trigger ${className || ""}`}
+      aria-label={children ? undefined : "Open options"}
+      className={utils.cn("combobox-trigger", className)}
       {...props}
     >
       {children}
-
-      <IconPlaceholder
-        lucide="ChevronDownIcon"
-        tabler="IconChevronDown"
-        hugeicons="ArrowDown01Icon"
-        phosphor="CaretDownIcon"
-        remixicon="RiArrowDownSLine"
-        className="combobox-trigger-icon"
-      />
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="m6 9 6 6 6-6" />
+      </svg>
     </ComboboxPrimitive.Trigger>
   );
 }
@@ -38,43 +39,34 @@ function ComboboxClear({ className, ...props }) {
   return (
     <ComboboxPrimitive.Clear
       data-slot="combobox-clear"
-      render={<InputGroupButton variant="ghost" size="icon-xs" />}
-      className={`combobox-clear ${className || ""}`}
+      aria-label="Clear selection"
+      className={utils.cn("combobox-clear", className)}
       {...props}
     >
-      <IconPlaceholder
-        lucide="XIcon"
-        tabler="IconX"
-        hugeicons="Cancel01Icon"
-        phosphor="XIcon"
-        remixicon="RiCloseLine"
-        className="combobox-clear-icon"
-      />
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M18 6 6 18M6 6l12 12" />
+      </svg>
     </ComboboxPrimitive.Clear>
   );
 }
 
-function ComboboxInput({ className, children, disabled = false, showTrigger = true, showClear = false, ...props }) {
+function ComboboxInput({ className, disabled = false, showTrigger = true, showClear = false, ...props }) {
   return (
-    <InputGroup className={`combobox-input ${className || ""}`}>
-      <ComboboxPrimitive.Input render={<InputGroupInput disabled={disabled} />} {...props} />
+    <div className={utils.cn("combobox-input-wrapper", className)}>
+      <ComboboxPrimitive.Input data-slot="combobox-input" className="combobox-input" disabled={disabled} {...props} />
 
-      <InputGroupAddon align="inline-end">
-        {showTrigger && (
-          <InputGroupButton
-            size="icon-xs"
-            variant="ghost"
-            render={<ComboboxTrigger />}
-            data-slot="input-group-button"
-            disabled={disabled}
-          />
-        )}
+      {showTrigger && <ComboboxTrigger disabled={disabled} />}
 
-        {showClear && <ComboboxClear disabled={disabled} />}
-      </InputGroupAddon>
-
-      {children}
-    </InputGroup>
+      {showClear && <ComboboxClear disabled={disabled} />}
+    </div>
   );
 }
 
@@ -99,8 +91,7 @@ function ComboboxContent({
       >
         <ComboboxPrimitive.Popup
           data-slot="combobox-content"
-          data-chips={!!anchor}
-          className={`combobox-content ${className || ""}`}
+          className={utils.cn("combobox-content", className)}
           {...props}
         />
       </ComboboxPrimitive.Positioner>
@@ -109,23 +100,28 @@ function ComboboxContent({
 }
 
 function ComboboxList({ className, ...props }) {
-  return <ComboboxPrimitive.List data-slot="combobox-list" className={`combobox-list ${className || ""}`} {...props} />;
+  return (
+    <ComboboxPrimitive.List data-slot="combobox-list" className={utils.cn("combobox-list", className)} {...props} />
+  );
 }
 
 function ComboboxItem({ className, children, ...props }) {
   return (
-    <ComboboxPrimitive.Item data-slot="combobox-item" className={`combobox-item ${className || ""}`} {...props}>
+    <ComboboxPrimitive.Item data-slot="combobox-item" className={utils.cn("combobox-item", className)} {...props}>
       {children}
 
       <ComboboxPrimitive.ItemIndicator render={<span className="combobox-item-indicator" />}>
-        <IconPlaceholder
-          lucide="CheckIcon"
-          tabler="IconCheck"
-          hugeicons="Tick02Icon"
-          phosphor="CheckIcon"
-          remixicon="RiCheckLine"
-          className="combobox-item-indicator-icon"
-        />
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <path d="m5 12 4 4L19 6" />
+        </svg>
       </ComboboxPrimitive.ItemIndicator>
     </ComboboxPrimitive.Item>
   );
@@ -133,7 +129,7 @@ function ComboboxItem({ className, children, ...props }) {
 
 function ComboboxGroup({ className, ...props }) {
   return (
-    <ComboboxPrimitive.Group data-slot="combobox-group" className={`combobox-group ${className || ""}`} {...props} />
+    <ComboboxPrimitive.Group data-slot="combobox-group" className={utils.cn("combobox-group", className)} {...props} />
   );
 }
 
@@ -141,7 +137,7 @@ function ComboboxLabel({ className, ...props }) {
   return (
     <ComboboxPrimitive.GroupLabel
       data-slot="combobox-label"
-      className={`combobox-label ${className || ""}`}
+      className={utils.cn("combobox-label", className)}
       {...props}
     />
   );
@@ -153,7 +149,7 @@ function ComboboxCollection(props) {
 
 function ComboboxEmpty({ className, ...props }) {
   return (
-    <ComboboxPrimitive.Empty data-slot="combobox-empty" className={`combobox-empty ${className || ""}`} {...props} />
+    <ComboboxPrimitive.Empty data-slot="combobox-empty" className={utils.cn("combobox-empty", className)} {...props} />
   );
 }
 
@@ -161,7 +157,7 @@ function ComboboxSeparator({ className, ...props }) {
   return (
     <ComboboxPrimitive.Separator
       data-slot="combobox-separator"
-      className={`combobox-separator ${className || ""}`}
+      className={utils.cn("combobox-separator", className)}
       {...props}
     />
   );
@@ -169,29 +165,31 @@ function ComboboxSeparator({ className, ...props }) {
 
 function ComboboxChips({ className, ...props }) {
   return (
-    <ComboboxPrimitive.Chips data-slot="combobox-chips" className={`combobox-chips ${className || ""}`} {...props} />
+    <ComboboxPrimitive.Chips data-slot="combobox-chips" className={utils.cn("combobox-chips", className)} {...props} />
   );
 }
 
 function ComboboxChip({ className, children, showRemove = true, ...props }) {
   return (
-    <ComboboxPrimitive.Chip data-slot="combobox-chip" className={`combobox-chip ${className || ""}`} {...props}>
+    <ComboboxPrimitive.Chip data-slot="combobox-chip" className={utils.cn("combobox-chip", className)} {...props}>
       {children}
 
       {showRemove && (
         <ComboboxPrimitive.ChipRemove
-          render={<Button variant="ghost" size="icon-xs" />}
+          aria-label={`Remove ${typeof children === "string" ? children : "item"}`}
           className="combobox-chip-remove"
-          data-slot="combobox-chip-remove"
         >
-          <IconPlaceholder
-            lucide="XIcon"
-            tabler="IconX"
-            hugeicons="Cancel01Icon"
-            phosphor="XIcon"
-            remixicon="RiCloseLine"
-            className="combobox-clear-icon"
-          />
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18M6 6l12 12" />
+          </svg>
         </ComboboxPrimitive.ChipRemove>
       )}
     </ComboboxPrimitive.Chip>
@@ -201,19 +199,22 @@ function ComboboxChip({ className, children, showRemove = true, ...props }) {
 function ComboboxChipsInput({ className, ...props }) {
   return (
     <ComboboxPrimitive.Input
-      data-slot="combobox-chip-input"
-      className={`combobox-chip-input ${className || ""}`}
+      data-slot="combobox-chips-input"
+      className={utils.cn("combobox-chips-input", className)}
       {...props}
     />
   );
 }
 
 function useComboboxAnchor() {
-  return React.useRef(null);
+  return useRef(null);
 }
 
 export {
   Combobox,
+  ComboboxValue,
+  ComboboxTrigger,
+  ComboboxClear,
   ComboboxInput,
   ComboboxContent,
   ComboboxList,
@@ -226,7 +227,5 @@ export {
   ComboboxChips,
   ComboboxChip,
   ComboboxChipsInput,
-  ComboboxTrigger,
-  ComboboxValue,
   useComboboxAnchor,
 };

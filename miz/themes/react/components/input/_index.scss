@@ -1,57 +1,225 @@
-@use "../../../../sass/config/_dims" as *;
-@use "../../../../sass/config/_typography" as *;
-@use "../../../../sass/kernel" as *;
-@use "../../config" as *;
 @use "sass:map";
 
-/* =====================================
-   Input
-   استایل اصلی فیلد ورودی
-===================================== */
+$input-sizes: (
+    sm: (
+        height: 34px,
+        padding: 0 11px,
+        font-size: 13px,
+    ),
+    default: (
+        height: 40px,
+        padding: 0 13px,
+        font-size: 14px,
+    ),
+    lg: (
+        height: 46px,
+        padding: 0 15px,
+        font-size: 15px,
+    ),
+);
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+
+    border: 1px solid var(--input);
+    border-radius: calc(var(--radius-md) + 2px);
+    background-color: var(--background);
+
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.025),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    transition:
+        border-color 200ms ease,
+        box-shadow 200ms ease,
+        background-color 200ms ease,
+        transform 200ms ease;
+
+    @each $name, $properties in $input-sizes {
+        &[data-size="#{$name}"] {
+            min-height: map.get($properties, height);
+
+            .input {
+                min-height: map.get($properties, height);
+                padding: map.get($properties, padding);
+                font-size: map.get($properties, font-size);
+            }
+        }
+    }
+
+    // Hover
+    &:not([data-disabled="true"]):not(:focus-within):hover {
+        border-color: var(--ring);
+
+        box-shadow:
+            0 1px 3px rgba(0, 0, 0, 0.04),
+            0 0 0 1px color-mix(in srgb, var(--ring) 10%, transparent);
+    }
+
+    // Focus
+    &:focus-within {
+        border-color: var(--primary);
+
+        box-shadow:
+            0 0 0 1px var(--primary),
+            0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent),
+            0 4px 12px color-mix(in srgb, var(--primary) 10%, transparent);
+
+        background-color: var(--background);
+    }
+
+    // Invalid
+    &[data-invalid="true"] {
+        border-color: var(--destructive);
+
+        &:focus-within {
+            border-color: var(--destructive);
+
+            box-shadow:
+                0 0 0 1px var(--destructive),
+                0 0 0 4px color-mix(in srgb, var(--destructive) 11%, transparent),
+                0 4px 12px color-mix(in srgb, var(--destructive) 8%, transparent);
+        }
+    }
+
+    // Disabled
+    &[data-disabled="true"] {
+        background-color: var(--muted);
+        opacity: 0.6;
+        cursor: not-allowed;
+        box-shadow: none;
+
+        &:hover,
+        &:focus-within {
+            border-color: var(--input);
+            box-shadow: none;
+        }
+    }
+
+    // Icon spacing
+    &:has(.input-icon-start) {
+        .input {
+            padding-inline-start: 2px;
+        }
+    }
+
+    &:has(.input-icon-end) {
+        .input {
+            padding-inline-end: 2px;
+        }
+    }
+}
 
 .input {
-  min-width: 0;
-  outline: none;
-  border: 1px solid var(--border);
-  @extend .w-100, .radius-all-normal, .py-3, .px-3;
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    flex: 1;
+
+    border: 0;
+    outline: none;
+    background: transparent;
+
+    color: var(--text);
+    line-height: 1.5;
+
+    transition:
+        color 180ms ease,
+        opacity 180ms ease;
+
+    &::placeholder {
+        color: var(--muted-foreground);
+        opacity: 0.75;
+        transition: opacity 180ms ease;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+
+        &::placeholder {
+            opacity: 0.4;
+        }
+    }
+
+    &:disabled {
+        cursor: not-allowed;
+    }
+
+    &[aria-invalid="true"] {
+        color: var(--destructive);
+    }
+
+    &[type="file"] {
+        cursor: pointer;
+
+        &::file-selector-button {
+            height: 100%;
+            margin-inline-end: 12px;
+            border: 0;
+            background: transparent;
+            color: var(--text);
+            font: inherit;
+            cursor: pointer;
+        }
+    }
+
+    &[type="search"] {
+        &::-webkit-search-cancel-button {
+            cursor: pointer;
+        }
+    }
+
+    &[type="number"] {
+        appearance: textfield;
+
+        &::-webkit-inner-spin-button,
+        &::-webkit-outer-spin-button {
+            margin: 0;
+            appearance: none;
+        }
+    }
 }
 
-/* =====================================
-   Input - دکمه انتخاب فایل
-===================================== */
+.input-icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
 
-.input::file-selector-button {
-  display: inline-flex;
-  border: 0;
-  background-color: transparent;
+    color: var(--muted-foreground);
 
-  @extend .bg-primary-color, .secondary-color;
+    transition:
+        color 200ms ease,
+        transform 200ms ease;
+
+    svg {
+        width: 17px;
+        height: 17px;
+    }
+
+    &-start {
+        margin-inline-start: 12px;
+    }
+
+    &-end {
+        margin-inline-end: 12px;
+    }
 }
 
-/* =====================================
-   Input - متن راهنمای داخل فیلد
-===================================== */
-
-.input::placeholder {
-  @extend .opacity-10, .border-color;
+.input-wrapper:focus-within {
+    .input-icon {
+        color: var(--primary);
+        transform: scale(1.04);
+    }
 }
 
-/* =====================================
-   Input - حالت غیرفعال
-===================================== */
-
-.input:disabled {
-  pointer-events: none;
-  cursor: not-allowed;
-
-  @extend .opacity-5;
-}
-
-.input:focus {
-  border-color: #37433f;
-  outline: none;
-}
-
-input:focus::placeholder {
-  @extend .text-color;
+.input-wrapper[data-invalid="true"]:focus-within {
+    .input-icon {
+        color: var(--destructive);
+    }
 }

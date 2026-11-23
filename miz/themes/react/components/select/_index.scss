@@ -4,6 +4,7 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* ==============================
    Select Component
 ============================== */
@@ -16,26 +17,13 @@
     box-shadow 0.2s ease,
     background 0.2s ease;
 
-  @extend .cursor-pointer,
-    .text-color,
-    .d-flex,
-    .bg-on-primary-color,
-    .bw-1,
-    .border-style-solid,
-    .border-color,
-    .w-100,
-    .gap-8,
-    .align-items-center,
-    .justify-content-space-between,
-    .py-0,
-    .px-4,
-    .radius-all-small,
-    .txt-align-start;
+    @extend .cursor-pointer , .text-color , .d-flex , .bg-on-primary-color , .bw-1 , .border-style-solid , .border-color , .w-100 , .gap-8 , .align-items-center , .justify-content-space-between , .py-0 , .px-4 , .radius-all-small , .txt-align-start ;
 }
 
 .select-trigger:hover {
   background: #f9fafb;
   border-color: #9ca3af;
+
 }
 
 .select-trigger:focus-visible,
@@ -45,7 +33,8 @@
 }
 
 .select-trigger:disabled {
-  @extend .opacity-5, .cursor-not-allowed;
+
+  @extend .opacity-5 , .cursor-not-allowed ;
 }
 
 .select-trigger[data-size="sm"] {
@@ -64,7 +53,7 @@
   flex: 1;
   text-overflow: ellipsis;
 
-  @extend .overflow-hidden, .txt-white-space-nowrap;
+  @extend .overflow-hidden , .txt-white-space-nowrap ;
 }
 
 .select-value:empty::before {
@@ -78,7 +67,7 @@
   flex-shrink: 0;
   color: #6b7280;
 
-  @extend .aspect-ratio-1x1;
+  @extend .aspect-ratio-1x1 ;
 }
 
 /* ==============================
@@ -107,7 +96,7 @@
   transform-origin: var(--transform-origin);
   animation: select-open 0.15s ease-out;
 
-  @extend .p-2, .overflow-x-hidden, .radius-all-normal, .bw-1, .border-style-solid, .border-color, .bg-on-primary-color;
+  @extend .p-2 , .overflow-x-hidden , .radius-all-normal , .bw-1 , .border-style-solid , .border-color , .bg-on-primary-color;
 }
 
 @keyframes select-open {
@@ -127,7 +116,8 @@
 ============================== */
 
 .select-group {
-  @extend .py-12, .px-0;
+
+  @extend .py-12 , .px-0 ;
 }
 
 /* ==============================
@@ -137,7 +127,7 @@
 .select-label {
   color: #9ca3af;
 
-  @extend .p-20, .font-weight-semi-bold, .txt-align-start;
+  @extend .p-20 , .font-weight-semi-bold  , .txt-align-start ;
 }
 
 /* ==============================
@@ -150,14 +140,7 @@
     background 0.15s ease,
     color 0.15s ease;
 
-  @extend .position-relative,
-    .d-flex,
-    .align-items-center,
-    .justify-content-space-between,
-    .gap-3,
-    .p-2,
-    .radius-all-small,
-    .txt-align-start;
+    @extend .position-relative , .d-flex , .align-items-center , .justify-content-space-between , .gap-3 , .p-2 , .radius-all-small , .txt-align-start ;
 }
 
 .select-item:hover,
@@ -170,18 +153,19 @@
   background: #eef2ff;
   color: #9ca3af;
 
-  @extend .font-weight-medium;
+  @extend .font-weight-medium ;
 }
 
 .select-item[data-disabled] {
-  @extend .opacity-5, .cursor-not-allowed;
+
+  @extend .opacity-5 , .cursor-not-allowed ;
 }
 
 .select-item-text {
   flex: 1;
   text-overflow: ellipsis;
 
-  @extend .overflow-hidden, .txt-white-space-nowrap;
+  @extend .overflow-hidden , .txt-white-space-nowrap ;
 }
 
 /* ==============================
@@ -191,14 +175,14 @@
 .select-item-indicator {
   flex-shrink: 0;
 
-  @extend .d-flex, .align-items-center, .justify-content-center;
+  @extend .d-flex , .align-items-center  , .justify-content-center ;
 }
 
 .select-item-indicator-icon {
   width: 15px;
   color: #9ca3af;
 
-  @extend .aspect-ratio-1x1;
+  @extend .aspect-ratio-1x1 ;
 }
 
 /* ==============================
@@ -209,7 +193,7 @@
   height: 1px;
   background: #e5e7eb;
 
-  @extend .m-1;
+  @extend .m-1 ;
 }
 
 /* ==============================
@@ -220,15 +204,15 @@
 .select-scroll-down-button {
   height: 24px;
   color: #6b7280;
-
-  @extend .d-flex, .align-items-center, .justify-content-center, .w-100, .cursor-pointer;
+  
+  @extend .d-flex , .align-items-center  , .justify-content-center  , .w-100  , .cursor-pointer;
 }
 
 .select-scroll-up-button svg,
 .select-scroll-down-button svg {
   width: 16px;
 
-  @extend .aspect-ratio-1x1;
+  @extend .aspect-ratio-1x1 ;
 }
 
 /* ==============================
@@ -246,7 +230,7 @@
 .select-content::-webkit-scrollbar-thumb {
   background: #d1d5db;
 
-  @extend .radius-all-small;
+  @extend .radius-all-small ;
 }
 
 .select-content::-webkit-scrollbar-thumb:hover {

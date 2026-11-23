@@ -4,40 +4,69 @@
 @use "../../config" as *;
 @use "sass:map";
 
-/* =========================
-   base checkbox
-========================= */
-
 .checkbox {
   display: inline-flex;
-  width: 25px;
-  min-width: 25px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 
-  @extend .bw-2,
-    .border-style-solid,
-    .aspect-ratio-1x1,
-    .border-color,
-    .position-relative,
-    .d-flex,
-    .align-items-center,
-    .justify-content-center,
-    .cursor-pointer;
-}
+  width: 16px;
+  height: 16px;
 
-/* =========================
-   checkbox-indicator
-========================= */
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
 
-.checkbox-indicator {
-  @extend .aspect-ratio-1x1, .w-100, .d-flex, .position-absolute, .overflow-hidden;
-}
+  background-color: var(--fields);
+  color: var(--on-primary);
 
-/* =========================
-   icon
-========================= */
+  cursor: pointer;
+  outline: none;
 
-.checkbox-indicator svg {
-  stroke: var(--primary);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 
-  @extend .aspect-ratio-1x1, .w-100;
+  &:hover:not([data-disabled]) {
+    border-color: var(--primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+
+  &[data-checked],
+  &[data-state="checked"] {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+  }
+
+  &[data-indeterminate],
+  &[data-state="indeterminate"] {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    color: var(--on-primary);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .checkbox-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 100%;
+    height: 100%;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
 }

@@ -4,6 +4,7 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* =========================================
    1. ToastViewport
    محل نمایش اعلان‌ها در صفحه
@@ -31,8 +32,10 @@
     width: 100%;
     margin-left: 0px;
     margin-right: 0px;
+ 
   }
 }
+
 
 /* =========================================
    2. Toast
@@ -45,29 +48,37 @@
   border: 1px solid var(--border);
   background-color: var(--popover);
   color: var(--popover-foreground);
-  box-shadow:
-    0 10px 15px -3px rgb(0 0 0 / 0.1),
-    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+              0 4px 6px -4px rgb(0 0 0 / 0.1);
   will-change: transform;
   outline: none;
   /* متغیرهای مدیریت موقعیت اعلان‌ها */
   --toast-gap: 0.75rem;
-  --toast-current-height: var(--toast-frontmost-height, var(--toast-height));
+  --toast-current-height: var(
+    --toast-frontmost-height,
+    var(--toast-height)
+  );
   --toast-offset-y: calc(
-    var(--toast-offset-y-original, 0px) * -1 + var(--toast-index) * var(--toast-gap) * -1 +
-      var(--toast-swipe-movement-y)
+    var(--toast-offset-y-original, 0px) * -1 +
+    var(--toast-index) * var(--toast-gap) * -1 +
+    var(--toast-swipe-movement-y)
   );
   --toast-peek: 0.75rem;
-  --toast-scale: max(0, calc(1 - var(--toast-index) * 0.1));
+  --toast-scale: max(
+    0,
+    calc(1 - var(--toast-index) * 0.1)
+  );
   --toast-shrink: calc(1 - var(--toast-scale));
 
   height: var(--toast-current-height);
 
-  transform: translateX(var(--toast-swipe-movement-x))
+  transform:
+    translateX(var(--toast-swipe-movement-x))
     translateY(
       calc(
-        var(--toast-swipe-movement-y) - var(--toast-index) * var(--toast-peek) - var(--toast-shrink) *
-          var(--toast-current-height)
+        var(--toast-swipe-movement-y) -
+        var(--toast-index) * var(--toast-peek) -
+        var(--toast-shrink) * var(--toast-current-height)
       )
     )
     scale(var(--toast-scale));
@@ -77,7 +88,8 @@
     opacity 500ms,
     height 150ms;
 
-  @extend .position-absolute, .right-0, .bottom-0, .z-index-10, .w-100, .user-select-none, .bg-secondary-color;
+    @extend .position-absolute, .right-0, .bottom-0, .z-index-10, .w-100, .user-select-none, .bg-secondary-color;
+
 }
 
 /* فاصله بین اعلان‌های روی هم */
@@ -106,7 +118,9 @@
 /* حالت باز شدن اعلان */
 .toast-item[data-expanded] {
   height: var(--toast-height);
-  transform: translateX(var(--toast-swipe-movement-x)) translateY(var(--toast-offset-y));
+  transform:
+    translateX(var(--toast-swipe-movement-x))
+    translateY(var(--toast-offset-y));
 }
 
 /* حالت بسته شدن عادی */
@@ -114,49 +128,67 @@
   transform: translateY(150%);
 }
 
+
 /* =========================================
    3. Toast
    انیمیشن خروج هنگام حرکت به پایین
 ========================================= */
 
 .toast-item[data-ending-style][data-swipe-direction="down"] {
-  transform: translateY(calc(var(--toast-swipe-movement-y) + 150%));
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) + 150%)
+  );
 }
 
 /* انیمیشن خروج هنگام حرکت به چپ */
 .toast-item[data-ending-style][data-swipe-direction="left"] {
-  transform: translateX(calc(var(--toast-swipe-movement-x) - 150%)) translateY(var(--toast-offset-y));
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) - 150%))
+    translateY(var(--toast-offset-y));
 }
 
 /* انیمیشن خروج هنگام حرکت به راست */
 .toast-item[data-ending-style][data-swipe-direction="right"] {
-  transform: translateX(calc(var(--toast-swipe-movement-x) + 150%)) translateY(var(--toast-offset-y));
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) + 150%))
+    translateY(var(--toast-offset-y));
 }
 
 /* انیمیشن خروج هنگام حرکت به بالا */
 .toast-item[data-ending-style][data-swipe-direction="up"] {
-  transform: translateY(calc(var(--toast-swipe-movement-y) - 150%));
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) - 150%)
+  );
 }
 
 /* حالت باز بودن هنگام خروج به پایین */
 .toast-item[data-expanded][data-ending-style][data-swipe-direction="down"] {
-  transform: translateY(calc(var(--toast-swipe-movement-y) + 150%));
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) + 150%)
+  );
 }
 
 /* حالت باز بودن هنگام خروج به چپ */
 .toast-item[data-expanded][data-ending-style][data-swipe-direction="left"] {
-  transform: translateX(calc(var(--toast-swipe-movement-x) - 150%)) translateY(var(--toast-offset-y));
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) - 150%))
+    translateY(var(--toast-offset-y));
 }
 
 /* حالت باز بودن هنگام خروج به راست */
 .toast-item[data-expanded][data-ending-style][data-swipe-direction="right"] {
-  transform: translateX(calc(var(--toast-swipe-movement-x) + 150%)) translateY(var(--toast-offset-y));
+  transform:
+    translateX(calc(var(--toast-swipe-movement-x) + 150%))
+    translateY(var(--toast-offset-y));
 }
 
 /* حالت باز بودن هنگام خروج به بالا */
 .toast-item[data-expanded][data-ending-style][data-swipe-direction="up"] {
-  transform: translateY(calc(var(--toast-swipe-movement-y) - 150%));
+  transform: translateY(
+    calc(var(--toast-swipe-movement-y) - 150%)
+  );
 }
+
 
 /* =========================================
    4. ToastContent
@@ -166,7 +198,7 @@
 .toast-content {
   transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1);
 
-  @extend .d-flex, .h-100, .align-items-center, .gap-3, .overflow-hidden, .p-4;
+  @extend .d-flex, .h-100, .align-items-center, .gap-3, .overflow-hidden, .p-4 ;
 }
 
 /* محتوای اعلان‌های پشت سر */
@@ -176,8 +208,9 @@
 
 /* محتوای اعلان باز شده */
 .toast-content[data-expanded] {
-  @extend .opacity-10;
+ @extend .opacity-10;
 }
+
 
 /* =========================================
    5. ToastTitle
@@ -189,6 +222,7 @@
   @extend .lh-5, .font-weight-medium;
 }
 
+
 /* =========================================
    6. ToastDescription
    توضیحات اعلان
@@ -199,6 +233,7 @@
   @extend .lh-5;
 }
 
+
 /* =========================================
    7. ToastAction
    دکمه عملیات اعلان
@@ -207,6 +242,7 @@
 .toast-action {
   flex-shrink: 0;
 }
+
 
 /* =========================================
    8. ToastClose
@@ -231,6 +267,7 @@
   color: var(--foreground);
 }
 
+
 /* =========================================
    9. ToastIcon
    آیکون اعلان
@@ -252,6 +289,7 @@
   color: var(--destructive);
 }
 
+
 /* =========================================
    10. ToastList
    بخش متن و اطلاعات اعلان
@@ -262,6 +300,7 @@
   flex: 1;
   @extend .d-flex, .flex-column, .gap-1;
 }
+
 
 /* =========================================
    11. ToastIcon

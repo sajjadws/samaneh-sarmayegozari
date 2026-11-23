@@ -14,8 +14,9 @@ const __dirname = dirname(__filename);
 const projectRoot = process.cwd();
 
 const packageJson = JSON.parse(readFileSync(join(projectRoot, "package.json"), "utf-8"));
-const cleanScript = packageJson.scripts?.clean;
+const cleanScript = packageJson.scripts?.["build-miz"] ?? "";
 const lastArg = cleanScript.trim().split(/\s+/).pop();
+console.log("lastArg", lastArg);
 
 let assetsRoot, mizRoot;
 
@@ -26,8 +27,8 @@ switch (lastArg) {
     break;
   case "react":
   case "vue":
-    assetsRoot = join(projectRoot, "src");
-    mizRoot = join(projectRoot, "src");
+    assetsRoot = join(projectRoot, "public");
+    mizRoot = join(projectRoot);
     break;
   default:
     assetsRoot = projectRoot;
@@ -65,13 +66,38 @@ function findJsFiles(dir) {
   return jsFiles;
 }
 
+// function mergeJsFiles(config) {
+//   const componentsDir = join(__dirname, "..", "themes", config.theme, "components");
+//   const jsFiles = findJsFiles(componentsDir);
+
+//   let mergedContent = `// ${config.theme} Theme Scripts\n// Auto-generated file\n\n`;
+
+//   console.log(`🔍 Found ${jsFiles.length} JS files to merge...`);
+
+//   jsFiles.forEach((file) => {
+//     try {
+//       const content = readFileSync(file, "utf8");
+//       mergedContent += `\n// File: ${relative(componentsDir, file)}\n${content}\n`;
+//     } catch (err) {
+//       console.error(`❌ Error reading file ${file}:`, err);
+//     }
+//   });
+
+//   return mergedContent;
+// }
+
 function mergeJsFiles(config) {
   const componentsDir = join(__dirname, "..", "themes", config.theme, "components");
   const jsFiles = findJsFiles(componentsDir);
 
-  let mergedContent = `// ${config.theme} Theme Scripts\n// Auto-generated file\n\n`;
-
   console.log(`🔍 Found ${jsFiles.length} JS files to merge...`);
+
+  if (!jsFiles.length) return "";
+
+  let mergedContent = `// ${config.theme} Theme Scripts
+// Auto-generated file
+
+`;
 
   jsFiles.forEach((file) => {
     try {
@@ -86,9 +112,15 @@ function mergeJsFiles(config) {
 }
 
 function writeMergedContent(config) {
+  const content = mergeJsFiles(config);
+
+  if (!content?.trim()) {
+    console.log(`⏭️ Skipping empty output: ${config.output}`);
+    return;
+  }
+
   const outputPath = join(projectRoot, config.output);
   mkdirSync(dirname(outputPath), { recursive: true });
-  const content = mergeJsFiles(config);
   writeFileSync(outputPath, content);
   console.log(`💾 Merged components written to: ${config.output}`);
 

@@ -4,10 +4,11 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* کانتینر اصلی Slider */
 .slider-root {
   height: 10px;
-  @extend .w-100;
+  @extend .w-100 ;
 }
 
 /* حالت عمودی Slider */
@@ -20,7 +21,7 @@
   height: 100%;
   touch-action: none;
   background-color: aqua;
-  @extend .d-flex, .position-relative, .align-items-center, .w-100, .user-select-none;
+  @extend .d-flex, .position-relative, .align-items-center, .w-100, .user-select-none ;
 }
 
 /* حالت غیرفعال Slider */
@@ -37,7 +38,7 @@
 .slider-track {
   flex-grow: 1;
 
-  @extend .position-relative, .overflow-hidden, .user-select-none, .w-100, .h-100;
+  @extend .position-relative, .overflow-hidden, .user-select-none , .w-100, .h-100;
 }
 
 /* قسمت انتخاب‌شده Slider */

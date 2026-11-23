@@ -4,6 +4,7 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 .tabs-container {
   @extend .d-flex;
 }
@@ -31,15 +32,16 @@
 }
 
 .tabs-trigger {
-  display: inline-flex;
+   display: inline-flex;
   height: calc(100% - 1px);
   color: color-mix(in srgb, var(--foreground) 60%, transparent);
   transition: all 150ms ease;
 
-  @extend .position-relative, .grow-1, .align-items-center, .justify-content-center, .txt-white-space-nowrap;
+  @extend .position-relative,  .grow-1, .align-items-center, .justify-content-center, .txt-white-space-nowrap;
 }
 
 .tabs-container[data-orientation="vertical"] .tabs-trigger {
+
   @extend .w-100, .justify-content-flex-start;
 }
 
@@ -50,7 +52,11 @@
 .tabs-trigger:focus-visible {
   border-color: var(--ring);
   outline: 1px solid var(--ring);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ring) 50%, transparent);
+  box-shadow: 0 0 0 3px color-mix(
+    in srgb,
+    var(--ring) 50%,
+    transparent
+  );
 }
 
 .tabs-trigger:disabled,
@@ -88,13 +94,18 @@
 
 .dark .tabs-trigger[data-active] {
   border-color: var(--input);
-  background-color: color-mix(in srgb, var(--input) 30%, transparent);
+  background-color: color-mix(
+    in srgb,
+    var(--input) 30%,
+    transparent
+  );
   color: var(--foreground);
 }
 
 .dark .tabs-list[data-variant="line"] .tabs-trigger[data-active] {
   border-color: transparent;
   background-color: transparent;
+
 }
 
 .tabs-trigger::after {
@@ -116,11 +127,11 @@
   right: -4px;
   width: 2px;
 
-  @extend .top-0, .bottom-0;
+  @extend .top-0, .bottom-0, 
 }
 
 .tabs-list[data-variant="line"] .tabs-trigger[data-active]::after {
-  @extend .opacity-10;
+ @extend .opacity-10;
 }
 
 .dark .tabs-list[data-variant="line"] .tabs-trigger[data-active]::after {
@@ -130,5 +141,5 @@
 .tabs-content {
   outline: none;
 
-  @extend .grow-1;
+  @extend .grow-1; 
 }

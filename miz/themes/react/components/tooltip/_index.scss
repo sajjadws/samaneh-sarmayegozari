@@ -4,6 +4,7 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* موقعیت‌دهی کانتینر Tooltip */
 .tooltip-positioner {
   isolation: isolate;
@@ -21,6 +22,7 @@
 
 /* فلش Tooltip */
 .tooltip-arrow {
+
   fill: var(--foreground);
   @extend .position-relative, .z-index-10, .bg-secondary-color;
 }
@@ -30,6 +32,7 @@
 /* Tooltip در پایین */
 .tooltip-arrow[data-side="bottom"] {
   top: 0.25rem;
+  
 }
 
 /* Tooltip در سمت چپ */

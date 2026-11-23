@@ -4,11 +4,13 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
+
 .spinner {
   width: 16px;
   animation: spinner-rotate 1s linear infinite;
 
-  @extend .aspect-ratio-1x1;
+  @extend  .aspect-ratio-1x1 ;
 }
 
 /* انیمیشن چرخش مداوم Spinner */

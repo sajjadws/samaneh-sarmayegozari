@@ -50,11 +50,23 @@
 
 // export { Slider }
 
-import { Slider as SliderPrimitive } from "@base-ui/react/slider";
-import { cn } from "cn";
 
-function Slider({ className, defaultValue, value, min = 20, max = 100, ...props }) {
-  const _values = Array.isArray(value) ? value : Array.isArray(defaultValue) ? defaultValue : [min, max];
+import { Slider as SliderPrimitive } from "@base-ui/react/slider"
+import { cn } from "cn"
+
+function Slider({
+  className,
+  defaultValue,
+  value,
+  min = 20,
+  max = 100,
+  ...props
+}) {
+  const _values = Array.isArray(value)
+    ? value
+    : Array.isArray(defaultValue)
+      ? defaultValue
+      : [min, max]
 
   return (
     <SliderPrimitive.Root
@@ -68,15 +80,25 @@ function Slider({ className, defaultValue, value, min = 20, max = 100, ...props 
       {...props}
     >
       <SliderPrimitive.Control className="slider-control">
-        <SliderPrimitive.Track data-slot="slider-track" className="slider-track">
-          <SliderPrimitive.Indicator data-slot="slider-range" className="slider-range" />
+        <SliderPrimitive.Track
+          data-slot="slider-track"
+          className="slider-track"
+        >
+          <SliderPrimitive.Indicator
+            data-slot="slider-range"
+            className="slider-range"
+          />
         </SliderPrimitive.Track>
         {Array.from({ length: _values.length }, (_, index) => (
-          <SliderPrimitive.Thumb data-slot="slider-thumb" key={index} className="slider-thumb" />
+          <SliderPrimitive.Thumb
+            data-slot="slider-thumb"
+            key={index}
+            className="slider-thumb"
+          />
         ))}
       </SliderPrimitive.Control>
     </SliderPrimitive.Root>
-  );
+  )
 }
 
-export { Slider };
+export { Slider }

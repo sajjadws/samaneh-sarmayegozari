@@ -1,159 +1,210 @@
-@use "../../../../sass/config/_dims" as *;
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
+@use "sass:map";
 
-/* =====================================
-   1. DropdownMenuContent
-   استایل محتوای اصلی منوی کشویی
-===================================== */
-
-.dropdown-menu-content {
-  max-height: var(--available-height);
-  transform-origin: var(--transform-origin);
-  overflow-y: auto;
-  outline: none;
-
-  @extend .overflow-x-hidden, .z-index-10, .w-100;
-}
-
-/* مخفی شدن محتوای منو هنگام بسته شدن */
-.dropdown-menu-content[data-closed] {
-  @extend .overflow-hidden;
-}
-
-/* =====================================
-   2. DropdownMenuContent
-   استایل Positioner
-===================================== */
+$dropdown-menu-sizes: (
+  default: (
+    min-width: 180px,
+    padding: 4px,
+    item-height: 36px,
+    font-size: 13px,
+    radius: 8px,
+  ),
+  sm: (
+    min-width: 150px,
+    padding: 3px,
+    item-height: 30px,
+    font-size: 12px,
+    radius: 7px,
+  ),
+  lg: (
+    min-width: 220px,
+    padding: 5px,
+    item-height: 40px,
+    font-size: 14px,
+    radius: 10px,
+  ),
+);
 
 .dropdown-menu-positioner {
-  isolation: isolate;
+  z-index: 1000;
   outline: none;
-  @extend .z-index-10;
 }
 
-/* =====================================
-   3. DropdownMenuItem
-   استایل آیتم‌های منو
-===================================== */
+.dropdown-menu-content {
+  min-width: map.get(map.get($dropdown-menu-sizes, default), min-width);
+  max-width: min(320px, calc(100vw - 16px));
+  max-height: var(--available-height);
+  overflow-x: hidden;
+  overflow-y: auto;
 
-.dropdown-menu-item {
+  padding: map.get(map.get($dropdown-menu-sizes, default), padding);
+
+  color: var(--text);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: map.get(map.get($dropdown-menu-sizes, default), radius);
+
+  box-shadow: 0 8px 24px rgb(0 0 0 / 10%);
   outline: none;
 
-  @extend .position-relative, .d-flex, .align-items-center, .cursor-default, .user-select-none;
+  transform-origin: var(--transform-origin);
+  transition:
+    opacity 140ms ease,
+    transform 140ms ease;
+
+  &[data-starting-style],
+  &[data-ending-style] {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+
+  &[data-open] {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* آیتم غیرفعال */
-.dropdown-menu-item[data-disabled] {
-  pointer-events: none;
-
-  @extend .opacity-5;
+.dropdown-menu-group {
+  display: flex;
+  flex-direction: column;
 }
 
-/* آیکون داخل آیتم */
-.dropdown-menu-item svg {
-  pointer-events: none;
+.dropdown-menu-label {
+  display: flex;
+  align-items: center;
+
+  min-height: 30px;
+  padding-inline: 8px;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  user-select: none;
+}
+
+.dropdown-menu-item,
+.dropdown-menu-checkbox-item,
+.dropdown-menu-radio-item,
+.dropdown-menu-sub-trigger {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  min-height: map.get(map.get($dropdown-menu-sizes, default), item-height);
+  padding-inline: 8px;
+
+  color: var(--text);
+  font-size: map.get(map.get($dropdown-menu-sizes, default), font-size);
+
+  border-radius: 5px;
+  outline: none;
+  cursor: default;
+  user-select: none;
+
+  transition:
+    background-color 120ms ease,
+    color 120ms ease;
+
+  &[data-highlighted],
+  &[data-popup-open] {
+    background: var(--secondary);
+    color: var(--on-secondary);
+  }
+
+  &[data-disabled] {
+    opacity: 0.45;
+    pointer-events: none;
+  }
+}
+
+.dropdown-menu-item-destructive {
+  color: var(--danger-regular);
+
+  &[data-highlighted] {
+    color: var(--danger-regular);
+    background: color-mix(in srgb, var(--danger-regular) 10%, transparent);
+  }
+}
+
+.dropdown-menu-inset {
+  padding-inline-start: 32px;
+}
+
+.dropdown-menu-item-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
+
+  width: 16px;
+  height: 16px;
+  margin-inline-start: -24px;
+
+  color: var(--primary);
+
+  svg {
+    display: block;
+    width: 14px;
+    height: 14px;
+  }
 }
 
-/* =====================================
-   4. DropdownMenuSubTrigger
-   استایل بازکننده زیرمنو
-===================================== */
+.dropdown-menu-radio-indicator {
+  width: 8px;
+  height: 8px;
 
-.dropdown-submenu-trigger {
-  outline: none;
-
-  @extend .d-flex, .align-items-center, .cursor-default, .user-select-none;
+  background: currentColor;
+  border-radius: 50%;
 }
 
-/* زمانی که زیرمنو باز است */
-.dropdown-submenu-trigger[data-popup-open] {
-  @extend .bg-primary-color, .on-primary-color;
+.dropdown-menu-sub-trigger {
+  justify-content: space-between;
 }
 
-/* آیکون بازکننده زیرمنو */
-.dropdown-submenu-trigger svg {
-  pointer-events: none;
+.dropdown-menu-sub-icon {
   flex-shrink: 0;
+  width: 14px;
+  height: 14px;
+  margin-inline-start: auto;
 }
 
-/* =====================================
-   5. DropdownMenuCheckboxItem
-   استایل آیتم چک‌باکس
-===================================== */
-
-.dropdown-checkbox-item {
-  outline: none;
-
-  @extend .d-flex, .align-items-center, .cursor-default, .user-select-none, .position-relative;
+.dropdown-menu-sub-content {
+  min-width: 160px;
 }
-
-/* چک‌باکس غیرفعال */
-.dropdown-checkbox-item[data-disabled] {
-  pointer-events: none;
-
-  @extend .opacity-5;
-}
-
-/* آیکون چک‌باکس */
-.dropdown-checkbox-item svg {
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-/* محل قرارگیری علامت تیک */
-.dropdown-checkbox-indicator {
-  pointer-events: none;
-}
-
-/* =====================================
-   6. DropdownMenuRadioItem
-   استایل آیتم رادیویی
-===================================== */
-
-.dropdown-radio-item {
-  outline: none;
-
-  @extend .d-flex, .position-relative, .align-items-center, .cursor-default, .user-select-none;
-}
-
-/* رادیو غیرفعال */
-.dropdown-radio-item[data-disabled] {
-  pointer-events: none;
-  @extend .opacity-5;
-}
-
-/* آیکون رادیو */
-.dropdown-radio-item svg {
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-/* =====================================
-   7. DropdownMenuSeparator
-   خط جداکننده آیتم‌ها
-===================================== */
 
 .dropdown-menu-separator {
-  @extend .w-100, .bg-primary-color;
+  height: 1px;
+  margin-block: 4px;
+
+  background: var(--border);
 }
-
-/* =====================================
-   8. DropdownMenuSubContent
-   محتوای زیرمنو
-===================================== */
-
-.dropdown-submenu-content {
-  width: auto;
-}
-
-/* =====================================
-   9. DropdownMenuShortcut
-   نمایش میانبر صفحه کلید
-===================================== */
 
 .dropdown-menu-shortcut {
-  @extend .d-inline-block;
+  margin-inline-start: auto;
+
+  color: var(--text-secondary);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+@each $size, $values in $dropdown-menu-sizes {
+  @if $size != default {
+    .dropdown-menu-content-#{$size} {
+      min-width: map.get($values, min-width);
+      padding: map.get($values, padding);
+      border-radius: map.get($values, radius);
+
+      .dropdown-menu-item,
+      .dropdown-menu-checkbox-item,
+      .dropdown-menu-radio-item,
+      .dropdown-menu-sub-trigger {
+        min-height: map.get($values, item-height);
+        font-size: map.get($values, font-size);
+      }
+    }
+  }
 }

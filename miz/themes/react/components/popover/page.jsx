@@ -3,9 +3,16 @@
 import * as React from "react";
 import { Popover as PopoverPrimitive } from "@base-ui/react/popover";
 
+
 function Popover({ ...props }) {
-  return <PopoverPrimitive.Root data-slot="popover" {...props} />;
+  return (
+    <PopoverPrimitive.Root
+      data-slot="popover"
+      {...props}
+    />
+  );
 }
+
 
 function PopoverTrigger({ ...props }) {
   return (
@@ -16,6 +23,7 @@ function PopoverTrigger({ ...props }) {
     />
   );
 }
+
 
 function PopoverContent({
   className = "",
@@ -34,19 +42,38 @@ function PopoverContent({
         sideOffset={sideOffset}
         className="popover-positioner"
       >
-        <PopoverPrimitive.Popup data-slot="popover-content" className={`popover-content ${className}`} {...props} />
+        <PopoverPrimitive.Popup
+          data-slot="popover-content"
+          className={`popover-content ${className}`}
+          {...props}
+        />
       </PopoverPrimitive.Positioner>
     </PopoverPrimitive.Portal>
   );
 }
 
+
 function PopoverHeader({ className = "", ...props }) {
-  return <div data-slot="popover-header" className={`popover-header ${className}`} {...props} />;
+  return (
+    <div
+      data-slot="popover-header"
+      className={`popover-header ${className}`}
+      {...props}
+    />
+  );
 }
 
+
 function PopoverTitle({ className = "", ...props }) {
-  return <PopoverPrimitive.Title data-slot="popover-title" className={`popover-title ${className}`} {...props} />;
+  return (
+    <PopoverPrimitive.Title
+      data-slot="popover-title"
+      className={`popover-title ${className}`}
+      {...props}
+    />
+  );
 }
+
 
 function PopoverDescription({ className = "", ...props }) {
   return (
@@ -58,4 +85,12 @@ function PopoverDescription({ className = "", ...props }) {
   );
 }
 
-export { Popover, PopoverContent, PopoverDescription, PopoverHeader, PopoverTitle, PopoverTrigger };
+
+export {
+  Popover,
+  PopoverContent,
+  PopoverDescription,
+  PopoverHeader,
+  PopoverTitle,
+  PopoverTrigger,
+};

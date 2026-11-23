@@ -4,6 +4,7 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* =====================================
    SWITCH ROOT
 ===================================== */
@@ -15,13 +16,8 @@
   transition: all 200ms ease;
   isolation: isolate;
 
-  @extend .position-relative,
-    .align-items-center,
-    .cursor-pointer,
-    .bw-1,
-    .border-color,
-    .border-style-solid,
-    .radius-all-large;
+  @extend .position-relative , .align-items-center , .cursor-pointer , .bw-1 , .border-color , .border-style-solid , .radius-all-large;
+  
 }
 
 .switch::after {
@@ -32,7 +28,7 @@
   right: -12px;
   z-index: -1;
 
-  @extend .position-absolute;
+  @extend .position-absolute ;
 }
 
 /* =====================================
@@ -60,6 +56,7 @@
   height: 24px;
 }
 
+
 /* =====================================
    SWITCH THUMB
 ===================================== */
@@ -72,8 +69,9 @@
   transform: translateX(2px);
   transition: transform 200ms ease;
 
-  @extend .d-block, .radius-all-full, .bg-primary-color;
+  @extend  .d-block , .radius-all-full , .bg-primary-color;
 }
+
 
 /* =====================================
    THUMB SIZES
@@ -93,6 +91,7 @@
   width: 20px;
   height: 20px;
 }
+
 
 /* =====================================
    SWITCH CHECKED STATE
@@ -116,13 +115,16 @@
   transform: translateX(-22px);
 }
 
+
 /* =====================================
    SWITCH DISABLED
 ===================================== */
 
 .switch[data-disabled] {
-  @extend .cursor-not-allowed, .opacity-5;
+
+  @extend .cursor-not-allowed , .opacity-5 ;
 }
+
 
 /* =====================================
    SWITCH FOCUS

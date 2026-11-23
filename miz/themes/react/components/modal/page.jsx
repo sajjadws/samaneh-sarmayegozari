@@ -7,11 +7,14 @@ import {
   DialogTrigger,
 } from "@/miz/components/react/dialog/page";
 
+
 export function Modal({ title, description, open, onOpenChange, children }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogTrigger />
-      <DialogContent className="">{children}</DialogContent>
+      <DialogContent className="sm:max-w-sm">
+        {children}
+      </DialogContent>
     </Dialog>
   );
 }

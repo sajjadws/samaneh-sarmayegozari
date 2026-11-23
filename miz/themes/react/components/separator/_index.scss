@@ -4,11 +4,12 @@
 @use "../../config" as *;
 @use "sass:map";
 
+
 /* استایل اصلی جداکننده */
 .separator {
   flex-shrink: 0;
 
-  @extend .bg-primary-color;
+  @extend .bg-border-color;
 }
 
 /* حالت افقی */
@@ -21,4 +22,5 @@
 .separator[data-orientation="vertical"] {
   width: 1px;
   align-self: stretch;
+
 }

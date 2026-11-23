@@ -1,24 +1,39 @@
-"use client";
+"use client"
 
-import { Radio as RadioPrimitive } from "@base-ui/react/radio";
-import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
-import { cn } from "cn";
+import { Radio as RadioPrimitive } from "@base-ui/react/radio"
+import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group"
+import { cn } from "cn"
 
 function RadioGroup({ className, ...props }) {
-  return <RadioGroupPrimitive data-slot="radio-group" className={cn("radio-group", className)} {...props} />;
+  return (
+    <RadioGroupPrimitive
+      data-slot="radio-group"
+      className={cn("radio-group", className)}
+      {...props}
+    />
+  )
 }
 
 function RadioGroupItem({ className, ...props }) {
   return (
-    <RadioPrimitive.Root data-slot="radio-item" className={cn("radio-item", className)} {...props}>
-      <RadioPrimitive.Indicator data-slot="radio-group-indicator" className="radio-item-indicator">
+    <RadioPrimitive.Root
+      data-slot="radio-item"
+      className={cn("radio-item", className)}
+      {...props}
+    >
+      <RadioPrimitive.Indicator
+        data-slot="radio-group-indicator"
+        className="radio-item-indicator"
+      >
         <span className="radio-item-inner" />
       </RadioPrimitive.Indicator>
     </RadioPrimitive.Root>
-  );
+  )
 }
 
-export { RadioGroup, RadioGroupItem };
+export { RadioGroup, RadioGroupItem }
+
+
 
 //-------------نحوه استفاده در صفحه -------------//
 // "use client"

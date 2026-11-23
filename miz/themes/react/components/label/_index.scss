@@ -10,8 +10,9 @@
 ===================================== */
 
 .form-label {
-  @extend .d-flex, .align-items-center, .user-select-none;
+  @extend .d-flex, .align-items-center,.user-select-none;
 }
+
 
 /* =====================================
    Label - حالت غیرفعال گروه
@@ -20,6 +21,7 @@
 [data-disabled="true"] .form-label {
   pointer-events: none;
 }
+
 
 /* =====================================
    Label - حالت غیرفعال ورودی مرتبط
