@@ -1,3 +1,5 @@
+"use client";
+
 import { useRef } from "react";
 import { Combobox as ComboboxPrimitive } from "@base-ui/react";
 

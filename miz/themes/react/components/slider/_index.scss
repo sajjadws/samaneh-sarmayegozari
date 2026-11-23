@@ -1,70 +1,201 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use "sass:map";
 
+// ----------------------------------------
+// Slider Root
+// ----------------------------------------
 
-/* کانتینر اصلی Slider */
-.slider-root {
-  height: 10px;
-  @extend .w-100 ;
+body:has(.slider[data-dragging]) {
+  cursor: grabbing;
 }
 
-/* حالت عمودی Slider */
-.slider-root[data-orientation="vertical"] {
-  @extend .h-100;
-}
+.slider {
+  position: relative;
+  display: flex;
+  align-items: center;
 
-/* کنترل‌کننده اصلی Slider */
-.slider-control {
-  height: 100%;
+  width: 100%;
   touch-action: none;
-  background-color: aqua;
-  @extend .d-flex, .position-relative, .align-items-center, .w-100, .user-select-none ;
+  user-select: none;
+
+  &[data-orientation="horizontal"] {
+    height: 1.5rem;
+  }
+
+  &[data-orientation="vertical"] {
+    width: 1.5rem;
+    height: 100%;
+    flex-direction: column;
+  }
+
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &[data-direction="ltr"] {
+    direction: ltr;
+  }
+
+  &[data-direction="rtl"] {
+    direction: rtl;
+  }
 }
 
-/* حالت غیرفعال Slider */
-.slider-control[data-disabled] {
-  @extend .opacity-5;
+// ----------------------------------------
+// Control
+// ----------------------------------------
+
+.slider-control {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+
+  touch-action: none;
+
+  [data-orientation="vertical"] > & {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
 }
 
-/* حالت عمودی کنترل‌کننده */
-.slider-control[data-orientation="vertical"] {
-  @extend .h-100, .flex-column, .w-100;
-}
+// ----------------------------------------
+// Track
+// ----------------------------------------
 
-/* مسیر اصلی Slider */
 .slider-track {
+  position: relative;
   flex-grow: 1;
 
-  @extend .position-relative, .overflow-hidden, .user-select-none , .w-100, .h-100;
+  border-radius: 999px;
+  background: var(--secondary);
+
+  [data-orientation="horizontal"] & {
+    width: 100%;
+    height: 0.35rem;
+  }
+
+  [data-orientation="vertical"] & {
+    width: 0.35rem;
+    height: 100%;
+  }
 }
 
-/* قسمت انتخاب‌شده Slider */
+// ----------------------------------------
+// Range / Indicator
+// ----------------------------------------
+
 .slider-range {
-  background-color: blueviolet;
-  @extend .user-select-none, .w-100, .h-100;
+  position: absolute;
+  border-radius: inherit;
+  background: var(--primary);
+
+  [data-orientation="horizontal"] & {
+    height: 100%;
+  }
+
+  [data-orientation="vertical"] & {
+    width: 100%;
+  }
 }
 
-/* حالت افقی قسمت انتخاب‌شده */
-.slider-range[data-orientation="horizontal"] {
-  @extend .h-100;
-}
+// ----------------------------------------
+// Thumb
+// ----------------------------------------
 
-/* حالت عمودی قسمت انتخاب‌شده */
-.slider-range[data-orientation="vertical"] {
-  @extend .w-100;
-}
 
-/* دکمه قابل حرکت Slider */
 .slider-thumb {
+  position: absolute;
+  display: block;
   flex-shrink: 0;
-  @extend .d-block, .user-select-none;
+
+  width: 1.25rem;
+  height: 1.25rem;
+
+  border: 2px solid var(--primary);
+  border-radius: 50%;
+
+  background: var(--background);
+
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 8%),
+    0 2px 5px rgb(0 0 0 / 10%),
+    inset 0 0 0 3px var(--background);
+
+  outline: none;
+  cursor: grab;
+
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 180ms ease,
+    border-color 180ms ease;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0.3rem;
+
+    border-radius: 50%;
+    background: var(--primary);
+
+    transition: transform 180ms ease;
+  }
+
+  &:hover {
+    transform: scale(1.12);
+
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--primary) 10%, transparent),
+      0 2px 6px rgb(0 0 0 / 12%);
+  }
+
+  &:focus-visible,
+  &[data-focus] {
+    box-shadow:
+      0 0 0 4px color-mix(in srgb, var(--primary) 18%, transparent),
+      0 2px 6px rgb(0 0 0 / 10%);
+  }
+
+  &[data-dragging] {
+    transform: scale(1.18);
+    cursor: grabbing;
+
+    box-shadow:
+      0 0 0 6px color-mix(in srgb, var(--primary) 15%, transparent),
+      0 3px 8px rgb(0 0 0 / 15%);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    border-color: var(--text-secondary);
+
+    &::after {
+      background: var(--text-secondary);
+    }
+  }
 }
 
-/* حالت غیرفعال دکمه */
-.slider-thumb:disabled {
-  pointer-events: none;
-  @extend .opacity-5;
+// ----------------------------------------
+// Focus and Invalid
+// ----------------------------------------
+
+.slider[data-invalid] {
+  .slider-track {
+    background: color-mix(in srgb, var(--danger-regular) 12%, var(--secondary));
+  }
+
+  .slider-range {
+    background: var(--danger-regular);
+  }
+
+  .slider-thumb {
+    border-color: var(--danger-regular);
+  }
 }

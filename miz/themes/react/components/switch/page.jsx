@@ -1,7 +1,5 @@
-"use client"
 
-import { Switch as SwitchPrimitive } from "@base-ui/react/switch"
-import { cn } from "cn"
+import { Switch as SwitchPrimitive } from "@base-ui/react/switch";
 
 function Switch({
   className,
@@ -12,7 +10,7 @@ function Switch({
     <SwitchPrimitive.Root
       data-slot="switch"
       data-size={size}
-      className={cn("switch", className)}
+      className={utils.cn("switch", className)}
       {...props}
     >
       <SwitchPrimitive.Thumb
@@ -20,7 +18,9 @@ function Switch({
         className="switch-thumb"
       />
     </SwitchPrimitive.Root>
-  )
+  );
 }
 
-export { Switch }
+export {
+  Switch,
+};

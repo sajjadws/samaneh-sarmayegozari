@@ -1,78 +1,59 @@
-"use client"
 
-import { Radio as RadioPrimitive } from "@base-ui/react/radio"
-import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group"
-import { cn } from "cn"
+import { Radio as RadioPrimitive } from "@base-ui/react/radio";
+import { RadioGroup as RadioGroupPrimitive } from "@base-ui/react/radio-group";
 
-function RadioGroup({ className, ...props }) {
+function RadioGroup({
+  orientation = "vertical",
+  className,
+  ...props
+}) {
   return (
     <RadioGroupPrimitive
       data-slot="radio-group"
-      className={cn("radio-group", className)}
+      data-orientation={orientation}
+      className={utils.cn("radio-group", className)}
       {...props}
     />
-  )
+  );
 }
 
-function RadioGroupItem({ className, ...props }) {
+function RadioGroupItem({
+  value,
+  id,
+  size = "default",
+  className,
+  children,
+  ...props
+}) {
   return (
-    <RadioPrimitive.Root
-      data-slot="radio-item"
-      className={cn("radio-item", className)}
-      {...props}
+    <label
+      data-slot="radio-group-item-wrapper"
+      data-size={size}
+      className={utils.cn("radio-group-item", className)}
     >
-      <RadioPrimitive.Indicator
-        data-slot="radio-group-indicator"
-        className="radio-item-indicator"
+      <RadioPrimitive.Root
+        data-slot="radio-group-item"
+        id={id}
+        value={value}
+        className="radio-group-control"
+        {...props}
       >
-        <span className="radio-item-inner" />
-      </RadioPrimitive.Indicator>
-    </RadioPrimitive.Root>
-  )
+        <RadioPrimitive.Indicator
+          data-slot="radio-group-indicator"
+          className="radio-group-indicator"
+        />
+      </RadioPrimitive.Root>
+
+      {children && (
+        <span className="radio-group-item-content">
+          {children}
+        </span>
+      )}
+    </label>
+  );
 }
 
-export { RadioGroup, RadioGroupItem }
-
-
-
-//-------------نحوه استفاده در صفحه -------------//
-// "use client"
-
-// import { useState } from "react"
-
-// import {
-//   RadioGroup,
-//   RadioGroupItem
-// } from "@/components/ui/radio-group"
-
-// export default function PaymentForm() {
-//   const [payment, setPayment] = useState("card")
-
-//   return (
-//     <div>
-//       <h2>روش پرداخت</h2>
-
-//       <RadioGroup
-//         value={payment}
-//         onValueChange={setPayment}
-//       >
-//         <label>
-//           <RadioGroupItem value="card" />
-//           کارت بانکی
-//         </label>
-
-//         <label>
-//           <RadioGroupItem value="cash" />
-//           پرداخت نقدی
-//         </label>
-
-//         <label>
-//           <RadioGroupItem value="online" />
-//           پرداخت آنلاین
-//         </label>
-//       </RadioGroup>
-
-//       <p>روش انتخاب شده: {payment}</p>
-//     </div>
-//   )
-// }
+export {
+  RadioGroup,
+  RadioGroupItem,
+};

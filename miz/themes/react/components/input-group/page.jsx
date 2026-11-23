@@ -1,167 +1,54 @@
+import { Input } from "../input/page";
+import { Button } from "../button/page";
 
-
-"use client"
-
-import * as React from "react"
-
-import { Button } from "../button/page"
-import { Input } from "../input/page"
-import { Textarea } from "../textarea/page"
-
-
-/* =====================================
-   INPUT GROUP
-===================================== */
-
-function InputGroup({
-  className = "",
-  ...props
-}) {
-  return (
-    <div
-      data-slot="input-group"
-      role="group"
-      className={`input-group ${className}`}
-      {...props}
-    />
-  )
+function InputGroup({ className, ...props }) {
+  return <div role="group" data-slot="input-group" className={utils.cn("input-group", className)} {...props} />;
 }
 
-
-/* =====================================
-   INPUT GROUP ADDON
-===================================== */
-
-function InputGroupAddon({
-  className = "",
-  align = "inline-start",
-  onClick,
-  ...props
-}) {
-
-  const handleClick = (event) => {
-
-    onClick?.(event)
-
-    if (event.defaultPrevented) return
-
-    if (event.target.closest("button")) return
-
-    event.currentTarget.parentElement
-      ?.querySelector("input, textarea")
-      ?.focus()
-  }
-
+function InputGroupAddon({ className, align = "inline-start", ...props }) {
   return (
     <div
       role="group"
       data-slot="input-group-addon"
       data-align={align}
-      className={`
-        input-group-addon
-        input-group-addon-${align}
-        ${className}
-      `}
-      onClick={handleClick}
+      className={utils.cn("input-group-addon", `input-group-addon-${align}`, className)}
+      onClick={(event) => {
+        if (event.target.closest("button")) return;
+
+        const control = event.currentTarget.parentElement?.querySelector('[data-slot="input-group-control"]');
+
+        control?.focus();
+      }}
       {...props}
     />
-  )
+  );
 }
 
-
-/* =====================================
-   INPUT GROUP BUTTON
-===================================== */
-
-function InputGroupButton({
-  className = "",
-  type = "button",
-  variant = "ghost",
-  size = "xs",
-  ...props
-}) {
-
+function InputGroupButton({ className, type = "button", variant = "ghost", size = "xs", ...props }) {
   return (
     <Button
       type={type}
-      data-size={size}
       variant={variant}
-      className={`
-        input-group-button
-        input-group-button-${size}
-        ${className}
-      `}
+      size={size}
+      data-size={size}
+      className={utils.cn("input-group-button", className)}
       {...props}
     />
-  )
+  );
 }
 
+function InputGroupText({ className, ...props }) {
+  return <span className={utils.cn("input-group-text", className)} {...props} />;
+}
 
-/* =====================================
-   INPUT GROUP TEXT
-===================================== */
+function InputGroupInput({ className, ...props }) {
+  return <Input data-slot="input-group-control" className={utils.cn("input-group-input", className)} {...props} />;
+}
 
-function InputGroupText({
-  className = "",
-  ...props
-}) {
-
+function InputGroupTextarea({ className, ...props }) {
   return (
-    <span
-      className={`input-group-text ${className}`}
-      {...props}
-    />
-  )
+    <textarea data-slot="input-group-control" className={utils.cn("input-group-textarea", className)} {...props} />
+  );
 }
 
-
-/* =====================================
-   INPUT GROUP INPUT
-===================================== */
-
-function InputGroupInput({
-  className = "",
-  ...props
-}) {
-
-  return (
-    <Input
-      data-slot="input-group-control"
-      className={`input-group-input ${className}`}
-      {...props}
-    />
-  )
-}
-
-
-/* =====================================
-   INPUT GROUP TEXTAREA
-===================================== */
-
-function InputGroupTextarea({
-  className = "",
-  ...props
-}) {
-
-  return (
-    <Textarea
-      data-slot="input-group-control"
-      className={`input-group-textarea ${className}`}
-      {...props}
-    />
-  )
-}
-
-
-/* =====================================
-   EXPORTS
-===================================== */
-
-export {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupButton,
-  InputGroupText,
-  InputGroupInput,
-  InputGroupTextarea,
-}
+export { InputGroup, InputGroupAddon, InputGroupButton, InputGroupText, InputGroupInput, InputGroupTextarea };

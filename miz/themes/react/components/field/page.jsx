@@ -1,155 +1,84 @@
-
-import { cn } from "cn";
-
-function Field({ className, orientation = "vertical", ...props }) {
-    return (
-        <div
-            data-slot="field"
-            data-orientation={orientation}
-            className={cn("field", className)}
-            {...props}
-        />
-    );
-}
+import { useMemo } from "react";
 
 function FieldSet({ className, ...props }) {
-    return (
-        <fieldset
-            data-slot="field-set"
-            className={cn("field-set", className)}
-            {...props}
-        />
-    );
+  return <fieldset className={utils.cn("field-set", className)} {...props} />;
 }
 
 function FieldLegend({ className, variant = "legend", ...props }) {
-    return (
-        <legend
-            data-slot="field-legend"
-            data-variant={variant}
-            className={cn("field-legend", className)}
-            {...props}
-        />
-    );
+  return <legend className={utils.cn("field-legend", `field-legend-${variant}`, className)} {...props} />;
 }
 
 function FieldGroup({ className, ...props }) {
-    return (
-        <div
-            data-slot="field-group"
-            className={cn("field-group", className)}
-            {...props}
-        />
-    );
+  return <div className={utils.cn("field-group", className)} {...props} />;
+}
+
+function Field({ className, orientation = "vertical", ...props }) {
+  return (
+    <div
+      role="group"
+      data-orientation={orientation}
+      className={utils.cn("field", `field-${orientation}`, className)}
+      {...props}
+    />
+  );
 }
 
 function FieldContent({ className, ...props }) {
-    return (
-        <div
-            data-slot="field-content"
-            className={cn("field-content", className)}
-            {...props}
-        />
-    );
+  return <div className={utils.cn("field-content", className)} {...props} />;
 }
 
 function FieldLabel({ className, ...props }) {
-    return (
-        <label
-            data-slot="field-label"
-            className={cn("field-label", className)}
-            {...props}
-        />
-    );
+  return <label className={utils.cn("field-label", className)} {...props} />;
 }
 
 function FieldTitle({ className, ...props }) {
-    return (
-        <div
-            data-slot="field-title"
-            className={cn("field-title", className)}
-            {...props}
-        />
-    );
+  return <div className={utils.cn("field-title", className)} {...props} />;
 }
 
 function FieldDescription({ className, ...props }) {
-    return (
-        <p
-            data-slot="field-description"
-            className={cn("field-description", className)}
-            {...props}
-        />
-    );
+  return <p className={utils.cn("field-description", className)} {...props} />;
+}
+
+function FieldSeparator({ children, className, ...props }) {
+  return (
+    <div role="separator" className={utils.cn("field-separator", className)} {...props}>
+      {children && <span className="field-separator-content">{children}</span>}
+    </div>
+  );
 }
 
 function FieldError({ className, children, errors, ...props }) {
-    const messages = errors
-        ? errors.map((error) =>
-              typeof error === "string" ? error : error.message
-          ).filter(Boolean)
-        : [];
+  const content = useMemo(() => {
+    if (children) return children;
+    if (!errors?.length) return null;
 
-    const content = children || messages;
+    const uniqueErrors = [...new Map(errors.map((error) => [error?.message, error])).values()];
 
-    if (!content || (Array.isArray(content) && content.length === 0)) {
-        return null;
+    if (uniqueErrors.length === 1) {
+      return uniqueErrors[0]?.message;
     }
 
-    return (
-        <div
-            role="alert"
-            data-slot="field-error"
-            className={cn("field-error", className)}
-            {...props}
-        >
-            {Array.isArray(content) ? (
-                content.length === 1 ? (
-                    content[0]
-                ) : (
-                    <ul>
-                        {content.map((message, index) => (
-                            <li key={index}>{message}</li>
-                        ))}
-                    </ul>
-                )
-            ) : (
-                content
-            )}
-        </div>
-    );
-}
+    return <ul>{uniqueErrors.map((error, index) => error?.message && <li key={index}>{error.message}</li>)}</ul>;
+  }, [children, errors]);
 
-function FieldSeparator({ className, children, ...props }) {
-    return (
-        <div
-            role="separator"
-            data-slot="field-separator"
-            className={cn("field-separator", className)}
-            {...props}
-        >
-            {children && (
-                <>
-                    <span className="field-separator-line" />
-                    <span className="field-separator-text">
-                        {children}
-                    </span>
-                    <span className="field-separator-line" />
-                </>
-            )}
-        </div>
-    );
+  if (!content) return null;
+
+  return (
+    <div role="alert" className={utils.cn("field-error", className)} {...props}>
+      {content}
+    </div>
+  );
 }
 
 export {
-    Field,
-    FieldSet,
-    FieldLegend,
-    FieldGroup,
-    FieldContent,
-    FieldLabel,
-    FieldTitle,
-    FieldDescription,
-    FieldError,
-    FieldSeparator,
+  Field,
+  FieldSet,
+  FieldLegend,
+  FieldGroup,
+  FieldContent,
+  FieldLabel,
+  FieldTitle,
+  FieldDescription,
+  FieldSeparator,
+  FieldError,
 };

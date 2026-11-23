@@ -1,24 +1,13 @@
-import { cn } from "cn"
+import { LoaderCircle } from "lucide-react";
 
-import { IconPlaceholder } from "@tabler/icons-react"
-
-function Spinner({ className, ...props }) {
+function Spinner({ className, size = "default", label = "Loading", icon, ...props }) {
   return (
+    <span data-slot="spinner" data-size={size} className={utils.cn("spinner", className)} role="status" {...props}>
+      {icon || <LoaderCircle aria-hidden="true" />}
 
-    <IconPlaceholder  lucide="Loader2Icon"
-      tabler="IconLoader"
-      hugeicons="Loading03Icon"
-      phosphor="SpinnerIcon"
-      remixicon="RiLoaderLine"
-      data-slot="spinner"
-      role="status"
-      aria-label="Loading"
-      className={cn("spinner", className)}
-      {...props}
-    />
-
-
-  )
+      <span className="spinner-sr-only">{label}</span>
+    </span>
+  );
 }
 
-export { Spinner }
+export { Spinner };

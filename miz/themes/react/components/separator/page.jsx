@@ -1,24 +1,41 @@
-"use client"
+// import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
 
-import { Separator as SeparatorPrimitive } from "@base-ui/react/separator"
-import { cn } from "cn"
+// function Separator({ className, orientation = "horizontal", decorative = true, ...props }) {
+//   return (
+//     <SeparatorPrimitive
+//       data-slot="separator"
+//       orientation={orientation}
+//       decorative={decorative}
+//       className={utils.cn("separator", className)}
+//       {...props}
+//     />
+//   );
+// }
+
+// export { Separator };
+
+
+
+
+
+import { Separator as SeparatorPrimitive } from "@base-ui/react/separator";
 
 function Separator({
   className,
   orientation = "horizontal",
+  decorative = true,
   ...props
 }) {
   return (
     <SeparatorPrimitive
       data-slot="separator"
       orientation={orientation}
-      className={cn(
-        "separator",
-        className
-      )}
+      aria-hidden={decorative ? true : undefined}
+      role={decorative ? "none" : "separator"}
+      className={utils.cn("separator", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Separator }
+export { Separator };

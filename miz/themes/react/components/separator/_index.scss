@@ -1,26 +1,24 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use "sass:map";
 
+// ----------------------------------------
+// Separator
+// ----------------------------------------
 
-/* استایل اصلی جداکننده */
 .separator {
   flex-shrink: 0;
+  background: var(--divider);
 
-  @extend .bg-border-color;
-}
+  &[data-orientation="horizontal"] {
+    width: 100%;
+    height: 1px;
+  }
 
-/* حالت افقی */
-.separator[data-orientation="horizontal"] {
-  height: 1px;
-  @extend .w-100;
-}
-
-/* حالت عمودی */
-.separator[data-orientation="vertical"] {
-  width: 1px;
-  align-self: stretch;
-
+  &[data-orientation="vertical"] {
+    align-self: stretch;
+    width: 1px;
+    min-height: 1rem;
+  }
 }

@@ -1,241 +1,203 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Toast as ToastPrimitive } from "@base-ui/react/toast"
-import { cn } from "cn"
+import { Toast as ToastPrimitive } from "@base-ui/react/toast";
+import {
+  CircleCheck,
+  Info,
+  TriangleAlert,
+  OctagonX,
+  LoaderCircle,
+  X,
+} from "lucide-react";
 
-import { Button } from "../button/page"
+const toastManager = ToastPrimitive.createToastManager();
 
-const toast = ToastPrimitive.createToastManager()
+const toast = {
+  add(options = {}) {
+    const { axis, ...rest } = options;
+
+    return toastManager.add({
+      ...rest,
+      data: {
+        ...rest.data,
+        ...(axis ? { axis } : {}),
+      },
+    });
+  },
+
+  close(...args) {
+    return toastManager.close(...args);
+  },
+
+  update(...args) {
+    return toastManager.update(...args);
+  },
+
+  promise(...args) {
+    return toastManager.promise(...args);
+  },
+};
 
 function ToastProvider({ ...props }) {
-  return <ToastPrimitive.Provider {...props} />
+  return <ToastPrimitive.Provider {...props} />;
 }
 
 function ToastPortal({ ...props }) {
-  return <ToastPrimitive.Portal data-slot="toast-portal" {...props} />
+  return (
+    <ToastPrimitive.Portal
+      data-slot="toast-portal"
+      {...props}
+    />
+  );
 }
 
 function ToastViewport({ className, ...props }) {
   return (
     <ToastPrimitive.Viewport
       data-slot="toast-viewport"
-      className={cn(
-        "toast-viewport",
-        className
-      )}
+      className={utils.cn("toast-viewport", className)}
       {...props}
     />
-  )
+  );
 }
 
 function Toast({ className, ...props }) {
   return (
     <ToastPrimitive.Root
       data-slot="toast"
-      className={cn(
-        "toast-item ",
-        className
-      )}
+      className={utils.cn("toast", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ToastContent({ className, ...props }) {
   return (
     <ToastPrimitive.Content
       data-slot="toast-content"
-      className={cn(
-        "toast-content",
-        className
-      )}
+      className={utils.cn("toast-content", className)}
       {...props}
     />
-  )
+  );
 }
 
 function ToastTitle({ className, ...props }) {
   return (
     <ToastPrimitive.Title
       data-slot="toast-title"
-      className={cn("toast-title", className)}
+      className={utils.cn("toast-title", className)}
       {...props}
     />
-  )
+  );
 }
 
-function ToastDescription({
-  className,
-  ...props
-}) {
+function ToastDescription({ className, ...props }) {
   return (
     <ToastPrimitive.Description
       data-slot="toast-description"
-      className={cn("toast-description", className)}
+      className={utils.cn("toast-description", className)}
       {...props}
     />
-  )
+  );
 }
 
-function ToastAction({
-  className,
-  render = <Button variant="outline" size="sm" />,
-  ...props
-}) {
+function ToastAction({ className, ...props }) {
   return (
     <ToastPrimitive.Action
       data-slot="toast-action"
-      render={render}
-      className={cn("toast-action", className)}
+      className={utils.cn("toast-action", className)}
       {...props}
     />
-  )
+  );
 }
 
-function ToastClose({
-  className,
-  children,
-  render = <Button variant="ghost" size="icon-sm" />,
-  ...props
-}) {
+function ToastClose({ className, children, ...props }) {
   return (
     <ToastPrimitive.Close
       data-slot="toast-close"
-      aria-label="Close toast"
-      render={render}
-      className={cn(
-        " toast-close",
-        className
-      )}
+      aria-label="Close notification"
+      className={utils.cn("toast-close", className)}
       {...props}
     >
-      {children ?? "*"}
+      {children || <X aria-hidden="true" />}
     </ToastPrimitive.Close>
-  )
+  );
 }
 
 function ToastIcon({ type }) {
-  let icon = null
+  const icons = {
+    success: CircleCheck,
+    info: Info,
+    warning: TriangleAlert,
+    error: OctagonX,
+    loading: LoaderCircle,
+  };
 
-  if (type === "success") {
-    // icon = (
-    //   <IconPlaceholder
-    //     lucide="CircleCheckIcon"
-    //     tabler="IconCircleCheck"
-    //     hugeicons="CheckmarkCircle02Icon"
-    //     phosphor="CheckCircleIcon"
-    //     remixicon="RiCheckboxCircleLine"
-    //     aria-hidden="true"
-    //   />
-    // )
-  }
+  const Icon = icons[type];
 
-  if (type === "info") {
-    // icon = (
-    //   <IconPlaceholder
-    //     lucide="InfoIcon"
-    //     tabler="IconInfoCircle"
-    //     hugeicons="InformationCircleIcon"
-    //     phosphor="InfoIcon"
-    //     remixicon="RiInformationLine"
-    //     aria-hidden="true"
-    //   />
-    // )
-  }
-
-  if (type === "warning") {
-    // icon = (
-    //   <IconPlaceholder
-    //     lucide="TriangleAlertIcon"
-    //     tabler="IconAlertTriangle"
-    //     hugeicons="Alert02Icon"
-    //     phosphor="WarningIcon"
-    //     remixicon="RiErrorWarningLine"
-    //     aria-hidden="true"
-    //   />
-    // )
-  }
-
-  if (type === "error") {
-    // icon = (
-    //   <IconPlaceholder
-    //     lucide="OctagonXIcon"
-    //     tabler="IconAlertOctagon"
-    //     hugeicons="MultiplicationSignCircleIcon"
-    //     phosphor="XCircleIcon"
-    //     remixicon="RiCloseCircleLine"
-    //     className="toast-icon-error"
-    //     aria-hidden="true"
-    //   />
-    // )
-  }
-
-  if (type === "loading") {
-    // icon = (
-    //   <IconPlaceholder
-    //     lucide="Loader2Icon"
-    //     tabler="IconLoader"
-    //     hugeicons="Loading03Icon"
-    //     phosphor="SpinnerIcon"
-    //     remixicon="RiLoaderLine"
-    //     className="toast-loading-icon"
-    //     aria-hidden="true"
-    //   />
-    // )
-  }
-
-  if (!icon) {
-    return null
-  }
+  if (!Icon) return null;
 
   return (
-    <span
-      data-slot="toast-icon"
-      className="toast-icon"
-    >
-      {icon}
+    <span data-slot="toast-icon" className="toast-icon">
+      <Icon
+        aria-hidden="true"
+        className={type === "loading" ? "toast-icon-loading" : ""}
+      />
     </span>
-  )
+  );
 }
 
-function ToastList() {
-  const { toasts } = ToastPrimitive.useToastManager()
+function ToastList({ axis = "y" }) {
+  const { toasts } = ToastPrimitive.useToastManager();
 
   return toasts.map((toastItem) => (
-    <Toast key={toastItem.id} toast={toastItem}>
+    <Toast
+      key={toastItem.id}
+      toast={toastItem}
+      data-axis={toastItem.data?.axis || axis}
+    >
       <ToastContent>
         <ToastIcon type={toastItem.type} />
-        <div className="toast-text">
+
+        <div className="toast-body">
           <ToastTitle />
           <ToastDescription />
         </div>
+
         <ToastAction />
         <ToastClose />
       </ToastContent>
     </Toast>
-  ))
+  ));
 }
 
 function Toaster({
   children,
-  toastManager = toast,
+  axis = "y",
+  className,
   ...props
 }) {
   return (
-    <ToastProvider toastManager={toastManager} {...props}>
+    <ToastProvider
+      toastManager={toastManager}
+      {...props}
+    >
       {children}
+
       <ToastPortal>
-        <ToastViewport>
-          <ToastList />
+        <ToastViewport
+          data-axis={axis}
+          className={className}
+        >
+          <ToastList axis={axis} />
         </ToastViewport>
       </ToastPortal>
     </ToastProvider>
-  )
+  );
 }
 
-const createToastManager = ToastPrimitive.createToastManager
-const useToastManager = ToastPrimitive.useToastManager
+const createToastManager = ToastPrimitive.createToastManager;
+const useToastManager = ToastPrimitive.useToastManager;
 
 export {
   Toaster,
@@ -244,6 +206,7 @@ export {
   ToastClose,
   ToastContent,
   ToastDescription,
+  ToastIcon,
   ToastPortal,
   ToastProvider,
   ToastTitle,
@@ -251,4 +214,4 @@ export {
   createToastManager,
   toast,
   useToastManager,
-}
+};

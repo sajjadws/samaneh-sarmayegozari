@@ -1,225 +1,124 @@
+
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
 @use "sass:map";
 
 $input-sizes: (
-    sm: (
-        height: 34px,
-        padding: 0 11px,
-        font-size: 13px,
-    ),
-    default: (
-        height: 40px,
-        padding: 0 13px,
-        font-size: 14px,
-    ),
-    lg: (
-        height: 46px,
-        padding: 0 15px,
-        font-size: 15px,
-    ),
+  default: (
+    height: 38px,
+    padding: 12px,
+    font-size: 13px,
+    radius: 8px,
+  ),
+  sm: (
+    height: 32px,
+    padding: 10px,
+    font-size: 12px,
+    radius: 6px,
+  ),
+  lg: (
+    height: 44px,
+    padding: 14px,
+    font-size: 14px,
+    radius: 9px,
+  ),
 );
 
-.input-wrapper {
-    position: relative;
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    align-items: center;
-
-    border: 1px solid var(--input);
-    border-radius: calc(var(--radius-md) + 2px);
-    background-color: var(--background);
-
-    box-shadow:
-        0 1px 2px rgba(0, 0, 0, 0.025),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-
-    transition:
-        border-color 200ms ease,
-        box-shadow 200ms ease,
-        background-color 200ms ease,
-        transform 200ms ease;
-
-    @each $name, $properties in $input-sizes {
-        &[data-size="#{$name}"] {
-            min-height: map.get($properties, height);
-
-            .input {
-                min-height: map.get($properties, height);
-                padding: map.get($properties, padding);
-                font-size: map.get($properties, font-size);
-            }
-        }
-    }
-
-    // Hover
-    &:not([data-disabled="true"]):not(:focus-within):hover {
-        border-color: var(--ring);
-
-        box-shadow:
-            0 1px 3px rgba(0, 0, 0, 0.04),
-            0 0 0 1px color-mix(in srgb, var(--ring) 10%, transparent);
-    }
-
-    // Focus
-    &:focus-within {
-        border-color: var(--primary);
-
-        box-shadow:
-            0 0 0 1px var(--primary),
-            0 0 0 4px color-mix(in srgb, var(--primary) 12%, transparent),
-            0 4px 12px color-mix(in srgb, var(--primary) 10%, transparent);
-
-        background-color: var(--background);
-    }
-
-    // Invalid
-    &[data-invalid="true"] {
-        border-color: var(--destructive);
-
-        &:focus-within {
-            border-color: var(--destructive);
-
-            box-shadow:
-                0 0 0 1px var(--destructive),
-                0 0 0 4px color-mix(in srgb, var(--destructive) 11%, transparent),
-                0 4px 12px color-mix(in srgb, var(--destructive) 8%, transparent);
-        }
-    }
-
-    // Disabled
-    &[data-disabled="true"] {
-        background-color: var(--muted);
-        opacity: 0.6;
-        cursor: not-allowed;
-        box-shadow: none;
-
-        &:hover,
-        &:focus-within {
-            border-color: var(--input);
-            box-shadow: none;
-        }
-    }
-
-    // Icon spacing
-    &:has(.input-icon-start) {
-        .input {
-            padding-inline-start: 2px;
-        }
-    }
-
-    &:has(.input-icon-end) {
-        .input {
-            padding-inline-end: 2px;
-        }
-    }
-}
-
 .input {
-    display: flex;
-    width: 100%;
-    min-width: 0;
-    flex: 1;
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  height: map.get(map.get($input-sizes, default), height);
 
-    border: 0;
-    outline: none;
-    background: transparent;
+  padding-inline: map.get(map.get($input-sizes, default), padding);
 
-    color: var(--text);
-    line-height: 1.5;
+  color: var(--text);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: map.get(map.get($input-sizes, default), radius);
 
-    transition:
-        color 180ms ease,
-        opacity 180ms ease;
+  font-size: map.get(map.get($input-sizes, default), font-size);
+  line-height: 1.5;
 
-    &::placeholder {
-        color: var(--muted-foreground);
-        opacity: 0.75;
-        transition: opacity 180ms ease;
+  outline: none;
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
+
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.75;
+  }
+
+  &:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  }
+
+  &:disabled,
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &:read-only {
+    background: var(--secondary);
+    cursor: default;
+  }
+
+  &[aria-invalid="true"],
+  &[data-invalid] {
+    border-color: var(--danger-regular);
+
+    &:focus-visible {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 15%, transparent);
     }
+  }
 
-    &:focus {
-        outline: none;
-        box-shadow: none;
+  &[type="file"] {
+    padding: 4px;
 
-        &::placeholder {
-            opacity: 0.4;
-        }
+    &::file-selector-button {
+      height: 100%;
+      margin-inline-end: 10px;
+      padding-inline: 10px;
+
+      color: var(--text);
+      background: var(--secondary);
+      border: 0;
+      border-radius: 5px;
+
+      font: inherit;
+      cursor: pointer;
     }
+  }
 
-    &:disabled {
-        cursor: not-allowed;
+  &[type="number"] {
+    appearance: textfield;
+
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+      margin: 0;
+      appearance: none;
     }
+  }
 
-    &[aria-invalid="true"] {
-        color: var(--destructive);
+  &[type="search"] {
+    &::-webkit-search-cancel-button {
+      cursor: pointer;
     }
-
-    &[type="file"] {
-        cursor: pointer;
-
-        &::file-selector-button {
-            height: 100%;
-            margin-inline-end: 12px;
-            border: 0;
-            background: transparent;
-            color: var(--text);
-            font: inherit;
-            cursor: pointer;
-        }
-    }
-
-    &[type="search"] {
-        &::-webkit-search-cancel-button {
-            cursor: pointer;
-        }
-    }
-
-    &[type="number"] {
-        appearance: textfield;
-
-        &::-webkit-inner-spin-button,
-        &::-webkit-outer-spin-button {
-            margin: 0;
-            appearance: none;
-        }
-    }
+  }
 }
 
-.input-icon {
-    display: inline-flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-
-    color: var(--muted-foreground);
-
-    transition:
-        color 200ms ease,
-        transform 200ms ease;
-
-    svg {
-        width: 17px;
-        height: 17px;
+@each $size, $values in $input-sizes {
+  @if $size != default {
+    .input-size-#{$size} {
+      height: map.get($values, height);
+      padding-inline: map.get($values, padding);
+      border-radius: map.get($values, radius);
+      font-size: map.get($values, font-size);
     }
-
-    &-start {
-        margin-inline-start: 12px;
-    }
-
-    &-end {
-        margin-inline-end: 12px;
-    }
-}
-
-.input-wrapper:focus-within {
-    .input-icon {
-        color: var(--primary);
-        transform: scale(1.04);
-    }
-}
-
-.input-wrapper[data-invalid="true"]:focus-within {
-    .input-icon {
-        color: var(--destructive);
-    }
+  }
 }

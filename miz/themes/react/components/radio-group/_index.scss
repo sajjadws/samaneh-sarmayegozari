@@ -1,37 +1,245 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
 @use "sass:map";
 
-/* =========================
-  radios group
-========================= */
+// Sizes
+$radio-sizes: (
+  sm: (
+    size: 14px,
+    indicator: 6px,
+  ),
+  default: (
+    size: 16px,
+    indicator: 8px,
+  ),
+  lg: (
+    size: 20px,
+    indicator: 10px,
+  ),
+);
 
+// Radio Group
 .radio-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
 
-  @extend .d-flex , .align-items-center , .gap-20 , .w-100;
+  width: 100%;
+  min-width: 0;
+
+  &[data-orientation="horizontal"] {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &[data-disabled] {
+    opacity: 0.6;
+  }
 }
 
-/* =========================
-  Base radio-bottom
-========================= */
+// Radio Item
+.radio-group-item {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
 
-.radio-item {
-  appearance: none;
-  flex-shrink: 0;
-  width: 35px;
-  transition: border 0.2s ease, background-color 0.2s ease;
+  width: fit-content;
+  max-width: 100%;
 
-  @extend .d-flex , .align-items-center , .justify-content-center , .aspect-ratio-1x1 , .p-0 , .radius-all-full , .cursor-pointer , .bw-6 , .border-style-solid , .border-color ; 
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+
+  cursor: pointer;
+  user-select: none;
+
+  &:has(.radio-group-control[data-disabled]) {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &:has(.radio-group-control[data-readonly]) {
+    cursor: default;
+  }
+
+  &:has(.radio-group-control[aria-invalid="true"]) {
+    color: var(--danger-regular);
+  }
 }
 
-/* =========================
-  checked state
-========================= */
+// Radio Control
+.radio-group-control {
+  position: relative;
 
-.radio-item[data-checked] {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
 
-  @extend .border-primary-color ;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  margin: 2px 0 0;
+
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+
+  background: var(--background);
+  color: var(--primary);
+
+  cursor: pointer;
+  outline: none;
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease;
+
+  &:hover:not([data-disabled]):not([data-checked]) {
+    border-color: var(--primary);
+  }
+
+  &[data-checked] {
+    border-color: var(--primary);
+    background: var(--primary);
+  }
+
+  &[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  &[data-readonly] {
+    cursor: default;
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--danger-regular);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
 }
 
+// Indicator
+.radio-group-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+
+  border-radius: inherit;
+
+  &::after {
+    display: block;
+
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+    background: var(--white);
+
+    content: "";
+  }
+
+  &[data-unchecked] {
+    display: none;
+  }
+}
+
+// Item Content
+.radio-group-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+// Sizes
+@each $name, $values in $radio-sizes {
+  .radio-group-item[data-size="#{$name}"] {
+    .radio-group-control {
+      width: map.get($values, size);
+      height: map.get($values, size);
+    }
+
+    .radio-group-indicator::after {
+      width: map.get($values, indicator);
+      height: map.get($values, indicator);
+    }
+  }
+}
+
+// Card Style
+.radio-group-item-card {
+  display: flex;
+  align-items: flex-start;
+
+  width: 100%;
+  padding: 14px;
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  background: var(--background);
+
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease;
+
+  &:has(.radio-group-control[data-checked]) {
+    border-color: var(--primary);
+    background: color-mix(
+      in srgb,
+      var(--primary) 5%,
+      var(--background)
+    );
+  }
+
+  &:hover:not(:has(.radio-group-control[data-disabled])) {
+    border-color: var(--primary);
+  }
+}
+
+// Description
+.radio-group-description {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+// Disabled
+.radio-group[data-disabled] .radio-group-item {
+  cursor: not-allowed;
+}
+
+// Invalid
+.radio-group[data-invalid] {
+  .radio-group-control {
+    border-color: var(--danger-regular);
+  }
+}
+
+// RTL
+[dir="rtl"] {
+  .radio-group-item {
+    text-align: right;
+  }
+}
+
+// Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  .radio-group-control,
+  .radio-group-item-card {
+    transition: none;
+  }
+}

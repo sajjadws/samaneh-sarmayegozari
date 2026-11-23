@@ -1,0 +1,253 @@
+
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use "sass:map";
+
+// Variables
+$bubble-variants: (
+  default: (
+    background: var(--primary),
+    color: var(--on-primary),
+    border: transparent,
+  ),
+  secondary: (
+    background: var(--secondary),
+    color: var(--on-secondary),
+    border: transparent,
+  ),
+  muted: (
+    background: var(--secondary),
+    color: var(--text),
+    border: transparent,
+  ),
+  tinted: (
+    background: color-mix(in srgb, var(--primary) 10%, var(--background)),
+    color: var(--text),
+    border: transparent,
+  ),
+  outline: (
+    background: transparent,
+    color: var(--text),
+    border: var(--border),
+  ),
+  ghost: (
+    background: transparent,
+    color: var(--text),
+    border: transparent,
+  ),
+  destructive: (
+    background: var(--danger-regular),
+    color: var(--white),
+    border: transparent,
+  ),
+);
+
+// Bubble
+.bubble {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  max-width: 80%;
+  min-width: 0;
+
+  border: 1px solid transparent;
+  border-radius: 16px;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  // Variants
+  @each $name, $values in $bubble-variants {
+    &[data-variant="#{$name}"] {
+      background: map.get($values, background);
+      color: map.get($values, color);
+      border-color: map.get($values, border);
+    }
+  }
+
+  // Alignment
+  &[data-align="start"] {
+    margin-inline-end: auto;
+  }
+
+  &[data-align="end"] {
+    margin-inline-start: auto;
+  }
+
+  // Ghost
+  &[data-variant="ghost"] {
+    width: 100%;
+    max-width: 100%;
+    border-color: transparent;
+    border-radius: 0;
+  }
+
+  // Interactive focus
+  &:has(.bubble-content:focus-visible) {
+    outline: 2px solid var(--primary);
+    outline-offset: 3px;
+  }
+}
+
+// Bubble Content
+.bubble-content {
+  display: block;
+  width: 100%;
+  min-width: 0;
+
+  padding: 10px 14px;
+
+  font-size: 14px;
+  line-height: 1.7;
+
+  overflow-wrap: anywhere;
+  word-break: break-word;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &[href],
+  &[type="button"],
+  &[role="button"] {
+    cursor: pointer;
+  }
+
+  p {
+    margin: 0;
+
+    & + p {
+      margin-top: 10px;
+    }
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  pre {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  code {
+    overflow-wrap: anywhere;
+  }
+
+  img,
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  ul,
+  ol {
+    padding-inline-start: 20px;
+  }
+}
+
+// Bubble Group
+.bubble-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+
+  width: 100%;
+  min-width: 0;
+
+  > .bubble {
+    flex-shrink: 0;
+  }
+}
+
+// Bubble Reactions
+.bubble-reactions {
+  position: absolute;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  min-height: 26px;
+  padding: 3px 7px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--background);
+  color: var(--text);
+
+  font-size: 12px;
+  line-height: 1;
+
+  box-shadow: 0 2px 6px rgb(0 0 0 / 8%);
+
+  // Side
+  &[data-side="bottom"] {
+    top: calc(100% - 2px);
+  }
+
+  &[data-side="top"] {
+    bottom: calc(100% - 2px);
+  }
+
+  // Alignment
+  &[data-align="start"] {
+    inset-inline-start: 12px;
+  }
+
+  &[data-align="end"] {
+    inset-inline-end: 12px;
+  }
+
+  > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  button {
+    width: 24px;
+    height: 24px;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: transparent;
+    color: inherit;
+
+    cursor: pointer;
+
+    &:hover {
+      background: var(--secondary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// Group spacing for reactions
+.bubble-group:has(.bubble-reactions) {
+  gap: 24px;
+}
+
+// Responsive
+@media (max-width: 640px) {
+  .bubble {
+    max-width: 90%;
+  }
+
+  .bubble-content {
+    padding: 9px 12px;
+    font-size: 13px;
+  }
+}

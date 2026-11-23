@@ -1,14 +1,13 @@
-import * as React from "react"
-import { cn } from "cn"
-
 function Textarea({ className, ...props }) {
   return (
     <textarea
       data-slot="textarea"
-      className={cn("textarea", className)}
+      className={utils.cn("textarea", className)}
       {...props}
     />
-  )
+  );
 }
 
-export { Textarea }
+export {
+  Textarea,
+};
