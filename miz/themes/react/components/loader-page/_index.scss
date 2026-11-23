@@ -1,0 +1,27 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use "sass:map";
+
+.loader-wrapper {
+  @extend .w-100vw , .h-100vh , .bg-on-primary-color , .justify-content-senter , .align-items-center , .d-flex , .flex-column;
+}
+
+.loader-icon {
+  @extend .primary-color , .txt-size-big ;
+}
+
+.loader-icon {
+  animation: LoaderAnimation 1s infinite;
+}
+
+@keyframes LoaderAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
