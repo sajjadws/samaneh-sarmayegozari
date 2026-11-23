@@ -17,11 +17,6 @@ export default async function HomePage() {
 
       <p>صفحه با موفقیت بارگذاری شد.</p>
 
-      <Button className="d-flex align-items-center gap-2"> دکمه
-        <LoaderPublic  />
-      </Button>
-      
-      <PageLoader />
     </main>
   );
 }
