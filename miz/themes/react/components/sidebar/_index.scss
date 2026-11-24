@@ -1,0 +1,75 @@
+@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_typography" as *;
+@use "../../../../sass/kernel" as *;
+@use "../../config" as *;
+@use "sass:map";
+
+main:has(.sidebar) {
+    height: calc(100vh - 10vh);
+}
+
+.sidebar {
+    width: 15%;
+    min-width: 67px;
+    transition: width 300ms linear;
+}
+
+.sidebar > [class*="icon-menu"] {
+    width: fit-content;
+    transition: 300ms linear all;
+}
+
+.sidebar.close {
+    width: 67px;
+}
+
+.sidebar.close:not(.align-items-lg-center) > [class*="icon-menu"] {
+    transform: translateX(-40%);
+}
+
+.sidebar .title {
+    opacity: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sidebar.close .title {
+    animation: FadeOut 300ms linear forwards;
+}
+
+.sidebar.opening .title {
+    animation: FadeIn 300ms linear forwards;
+}
+
+.sidebar .link-item {
+    transition: 225ms linear all;
+}
+
+.sidebar .link-item i[class*="arrow"]{
+    transition: 225ms linear all;
+}
+
+.sidebar .link-item[data-panel-open] i[class*="arrow"]{
+    transform: rotateZ(-90deg);
+}
+
+@keyframes FadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes FadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

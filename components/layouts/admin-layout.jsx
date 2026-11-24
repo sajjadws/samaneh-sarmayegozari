@@ -1,7 +1,8 @@
 "use client";
 import { useState } from "react";
-// import Sidebar from "@/components/layouts/admin/sidebar";
-import Header from "@/miz/components/react/header/page";
+import Sidebar from "@/miz/components/react/sidebar/sidebar";
+import Header from "@/miz/themes/react/components/header/header";
+import { IconElevator } from "@tabler/icons-react";
 
 export default function AdminLayout({ children }) {
 	const [theme, setTheme] = useState("light");
@@ -9,8 +10,8 @@ export default function AdminLayout({ children }) {
 	return (
 		<>
 			<Header theme={theme} setTheme={setTheme} />
-			<main>
-				{/* <Sidebar role={globalThis.getRole("admin")}/> */}
+			<main className="w-100 d-flex">
+				<Sidebar role={globalThis.getRole("admin")}/>
 				{children}
 			</main>
 			
