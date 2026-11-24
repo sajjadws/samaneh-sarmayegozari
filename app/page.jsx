@@ -1,7 +1,3 @@
-import { LoaderPublic } from "@/miz/themes/react/components/loader-public/page";
-import { Button } from "@/miz/themes/react/components/button/page";
-import { LoaderPublic } from "@/miz/themes/react/components/loader-public/page";
-import PageLoader from "@/miz/themes/react/components/loader-page/page";
 
 
 export default async function HomePage() {
