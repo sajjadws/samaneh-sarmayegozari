@@ -1,4 +1,6 @@
 import "/public/css/miz.min.css";
+import "/public/css/style.min.css";
+import "./globals.css";
 import AdminLayout from "@/components/layouts/admin-layout";
 
 export default function HomeLayout({ children }) {

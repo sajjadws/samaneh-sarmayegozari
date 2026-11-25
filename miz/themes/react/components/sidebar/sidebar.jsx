@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, useMemo } from "react";
-import "@/lib/globals";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getSidebarItems } from "@/components/config/admin-layout/sidebar";
@@ -40,7 +39,7 @@ export default function Sidebar({ role, ...props }) {
   const items = useMemo(() => {
     return [...getSidebarItems()]
       .filter((item) => {
-        return globalThis.getRole(item.role) === globalThis.getRole(role);
+        return item.role === role;
       })
       .sort((a, b) => a.order - b.order);
   }, [role]);
@@ -79,10 +78,6 @@ export default function Sidebar({ role, ...props }) {
 
       return next;
     });
-  }
-
-  function flattenSidebarItems(items = []) {
-    return items.flatMap((item) => [item, ...flattenSidebarItems(item.subList ?? [])]);
   }
 
   useEffect(() => {

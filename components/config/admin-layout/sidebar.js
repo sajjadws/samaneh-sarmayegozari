@@ -1,5 +1,4 @@
 import {
-  IconMenu2,
   IconLayoutDashboard,
   IconUser,
   IconFileDescription,

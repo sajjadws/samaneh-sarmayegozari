@@ -4,14 +4,23 @@
 @use "../../config" as *;
 @use "sass:map";
 
-.theme{
+.theme {
   width: 32px;
   height: 32px;
   border: 1px solid var(--secondary);
   background-color: #ffffff;
 }
 
-.theme-icon{
-width: 22px;
-height: 22px;
+.theme-icon {
+  width: 22px;
+  height: 22px;
+}
+
+.header {
+  height: 71px;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
 }
