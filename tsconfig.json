@@ -5,7 +5,7 @@
     "paths": {
       "@/*": ["./*"],
       "@/modules/*": ["./app/(modules)/*"],
-      "@/miz/components/react/*": ["./miz/themes/react/components/*"]
+      "@/miz/themes/react/*": ["./miz/themes/react/components/*"]
     },
     "allowJs": true,
     "skipLibCheck": true,

@@ -50,6 +50,7 @@ function PaginationPrevious({
   className,
   text = "Previous",
   size = "default",
+  rtl = false,
   ...props
 }) {
   return (
@@ -59,7 +60,9 @@ function PaginationPrevious({
       size={size}
       {...props}
     >
-      <ChevronLeft aria-hidden="true" />
+      {
+        rtl ? (<ChevronRight aria-hidden="true" />) : (<ChevronLeft aria-hidden="true" />)
+      }
       {text && <span>{text}</span>}
     </PaginationLink>
   );
@@ -69,6 +72,7 @@ function PaginationNext({
   className,
   text = "Next",
   size = "default",
+  rtl = false,
   ...props
 }) {
   return (
@@ -79,7 +83,9 @@ function PaginationNext({
       {...props}
     >
       {text && <span>{text}</span>}
-      <ChevronRight aria-hidden="true" />
+            {
+        rtl ? (<ChevronLeft aria-hidden="true" />) : (<ChevronRight aria-hidden="true" />)
+      }
     </PaginationLink>
   );
 }
