@@ -1,5 +1,4 @@
-import { Input } from "../input/page";
-import { Button } from "../button/page";
+import { Input, Button } from "@/miz/themes/react";
 
 function InputGroup({ className, ...props }) {
   return <div role="group" data-slot="input-group" className={utils.cn("input-group", className)} {...props} />;
