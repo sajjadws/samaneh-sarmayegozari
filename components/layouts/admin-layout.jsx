@@ -11,7 +11,7 @@ export default function AdminLayout({ children }) {
       <Header theme={theme} setTheme={setTheme} />
       <main className="d-flex w-100">
         <Sidebar role="admin" />
-        <section className="bg-color w-85 px-8 py-10">{children}</section>
+        <section className="bg-color w-100 px-8 py-10">{children}</section>
       </main>
     </>
   );

@@ -54,7 +54,7 @@ export default function Sidebar({ role, ...props }) {
       : isActive(href);
 
     return cn(
-      "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2",
+      "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2 pr-2 ",
       linkClassName,
       active ? "bg-on-primary-color primary-color" : "on-primary-color",
     );
