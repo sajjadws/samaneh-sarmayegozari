@@ -23,6 +23,10 @@ main:has(.sidebar) {
   width: 67px;
 }
 
+.sidebar.close .link-item {
+  justify-content: center;
+}
+
 .sidebar.close:not(.align-items-lg-center) > [class*="icon-menu"] {
   transform: translateX(-40%);
 }

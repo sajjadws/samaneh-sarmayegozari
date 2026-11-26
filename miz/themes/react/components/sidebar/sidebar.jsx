@@ -54,7 +54,7 @@ export default function Sidebar({ role, ...props }) {
       : isActive(href);
 
     return cn(
-      "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2 pr-2 ",
+      "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2",
       linkClassName,
       active ? "bg-on-primary-color primary-color" : "on-primary-color",
     );
@@ -131,93 +131,99 @@ export default function Sidebar({ role, ...props }) {
   return (
     <aside
       className={cn(
-        "sidebar d-flex flex-column bg-primary-color align-items-md-center h-100 w-15 gap-3 p-3",
+        "sidebar d-flex flex-column bg-primary-color align-items-md-center h-100 w-15 gap-3 overflow-hidden p-3",
         asideClassName,
         isClosed && "close",
         isOpening && "opening",
       )}
     >
-      <IconMenu2 onClick={handleCloseSideBar} color="white" size={24} stroke={1.8} className="cursor-pointer" />
+      <div className="overflow-scroll">
+        <IconMenu2 onClick={handleCloseSideBar} color="white" size={24} stroke={1.8} className="cursor-pointer" />
 
-      {items.map((item) => {
-        const ItemIcon = item.icon;
+        {items.map((item) => {
+          const ItemIcon = item.icon;
 
-        const parentIsActive = isActive(item.link) || hasActiveDescendant(item, pathname);
+          const parentIsActive = isActive(item.link) || hasActiveDescendant(item, pathname);
 
-        return item.subList?.length > 0 ? (
-          <Collapsible
-            key={item.id ?? item.link}
-            open={openItems.has(item.link)}
-            onOpenChange={(open) => handleOpenChange(item.link, open)}
-            className="d-flex flex-column gap-2"
-          >
-            <CollapsibleTrigger
-              nativeButton={false}
-              render={
-                <div
-                  className={cn(
-                    "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2",
-                    linkClassName,
-                    parentIsActive ? "bg-on-primary-color primary-color" : "on-primary-color",
-                  )}
-                >
-                  <ItemIcon size={22} stroke={1.8} />
-                  <span
+          return item.subList?.length > 0 ? (
+            <Collapsible
+              key={item.id ?? item.link}
+              open={openItems.has(item.link)}
+              onOpenChange={(open) => handleOpenChange(item.link, open)}
+              className="d-flex flex-column gap-2"
+            >
+              <CollapsibleTrigger
+                nativeButton={false}
+                render={
+                  <div
                     className={cn(
-                      "title txt-size-normal d-md-none",
-                      titleClassName,
-                      hiddenTitles.has(item.link) ? "d-none" : "d-inline",
+                      "link-item d-flex align-items-center radius-all-normal gap-2 overflow-hidden p-2",
+                      linkClassName,
+                      parentIsActive ? "bg-on-primary-color primary-color" : "on-primary-color",
                     )}
-                    onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
                   >
-                    {item.label}
-                  </span>
-                  <IconChevronLeft
-                    size={18}
-                    stroke={1.8}
-                    className={cn("ms-auto", openItems.has(item.link) && "rotate-90")}
-                  />
-                </div>
-              }
-            />
-
-            <CollapsibleContent className="d-flex flex-column gap-2">
-              {item.subList.map((subItem) => {
-                const SubItemIcon = subItem.icon;
-                return (
-                  <Link key={subItem.id ?? subItem.link} href={subItem.link} className={getItemClassName(subItem.link)}>
-                    <SubItemIcon size={20} stroke={1.8} />
+                    <ItemIcon size={22} stroke={1.8} />
                     <span
                       className={cn(
-                        "title txt-size-subtitle d-md-none",
+                        "title txt-size-normal d-md-none",
                         titleClassName,
-                        hiddenTitles.has(subItem.link) ? "d-none" : "d-inline",
+                        hiddenTitles.has(item.link) ? "d-none" : "d-inline",
                       )}
-                      onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}
+                      onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
                     >
-                      {subItem.label}
+                      {item.label}
                     </span>
-                  </Link>
-                );
-              })}
-            </CollapsibleContent>
-          </Collapsible>
-        ) : (
-          <Link key={item.id ?? item.link} href={item.link} className={getItemClassName(item.link)}>
-            <ItemIcon size={22} stroke={1.8} />
-            <span
-              className={cn(
-                "title txt-size-normal d-md-none",
-                titleClassName,
-                hiddenTitles.has(item.link) ? "d-none" : "d-inline",
-              )}
-              onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
-            >
-              {item.label}
-            </span>
-          </Link>
-        );
-      })}
+                    <IconChevronLeft
+                      size={18}
+                      stroke={1.8}
+                      className={cn("ms-auto", openItems.has(item.link) && "rotate-90")}
+                    />
+                  </div>
+                }
+              />
+
+              <CollapsibleContent className="d-flex flex-column gap-2">
+                {item.subList.map((subItem) => {
+                  const SubItemIcon = subItem.icon;
+                  return (
+                    <Link
+                      key={subItem.id ?? subItem.link}
+                      href={subItem.link}
+                      className={getItemClassName(subItem.link)}
+                    >
+                      <SubItemIcon size={20} stroke={1.8} />
+                      <span
+                        className={cn(
+                          "title txt-size-subtitle d-md-none",
+                          titleClassName,
+                          hiddenTitles.has(subItem.link) ? "d-none" : "d-inline",
+                        )}
+                        onAnimationEnd={(event) => handleTitleAnimationEnd(event, subItem.link)}
+                      >
+                        {subItem.label}
+                      </span>
+                    </Link>
+                  );
+                })}
+              </CollapsibleContent>
+            </Collapsible>
+          ) : (
+            <Link key={item.id ?? item.link} href={item.link} className={getItemClassName(item.link)}>
+              <ItemIcon size={22} stroke={1.8} />
+              <span
+                className={cn(
+                  "title txt-size-normal d-md-none",
+                  titleClassName,
+                  hiddenTitles.has(item.link) ? "d-none" : "d-inline",
+                )}
+                onAnimationEnd={(event) => handleTitleAnimationEnd(event, item.link)}
+              >
+                {item.label}
+              </span>
+            </Link>
+          );
+        })}
+      </div>
     </aside>
   );
 }
