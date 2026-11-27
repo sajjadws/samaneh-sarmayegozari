@@ -57,6 +57,9 @@ main:has(.sidebar) {
 .sidebar .link-item[data-panel-open] i[class*="arrow"] {
   transform: rotateZ(-90deg);
 }
+.scrollbar-width-none {
+  scrollbar-width: none;
+}
 
 @keyframes FadeIn {
   from {

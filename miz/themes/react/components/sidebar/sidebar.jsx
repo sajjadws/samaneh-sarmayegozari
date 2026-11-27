@@ -137,7 +137,7 @@ export default function Sidebar({ role, ...props }) {
         isOpening && "opening",
       )}
     >
-      <div className="overflow-scroll">
+      <div className="scrollbar-width-none overflow-scroll">
         <IconMenu2 onClick={handleCloseSideBar} color="white" size={24} stroke={1.8} className="cursor-pointer" />
 
         {items.map((item) => {
