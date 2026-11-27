@@ -1,14 +1,22 @@
 "use client";
 
 import { useEffect, useMemo, useState, useCallback } from "react";
-import { useTable, tableFeatures, rowSortingFeature, createSortedRowModel, flexRender, rowSelectionFeature, columnVisibilityFeature } from "@tanstack/react-table";
+import {
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  createSortedRowModel,
+  flexRender,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+} from "@tanstack/react-table";
 
 import { useSearchParams } from "next/navigation";
-// import RowNumber from "@/components/row-number";
-// import TableSkeleton from "@/components/skeletons/table-skeleton";
-import Pagination from "@/components/pagination";
+import RowNumber from "@/components/row-number";
+import PaginationTable from "@/components/pagination";
 import FilterTable from "@/components/filter";
 import SearchTable from "@/components/search-table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/miz/themes/react";
 
 import { cn } from "@/lib/utils";
 import EmptyAlert from "@/components/empty-alert";
@@ -34,13 +42,11 @@ export const DataTable = ({
   selectors = [],
   showPagination = true,
   showSearchBox = true,
-  // showPerPage = true,
-  // showRowNumber = true,
-  showRowNumber = false,
+  showPerPage = true,
+  showRowNumber = true,
   rowIdAccessor = "id",
   emptyState,
   rowId,
-  // tableBg, handel with sass
   className,
 }) => {
   const sp = useSearchParams();
@@ -57,29 +63,6 @@ export const DataTable = ({
     JSON.stringify(initialData) !== JSON.stringify(data) && setData(initialData);
   }, [initialData]);
 
-  // useEffect(() => {
-  //   if (!async) {
-  //     if (!queryParam) {
-  //       setData(initialData);
-  //     } else {
-  //       const q = queryParam.toLowerCase();
-  //       const filtered = (initialData || []).filter((row) =>
-  //         Object.values(row ?? {}).some((val) =>
-  //           String(val ?? "")
-  //             .toLowerCase()
-  //             .includes(q),
-  //         ),
-  //       );
-  //       setData(filtered);
-  //     }
-  //   }
-  // }, [async, queryParam, initialData]);
-
-  // useEffect(() => {
-  //   setSelectedRows({});
-  //   setSelectAll(false);
-  // }, [page, data]);
-
   const features = tableFeatures({
     rowSortingFeature,
     rowSelectionFeature,
@@ -95,154 +78,115 @@ export const DataTable = ({
 
   const allRows = table.getRowModel().rows;
 
-  const paginatedRows = useMemo(
-    () => allRows.slice(page * perPage, (page + 1) * perPage),
-    [allRows, page, perPage],
-  );
+  const paginatedRows = useMemo(() => allRows.slice((page - 1) * perPage, page * perPage), [allRows, page, perPage]);
 
-  const totalCount = useMemo(
-    () => (allRows.length),
-    [allRows.length],
-  );
+  const totalCount = useMemo(() => allRows.length, [allRows.length]);
 
   const getRowId = useCallback((row) => row?.original?.[rowIdAccessor] ?? row?.id, [rowIdAccessor]);
 
   return (
-    <div className={cn("overflow-x-auto", className)}>
+    <div className={cn("d-flex flex-column gap-4 overflow-x-scroll p-4", className)}>
       {selectors.length > 4 && showSearchBox !== false && (
-        // <SearchTable useScanner={useScanner} className="mr-2 min-w-44" queryTitle="search" async={async} />
-        <SearchTable className="mis-2 min-w-44" query={queryParam} queryTitle="search"/>
+        <SearchTable className="mis-2 min-w-44" query={queryParam} queryTitle="search" />
       )}
       <div
         className={cn(
-          "mb-4 d-flex w-100 flex-column align-items-start justify-conent-space-between gap-3 p-2 flex-md-row align-items-md-end",
+          "d-flex align-items-start justify-content-space-between w-100 flex-row gap-3",
           selectors.length < 1 && "flex-row flex-wrap",
         )}
       >
         {selectors.length <= 4 && showSearchBox !== false && (
-          // <SearchTable useScanner={useScanner} className="min-w-44" queryTitle="search" async={async} />
           <SearchTable className="min-w-44" query={queryParam} queryTitle="search" />
         )}
         <div
           className={cn(
-            // selectors.length <= 4 && "mis-auto d-flex flex-row flex-wrap align-items-end gap-2 flex-row-md-reverse",
-            selectors.length <= 4 && "mis-auto d-flex flex-row flex-wrap align-items-end gap-2 flex-row-md-reverse",
-            selectors.length <= 2 && "mis-0",
-            selectors.length > 4 && "d-grid grid-1 gap-2 grid-md-3 grid-xl-5",
+            selectors.length <= 4 &&
+              "d-flex align-items-end flex-row-md-reverse flex-md-wrap max-w-lg-fit-content justify-content-lg-end max-w-42 grow-1 flex-row gap-2",
+            selectors.length > 4 && "d-grid grid-1 grid-md-3 grid-xl-5 gap-2",
           )}
         >
-          {/* {showPerPage !== false && (
-            <CustomSelector
-              title={selectors && checkIsArray(selectors, { checkLength: true }) ? "تعداد" : null}
-              showAll={false}
-              queryTitle="perPage"
-              className="min-w-20"
-              wrapperClassName={selectors.length < 1 && "mt-0"}
+          {showPerPage !== false && (
+            <FilterTable
+              item={{
+                title: "تعداد",
+              }}
+              queryTitle={"perPage"}
               options={[
                 { title: "10", value: 10 },
                 { title: "20", value: 20 },
                 { title: "50", value: 50 },
                 { title: "100", value: 100 },
               ]}
+              initialData={initialData}
+              setData={setData}
             />
-          )} */}
+          )}
 
           {checkIsArray(selectors) &&
-            selectors.map((item, idx) =>
-              (
-                <FilterTable
-                  key={idx}
-                  item={item}
-                  queryTitle={item?.queryTitle}
-                  options={item?.options}
-                  initialData={initialData}
-                  setData={setData}
-                />
-              ),
-            )}
-
-          {/* {checkIsArray(selectors) &&
-            selectors.map((item, idx) =>
-              item?.type === "search" ? (
-                <SearchTable key={idx} className={cn("min-w-40", item?.className)} {...item} />
-              ) : (
-                <CustomSelector
-                  key={idx}
-                  title={item?.title}
-                  queryTitle={item?.queryTitle}
-                  options={item?.options}
-                  className={item?.className}
-                  // async={async}
-                  initialData={initialData}
-                  setData={setData}
-                  apiData={item?.type === "apiData" ? { ...item } : null}
-                  searchParamsLess={item?.searchParamsLess}
-                  itemKey={item?.itemKey}
-                />
-              ),
-            )} */}
+            selectors.map((item, idx) => (
+              <FilterTable
+                key={idx}
+                item={item}
+                queryTitle={item?.queryTitle}
+                options={item?.options}
+                initialData={initialData}
+                setData={setData}
+              />
+            ))}
         </div>
       </div>
 
       {loading ? (
-        <TableSkeleton />
+        <p>loding ...</p>
       ) : (data?.length ?? 0) > 0 ? (
-        // <div className="animate-fade-down max-w-full overflow-x-auto rounded-lg">
-        <div className="animate-fade-down max-w-full overflow-x-auto rounded-lg">
-          {/* <table className={cn("bg-base-200 table w-full", tableBg)}> */}
-          <table className={cn("bg-color table w-100")}>
-            <thead>
-              {table.getHeaderGroups().map((hg) => (
-                // <tr key={hg.id} className={cn("bg-base-200 text-base", tableBg)}>
-                <tr key={hg.id} className={cn("bg-color text-color")}>
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((hg) => (
+              <TableRow key={hg.id} className={cn("primary-color")}>
+                {showRowNumber !== false && <TableHead>#</TableHead>}
+                {hg.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+
+          <TableBody>
+            {paginatedRows.map((row, idx) => {
+              const rid = rowId ? row.original[rowId] : getRowId(row);
+              return (
+                <TableRow
+                  key={rid}
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {showRowNumber !== false && (
-                    <th className="border-color w-14 border-style-solid bw-1 p-3 text-center txt-size-normal">#</th>
+                    <TableCell>
+                      <RowNumber number={idx} />
+                    </TableCell>
                   )}
-                  {hg.headers.map((header) => (
-                    <th key={header.id} className="border-color border-style-solid bw-1 p-3 text-center txt-size-normal">
-                      {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
-                    </th>
-                  ))}
-                </tr>
-              ))}
-            </thead>
 
-            <tbody>
-              {paginatedRows.map((row, idx) => {
-                const rid = rowId ? row.original[rowId] : getRowId(row);
-                return (
-                  <tr
-                    key={rid}
-                    data-state={row.getIsSelected() && "selected"}
-                    className="hover:bg-base-100 border-base-300 border-b"
-                  >
-                    {showRowNumber !== false && (
-                      <td className="border-base-300 border p-3 text-center">
-                        <RowNumber number={idx + 1 + page * perPage} />
-                      </td>
-                    )}
-
-                    {row.getVisibleCells().map((cell) => {
-                      return (
-                        <td key={cell.id} className="border-base-300 border p-3 text-center">
-                          {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </td>
-                      );
-                    })}
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
       ) : emptyState ? (
         emptyState
       ) : (
-        <EmptyAlert className="alert-soft" />
+        <EmptyAlert/>
       )}
 
       {showPagination !== false && (data?.length ?? 0) > 0 && (
-        <Pagination page={page} total={totalCount} perPage={perPage} />
+        <PaginationTable className={"justify-content-end"} page={page} total={totalCount} perPage={perPage} />
       )}
     </div>
   );

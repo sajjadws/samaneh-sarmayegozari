@@ -12,7 +12,7 @@ import {
   PaginationPrevious,
 } from "@/miz/themes/react";
 
-export default function PaginationTable({ page = 1, perPage = 10, total = 0 }) {
+export default function PaginationTable({ className, page = 1, perPage = 10, total = 0 }) {
   const lastPage = Math.ceil(Number(total) / Number(perPage));
 
   const searchParams = useSearchParams();
@@ -40,12 +40,12 @@ export default function PaginationTable({ page = 1, perPage = 10, total = 0 }) {
   }
 
   return (
-    <Pagination>
+    <Pagination className={utils.cn(className)}>
       <PaginationContent>
         {page > 1 && (
           <>
             <PaginationItem>
-              <PaginationPrevious rtl={true} onClick={() => {pushQuery(page - 1)}} text="قبلی" />
+              <PaginationPrevious rtl={true} onClick={() => {pushQuery(page - 1)}} />
             </PaginationItem>
           </>
         )}
@@ -98,7 +98,7 @@ export default function PaginationTable({ page = 1, perPage = 10, total = 0 }) {
 
         {lastPage > page && (
           <PaginationItem>
-            <PaginationNext rtl={true} onClick={() => {pushQuery(page + 1)}} text="بعدی" />
+            <PaginationNext rtl={true} onClick={() => {pushQuery(page + 1)}} />
           </PaginationItem>
         )}
       </PaginationContent>

@@ -1,10 +1,13 @@
 "use client";
 
 import { useRef } from "react";
-import qs from"query-string";
+import qs from "query-string";
 import { Controller, useForm } from "react-hook-form";
-import { Field, FieldGroup, Input } from "@/miz/themes/react";
+import { Field, FieldGroup, InputGroup, InputGroupAddon, InputGroupInput } from "@/miz/themes/react";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import { IconSearch } from "@tabler/icons-react";
+
 import "@/lib/globals-client";
 
 export default function SearchTable({ query, queryTitle }) {
@@ -24,19 +27,23 @@ export default function SearchTable({ query, queryTitle }) {
     }, 1500);
   }
 
-  function pushQuery(searchQuery = null){
+  function pushQuery(searchQuery = null) {
     const current = qs.parse(searchParams.toString());
     const query = {
       ...current,
-      [queryTitle]: searchQuery || null
+      page: 1,
+      [queryTitle]: searchQuery || null,
     };
 
-    const url = qs.stringifyUrl({
-      url: window.location.href,
-      query,
-    }, {
-      skipNull: true
-    });
+    const url = qs.stringifyUrl(
+      {
+        url: window.location.href,
+        query,
+      },
+      {
+        skipNull: true,
+      },
+    );
 
     router.push(url);
   }
@@ -49,15 +56,19 @@ export default function SearchTable({ query, queryTitle }) {
           control={form.control}
           render={({ field, fieldState }) => (
             <Field data-invalid={fieldState.invalid}>
-              <Input
-                {...field}
-                onChange={(e) => {
-                  field.onChange(e);
-                  handelOnChange(e.target.value);
-                }}
-                placeholder="جست و جو ..."
-                className="max-w-96"
-              />
+              <InputGroup className="max-w-96">
+                <InputGroupInput
+                  {...field}
+                  onChange={(e) => {
+                    field.onChange(e);
+                    handelOnChange(e.target.value);
+                  }}
+                  placeholder="جستجو"
+                />
+                <InputGroupAddon>
+                  <IconSearch />
+                </InputGroupAddon>
+              </InputGroup>
             </Field>
           )}
         />
@@ -65,3 +76,7 @@ export default function SearchTable({ query, queryTitle }) {
     </form>
   );
 }
+
+// import { Search } from "lucide-react";
+
+// import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";

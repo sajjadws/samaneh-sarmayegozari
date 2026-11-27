@@ -29,11 +29,104 @@ const columns = columnHelper.columns([
   columnHelper.accessor("progress", {
     header: "Profile Progress",
   }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
+  // columnHelper.accessor("progress", {
+  //   header: "Profile Progress",
+  // }),
 ]);
 
 const testData = [
   {
-    firstName: "Mia",
+    firstName: "start",
     lastName: "Bakker",
     age: "33",
     status: "closed",
@@ -727,6 +820,13 @@ const testData = [
   },
   {
     firstName: "Milan",
+    lastName: "Novak",
+    age: "11",
+    status: "pending",
+    progress: 456,
+  },
+  {
+    firstName: "end",
     lastName: "Novak",
     age: "11",
     status: "pending",
