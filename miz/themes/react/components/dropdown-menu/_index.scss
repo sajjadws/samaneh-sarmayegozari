@@ -33,6 +33,24 @@
   @extend .z-index-10;
 }
 
+.dropdown-menu-content,
+.dropdown-submenu-content {
+  transform-origin: top center;
+  animation: dropdown-slide-down 250ms linear;
+}
+
+@keyframes dropdown-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* =====================================
    3. DropdownMenuItem
    استایل آیتم‌های منو
@@ -90,20 +108,17 @@
   @extend .d-flex, .align-items-center, .cursor-default, .user-select-none, .position-relative;
 }
 
-/* چک‌باکس غیرفعال */
 .dropdown-checkbox-item[data-disabled] {
   pointer-events: none;
 
   @extend .opacity-5;
 }
 
-/* آیکون چک‌باکس */
 .dropdown-checkbox-item svg {
   pointer-events: none;
   flex-shrink: 0;
 }
 
-/* محل قرارگیری علامت تیک */
 .dropdown-checkbox-indicator {
   pointer-events: none;
 }
@@ -137,7 +152,8 @@
 ===================================== */
 
 .dropdown-menu-separator {
-  @extend .w-100, .bg-primary-color;
+  height: 1px;
+  @extend .w-100, .bg-divider-color;
 }
 
 /* =====================================
@@ -147,6 +163,9 @@
 
 .dropdown-submenu-content {
   width: auto;
+}
+.shadow-light {
+  box-shadow: 0px 2px 2px 0px var(--shadow);
 }
 
 /* =====================================

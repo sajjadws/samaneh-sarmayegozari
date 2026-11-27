@@ -4,8 +4,6 @@ import * as React from "react";
 import { Menu as MenuPrimitive } from "@base-ui/react/menu";
 import { cn } from "cn";
 
-// import { IconPlaceholder } from "@/app/(create)/components/icon-placeholder"
-
 function DropdownMenu({ ...props }) {
   return <MenuPrimitive.Root data-slot="dropdown-menu" {...props} />;
 }
@@ -85,14 +83,6 @@ function DropdownMenuSubTrigger({ className, inset, children, ...props }) {
       {...props}
     >
       {children}
-      {/* <IconPlaceholder
-        lucide="ChevronRightIcon"
-        tabler="IconChevronRight"
-        hugeicons="ArrowRight01Icon"
-        phosphor="CaretRightIcon"
-        remixicon="RiArrowRightSLine"
-        className="cn-rtl-flip ml-auto"
-      /> */}
     </MenuPrimitive.SubmenuTrigger>
   );
 }
@@ -108,7 +98,7 @@ function DropdownMenuSubContent({
   return (
     <DropdownMenuContent
       data-slot="dropdown-menu-sub-content"
-      className={cn("dropdown-submenu-content", className)}
+      className={cn("dropdown-submenu-content radius-all-noraml bg-color", className)}
       align={align}
       alignOffset={alignOffset}
       side={side}
@@ -128,15 +118,7 @@ function DropdownMenuCheckboxItem({ className, children, checked, inset, ...prop
       {...props}
     >
       <span className="dropdown-checkbox-indicator" data-slot="dropdown-menu-checkbox-item-indicator">
-        <MenuPrimitive.CheckboxItemIndicator>
-          {/* <IconPlaceholder
-            lucide="CheckIcon"
-            tabler="IconCheck"
-            hugeicons="Tick02Icon"
-            phosphor="CheckIcon"
-            remixicon="RiCheckLine"
-          /> */}
-        </MenuPrimitive.CheckboxItemIndicator>
+        <MenuPrimitive.CheckboxItemIndicator></MenuPrimitive.CheckboxItemIndicator>
       </span>
       {children}
     </MenuPrimitive.CheckboxItem>
@@ -156,15 +138,7 @@ function DropdownMenuRadioItem({ className, children, inset, ...props }) {
       {...props}
     >
       <span className="dropdown-checkbox-indicator" data-slot="dropdown-menu-radio-item-indicator">
-        <MenuPrimitive.RadioItemIndicator>
-          {/* <IconPlaceholder
-            lucide="CheckIcon"
-            tabler="IconCheck"
-            hugeicons="Tick02Icon"
-            phosphor="CheckIcon"
-            remixicon="RiCheckLine"
-          /> */}
-        </MenuPrimitive.RadioItemIndicator>
+        <MenuPrimitive.RadioItemIndicator></MenuPrimitive.RadioItemIndicator>
       </span>
       {children}
     </MenuPrimitive.RadioItem>

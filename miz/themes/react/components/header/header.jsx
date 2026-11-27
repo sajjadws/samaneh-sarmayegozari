@@ -2,7 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { Avatar, AvatarImage } from "../avatar/page";
-import { IconBell, IconMoon, IconSun } from "@tabler/icons-react";
+import { IconBell, IconMoon, IconSun, IconUser, IconShieldCheck, IconLogout } from "@tabler/icons-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuGroup,
+  DropdownMenuContent,
+  DropdownMenuSeparator,
+} from "../dropdown-menu/page";
+
 export default function Header({ role, theme, setTheme }) {
   const [isDark, setIsDark] = useState(false);
 
@@ -41,17 +52,58 @@ export default function Header({ role, theme, setTheme }) {
             3
           </span>
         </div>
-        <div className="d-flex align-items-center gap-2">
-          <div className="d-flex flex-column align-items-end">
-            <span className="text-color txt-size-normal">مدیر سیستم</span>
-            <span className="secondary-text-color txt-size-subtitle">مدیر کل</span>
-          </div>
-          <div className="d-flex align-items-center avatar flex-wrap gap-6">
-            <Avatar>
-              <AvatarImage src="media/images/پروفایل.jpg" alt="" className="radius-all-full" />
-            </Avatar>
-          </div>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <div className="d-flex align-items-center gap-2">
+                <div className="d-flex flex-column align-items-end">
+                  <span className="text-color txt-size-normal">مدیر سیستم</span>
+                  <span className="secondary-text-color txt-size-subtitle">مدیر کل</span>
+                </div>
+                <div className="d-flex align-items-center avatar flex-wrap gap-6">
+                  <Avatar>
+                    <AvatarImage src="media/images/پروفایل.jpg" alt="" className="radius-all-full" />
+                  </Avatar>
+                </div>
+              </div>
+            }
+          />
+          <DropdownMenuContent
+            className="shadow-light bg-color dropdown-content radius-all-normal w-100 p-3"
+            align="start"
+          >
+            <DropdownMenuGroup>
+              <DropdownMenuLabel className="d-flex justify-content-end">
+                <div className="d-flex align-items-center gap-2">
+                  <div className="d-flex flex-column align-items-end">
+                    <span className="text-color txt-size-normal">مدیر سیستم</span>
+                    <span className="secondary-text-color txt-size-subtitle">مدیر کل</span>
+                  </div>
+                  <div className="d-flex align-items-center avatar flex-wrap gap-6">
+                    <Avatar>
+                      <AvatarImage src="media/images/پروفایل.jpg" alt="" className="radius-all-full" />
+                    </Avatar>
+                  </div>
+                </div>
+              </DropdownMenuLabel>
+            </DropdownMenuGroup>
+            <DropdownMenuGroup className="d-flex flex-column gap-3">
+              <DropdownMenuSeparator className="divider-color" />
+              <DropdownMenuItem className="txt-size-small text-color">
+                <IconUser size={20} stroke={1.2} />
+                مشخصات پروفایل
+              </DropdownMenuItem>
+              <DropdownMenuItem className="txt-size-small text-color">
+                <IconShieldCheck size={20} stroke={1.2} />
+                احراز هویت
+              </DropdownMenuItem>
+              <DropdownMenuItem className="txt-size-small d-flex align-items-center danger-regular-color gap-1">
+                <IconLogout size={20} stroke={1.2} />
+                خروج از حساب
+              </DropdownMenuItem>
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
