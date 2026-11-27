@@ -158,10 +158,10 @@
   min-height: 1px;
   margin-block: 4px;
 
-  background: var(--border);
+  background-color: var(--border);
 
   &:has(.field-separator-content) {
-    background: transparent;
+    background-color: transparent;
 
     &::before {
       position: absolute;
@@ -170,7 +170,7 @@
 
       height: 1px;
 
-      background: var(--border);
+      background-color: var(--border);
       content: "";
     }
   }
@@ -183,7 +183,7 @@
   padding-inline: 10px;
 
   color: var(--text-secondary);
-  background: var(--background);
+  background-color: var(--background);
   font-size: 11px;
   line-height: 1.5;
 }

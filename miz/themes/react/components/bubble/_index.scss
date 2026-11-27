@@ -60,7 +60,7 @@ $bubble-variants: (
   // Variants
   @each $name, $values in $bubble-variants {
     &[data-variant="#{$name}"] {
-      background: map.get($values, background);
+      background-color: map.get($values, background);
       color: map.get($values, color);
       border-color: map.get($values, border);
     }
@@ -179,7 +179,7 @@ $bubble-variants: (
   border: 1px solid var(--border);
   border-radius: 999px;
 
-  background: var(--background);
+  background-color: var(--background);
   color: var(--text);
 
   font-size: 12px;
@@ -219,13 +219,13 @@ $bubble-variants: (
     border: 0;
     border-radius: 50%;
 
-    background: transparent;
+    background-color: transparent;
     color: inherit;
 
     cursor: pointer;
 
     &:hover {
-      background: var(--secondary);
+      background-color: var(--secondary);
     }
 
     &:focus-visible {
