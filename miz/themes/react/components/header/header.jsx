@@ -12,7 +12,7 @@ import {
   DropdownMenuGroup,
   DropdownMenuContent,
   DropdownMenuSeparator,
-} from "../dropdown-menu/page";
+} from "../dropdown-menu/dropdown-menu";
 
 export default function Header({ role, theme, setTheme }) {
   const [isDark, setIsDark] = useState(false);
