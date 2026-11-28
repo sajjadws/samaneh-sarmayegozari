@@ -29,7 +29,7 @@
   padding: 0.25rem;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
-  background: var(--primary);
+  background-color: var(--primary);
   color: var(--on-primary);
 
   &[data-variant="line"] {
@@ -37,7 +37,7 @@
     padding: 0;
     border: 0;
     border-radius: 0;
-    background: transparent;
+    background-color: transparent;
   }
 
   .tabs[data-orientation="vertical"] & {
@@ -64,7 +64,7 @@
   padding: 0.5rem 0.875rem;
   border: 0;
   border-radius: 0.5rem;
-  background: transparent;
+  background-color: transparent;
   color: var(--on-primary);
   font: inherit;
   font-size: 0.875rem;
@@ -84,7 +84,7 @@
   }
 
   &[data-active] {
-    background: var(--background);
+    background-color: var(--background);
     color: var(--text);
     box-shadow:
       0 1px 2px rgb(0 0 0 / 6%),
@@ -105,7 +105,7 @@
   .tabs-list[data-variant="line"] & {
     padding: 0.625rem 0.125rem;
     border-radius: 0;
-    background: transparent;
+    background-color: transparent;
     box-shadow: none;
 
     &::after {
@@ -114,7 +114,7 @@
       bottom: -0.25rem;
       height: 2px;
       border-radius: 2px;
-      background: var(--primary);
+      background-color: var(--primary);
       content: "";
       opacity: 0;
       transform: scaleX(0.6);

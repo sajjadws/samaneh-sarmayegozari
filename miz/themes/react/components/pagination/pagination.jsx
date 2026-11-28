@@ -48,7 +48,7 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
-  text = "Previous",
+  text = "",
   size = "default",
   rtl = false,
   ...props
@@ -70,7 +70,7 @@ function PaginationPrevious({
 
 function PaginationNext({
   className,
-  text = "Next",
+  text = "",
   size = "default",
   rtl = false,
   ...props

@@ -33,7 +33,7 @@ $switch-sizes: (
   border: 0;
   border-radius: 999px;
 
-  background: var(--secondary);
+  background-color: var(--secondary);
   cursor: pointer;
   outline: none;
 
@@ -42,11 +42,11 @@ $switch-sizes: (
     box-shadow 180ms ease;
 
   &[data-checked] {
-    background: var(--primary);
+    background-color: var(--primary);
   }
 
   &[data-unchecked] {
-    background: var(--disabled-regular);
+    background-color: var(--disabled-regular);
   }
 
   &[data-disabled] {
@@ -99,7 +99,7 @@ $switch-sizes: (
   flex-shrink: 0;
 
   border-radius: 50%;
-  background: var(--white);
+  background-color: var(--white);
 
   box-shadow:
     0 1px 2px rgb(0 0 0 / 12%),
