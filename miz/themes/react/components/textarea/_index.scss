@@ -12,7 +12,7 @@
   border: 1px solid var(--border);
   border-radius: 7px;
 
-  background: var(--background);
+  background-color: var(--background);
   color: var(--text);
 
   font-family: inherit;
@@ -46,12 +46,12 @@
   &:disabled {
     cursor: not-allowed;
     opacity: 0.5;
-    background: var(--secondary);
+    background-color: var(--secondary);
   }
 
   &[readonly] {
     cursor: default;
-    background: var(--secondary);
+    background-color: var(--secondary);
   }
 
   &[aria-invalid="true"] {
@@ -69,15 +69,15 @@
   }
 
   &::-webkit-scrollbar-track {
-    background: transparent;
+    background-color: transparent;
   }
 
   &::-webkit-scrollbar-thumb {
     border-radius: 7px;
-    background: var(--border);
+    background-color: var(--border);
 
     &:hover {
-      background: var(--text-secondary);
+      background-color: var(--text-secondary);
     }
   }
 }

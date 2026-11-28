@@ -62,7 +62,7 @@ $progress-variants: (
   overflow: hidden;
 
   border-radius: 999px;
-  background: var(--disabled-light);
+  background-color: var(--disabled-light);
 }
 
 // Indicator
@@ -74,13 +74,13 @@ $progress-variants: (
   height: 100%;
 
   border-radius: inherit;
-  background: var(--primary);
+  background-color: var(--primary);
 
   transition: width 400ms ease;
 
   @each $name, $color in $progress-variants {
     .progress[data-variant="#{$name}"] & {
-      background: $color;
+      background-color: $color;
     }
   }
 }

@@ -42,7 +42,7 @@ $dropdown-menu-sizes: (
   padding: map.get(map.get($dropdown-menu-sizes, default), padding);
 
   color: var(--text);
-  background: var(--background);
+  background-color: var(--background);
   border: 1px solid var(--border);
   border-radius: map.get(map.get($dropdown-menu-sizes, default), radius);
 
@@ -111,7 +111,7 @@ $dropdown-menu-sizes: (
 
   &[data-highlighted],
   &[data-popup-open] {
-    background: var(--secondary);
+    background-color: var(--secondary);
     color: var(--on-secondary);
   }
 
@@ -126,7 +126,7 @@ $dropdown-menu-sizes: (
 
   &[data-highlighted] {
     color: var(--danger-regular);
-    background: color-mix(in srgb, var(--danger-regular) 10%, transparent);
+    background-color: color-mix(in srgb, var(--danger-regular) 10%, transparent);
   }
 }
 
@@ -157,7 +157,7 @@ $dropdown-menu-sizes: (
   width: 8px;
   height: 8px;
 
-  background: currentColor;
+  background-color: currentColor;
   border-radius: 50%;
 }
 
@@ -180,7 +180,7 @@ $dropdown-menu-sizes: (
   height: 1px;
   margin-block: 4px;
 
-  background: var(--border);
+  background-color: var(--border);
 }
 
 .dropdown-menu-shortcut {

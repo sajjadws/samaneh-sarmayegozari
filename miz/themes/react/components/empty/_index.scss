@@ -58,7 +58,7 @@
   margin-bottom: 4px;
 
   color: var(--text-secondary);
-  background: var(--secondary);
+  background-color: var(--secondary);
   border-radius: 12px;
 
   img,
@@ -101,7 +101,7 @@
   border-radius: 12px;
 }
 
-.empty-background {
-  background: var(--secondary);
+.empty-background-color {
+  background-color: var(--secondary);
   border-radius: 12px;
 }

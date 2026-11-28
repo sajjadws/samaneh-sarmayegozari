@@ -54,7 +54,7 @@ $combobox-icon-size: 16px;
   padding: 0;
   border: 0;
   outline: none;
-  background: transparent;
+  background-color: transparent;
   color: inherit;
 
   font: inherit;
@@ -81,7 +81,7 @@ $combobox-icon-size: 16px;
   padding: 0;
 
   border: 0;
-  background: transparent;
+  background-color: transparent;
   color: var(--text-secondary, var(--text));
 
   cursor: pointer;
@@ -167,7 +167,7 @@ $combobox-icon-size: 16px;
   padding: 8px 10px;
 
   border: 0;
-  background: transparent;
+  background-color: transparent;
   color: var(--text);
 
   cursor: default;
@@ -280,7 +280,7 @@ $combobox-icon-size: 16px;
   padding: 0;
 
   border: 0;
-  background: transparent;
+  background-color: transparent;
   color: inherit;
   cursor: pointer;
 
@@ -302,7 +302,7 @@ $combobox-icon-size: 16px;
   padding: 0;
   border: 0;
   outline: none;
-  background: transparent;
+  background-color: transparent;
   color: var(--text);
 
   font: inherit;
