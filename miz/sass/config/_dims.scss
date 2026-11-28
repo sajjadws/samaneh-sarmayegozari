@@ -10,27 +10,37 @@ $border-radius: (
 );
 
 $conf-opacity: (
-  factor: 0.1,
+  factor:0.1
 );
 
 $conf-ellipsis: (
-  count: 10,
+  count:10
 );
 
 $conf-z-index: (
-  max: 10,
-  min: 0,
-  step: 1,
+  max:10,
+  min:0,
+  step:1
 );
 
 $conf-aspect-ratio: (
-  nominator: 4,
-  denominator: 3,
-  step: 1,
+  nominator:4,
+  denominator:3,
+  step:1
 );
 
 $conf-border-thickness: (
-  last-width: 10,
+  last-width:10
 );
 
-$conf-cursor: (default, pointer, text, not-allowed, move, grab, grabbing, wait, progress);
+$conf-cursor: (
+  default,
+  pointer,
+  text,
+  not-allowed,
+  move,
+  grab,
+  grabbing,
+  wait,
+  progress,
+);

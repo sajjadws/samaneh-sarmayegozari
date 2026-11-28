@@ -1,8 +1,27 @@
+@use "../../../sass/global-functions/_font" as *;
 @use "../../../sass/global-functions/_colors" as *;
 @use "../../../sass/global-functions/_break-point" as *;
 
-// accordion
-
-$tab-count: 3;
-$tab-break-point: get-break-point-value(md);
-// masonry
+// avatar sizes
+$avatar-sizes: (
+    avatar-font-size: (
+        "default": "subtitle",
+        "lg": "subtitle",
+        "sm": "small",
+    ),
+    avatar: (
+        "default": 32px,
+        "lg": 40px,
+        "sm": 24px,
+    ),
+    badge: (
+        "default": 10px,
+        "lg": 12px,
+        "sm": 8px,
+    ),
+    badge-svg: (
+        "default": 8px,
+        "lg": 8px,
+        "sm": 6px,
+    )
+);

@@ -1,87 +1,107 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use "sass:map";
 
-/* کانتینر اصلی بخش Empty */
-.empty-container {
+.empty {
   display: flex;
-  flex: 1 1 0%;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 24px;
 
   width: 100%;
-  min-width: 0;
+  min-height: 240px;
+  padding: 32px 24px;
 
   text-align: center;
-  text-wrap: balance;
 }
 
-/* سربرگ Empty */
 .empty-header {
   display: flex;
   flex-direction: column;
   align-items: center;
-
-  max-width: 24rem;
-}
-
-/* بخش رسانه یا آیکون */
-.empty-media {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-}
-
-/* جلوگیری از کلیک‌پذیری SVG داخل آیکون */
-.empty-media svg {
-  pointer-events: none;
-  flex-shrink: 0;
-}
-
-/* حالت پیش‌فرض رسانه */
-.empty-media-default {
-  /* استایل اختصاصی حالت default را اینجا قرار بده */
-}
-
-/* حالت آیکون */
-.empty-media-icon {
-  /* استایل اختصاصی حالت icon را اینجا قرار بده */
-}
-
-/* عنوان Empty */
-.empty-title {
-  /* استایل عنوان */
-}
-
-/* توضیحات Empty */
-.empty-description {
-  color: var(--muted-foreground);
-}
-
-/* لینک‌های داخل توضیحات */
-.empty-description a {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-/* حالت هاور لینک‌ها */
-.empty-description a:hover {
-  color: var(--primary);
-}
-
-/* محتوای Empty */
-.empty-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  gap: 8px;
 
   width: 100%;
-  max-width: 24rem;
-  min-width: 0;
+  max-width: 420px;
+}
 
-  text-wrap: balance;
+.empty-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  color: var(--text-secondary);
+
+  img,
+  svg {
+    display: block;
+    max-width: 100%;
+  }
+}
+
+.empty-media-default {
+  margin-bottom: 4px;
+
+  img,
+  svg {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+.empty-media-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 4px;
+
+  color: var(--text-secondary);
+  background: var(--secondary);
+  border-radius: 12px;
+
+  img,
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.empty-title {
+  margin: 0;
+
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.empty-description {
+  max-width: 360px;
+  margin: 0;
+
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.empty-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+
+  width: 100%;
+}
+
+.empty-outline {
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+}
+
+.empty-background {
+  background: var(--secondary);
+  border-radius: 12px;
 }

@@ -1,287 +1,357 @@
-@use "../../../../sass/config/_dims" as *;
-@use "../../../../sass/config/_typography" as *;
-@use "../../../../sass/kernel" as *;
-@use "../../config" as *;
 @use "sass:map";
 
-/* =========================
-    Base Button
-========================= */
+// Dimensions
+$dp-width: 290px;
+$dp-width-mobile: 270px;
 
-.btn {
-  display: inline-flex;
-  flex-shrink: 0;
-  border-color: transparent;
-  background-clip: padding-box;
-  outline: none;
-  transition: all 150ms ease;
-  -webkit-tap-highlight-color: transparent;
-  @extend .align-items-center,
-    .justify-content-center,
-    .gap-1,
-    .bw-1,
-    .border-style-solid,
-    .radius-all-normal,
-    .txt-size-normal,
-    .font-weight-medium,
-    .txt-white-space-nowrap,
-    .cursor-pointer,
-    .user-select-none,
-    .py-1,
-    .px-2;
-}
+$dp-input-height: 2.5rem;
 
-.btn:focus-visible {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 50%, transparent);
-}
+$dp-day-size: 36px;
+$dp-day-inner-size: 32px;
 
-.btn:active:not([aria-haspopup]) {
-  transform: translateY(1px);
-}
+$dp-week-day-height: 34px;
 
-.btn:disabled,
-.btn[disabled] {
-  pointer-events: none;
-  @extend .opacity-5;
-}
+$dp-padding: 12px;
+$dp-padding-mobile: 8px;
 
-.btn[aria-invalid="true"] {
-  border-color: var(--danger-regular);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 20%, transparent);
-}
+$dp-radius: 9px;
+$dp-popup-radius: 6px;
 
-/* SVG icons */
+$dp-transition: 0.2s ease;
+$dp-day-transition: 0.15s ease;
 
-.btn svg {
-  pointer-events: none;
-  flex-shrink: 0;
-}
+$dp-month-gap: 3px;
 
-.btn svg:not([class*="size-"]) {
-  width: 1rem;
-  height: 1rem;
-}
+$dp-shadow: 0 10px 25px -5px rgb(0 0 0 / 8%),
+  0 4px 10px -5px rgb(0 0 0 / 5%);
 
-/* =========================
-    Variants
-========================= */
+// ========================================
+// Date Picker
+// ========================================
 
-/* Default */
+.miz-date-picker {
+  width: 100%;
 
-.btn-default {
-  color: var(--on-primary);
-  @extend .bg-primary-color;
-}
-
-.btn-default:hover {
-  background-color: color-mix(in srgb, var(--primary) 80%, transparent);
-}
-
-/* Outline */
-
-.btn-outline {
-  @extend .border-color, .bg-color;
-}
-
-.btn-outline:hover,
-.btn-outline[aria-expanded="true"] {
-  @extend .bg-secondary-light-color, .text-color;
-}
-
-/* Secondary */
-
-.btn-secondary {
-  @extend .bg-secondary-color, .on-secondary-color;
-}
-
-.btn-secondary:hover {
-  background-color: color-mix(in oklch, var(--secondary), var(--text) 5%);
-}
-
-.btn-secondary[aria-expanded="true"] {
-  @extend .bg-secondary-color, .on-secondary-color;
-}
-
-/* Ghost */
-
-.btn-ghost:hover,
-.btn-ghost[aria-expanded="true"] {
-  background-color: var(--secondary-light);
-  color: var(--text);
-  @extend .bg-secondary-color, .text-color;
-}
-
-/* Destructive */
-
-.btn-destructive {
-  background-color: color-mix(in srgb, var(--danger-regular) 10%, transparent);
-  @extend .danger-regular-color;
-}
-
-.btn-destructive:hover {
-  background-color: color-mix(in srgb, var(--danger-regular) 20%, transparent);
-}
-
-.btn-destructive:focus-visible {
-  border-color: color-mix(in srgb, var(--danger-regular) 40%, transparent);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 20%, transparent);
-}
-
-/* Link */
-
-.btn-link {
-  text-underline-offset: 4px;
-  @extend .primary-color;
-}
-
-.btn-link:hover {
-  @extend .txt-decoration-underline;
-}
-
-/* =========================
-    Sizes
-========================= */
-
-.btn-size-default {
-  height: 2rem;
-  @extend .px-1;
-}
-
-.btn-size-xs {
-  height: 1.5rem;
-  @extend .gap-1, .px-1, .radius-all-normal, .txt-size-subtitle;
-}
-
-.btn-size-sm {
-  height: 1.75rem;
-  @extend .gap-1, .px-1, .radius-all-normal, .txt-size-subtitle;
-}
-
-.btn-size-lg {
-  height: 2.25rem;
-  @extend .px-1;
-}
-
-.btn-size-icon {
-  width: 2rem;
-  height: 2rem;
-  @extend .p-0;
-}
-
-.btn-size-icon-xs {
-  width: 1.5rem;
-  height: 1.5rem;
-  @extend .p-0, .radius-all-normal;
-}
-
-.btn-size-icon-sm {
-  width: 1.75rem;
-  height: 1.75rem;
-  @extend .p-0, .radius-all-normal;
-}
-
-.btn-size-icon-lg {
-  width: 2.25rem;
-  height: 2.25rem;
-  @extend .p-0;
-}
-
-/* =========================
-    Small SVG sizes
-========================= */
-
-// .btn-size-xs svg:not([class*="size-"]) {
-//     width: 0.75rem;
-//     height: 0.75rem;
-// }
-
-// .btn-size-sm svg:not([class*="size-"]) {
-//     width: 0.875rem;
-//     height: 0.875rem;
-// }
-
-// .btn-size-icon-xs svg:not([class*="size-"]) {
-//     width: 0.75rem;
-//     height: 0.75rem;
-// }
-
-$btn-sizes: (
-  "xs": 0.75rem,
-  "sm": 0.875rem,
-  "default": 1rem,
-  "lg": 1.125rem,
-);
-
-@each $size, $icon-size in $btn-sizes {
-  .btn-size-#{$size} svg:not([class*="size-"]) {
-    width: $icon-size;
-    height: $icon-size;
+  .rmdp-container {
+    display: block;
+    width: 100%;
   }
 
-  .btn-size-icon-#{$size} svg:not([class*="size-"]) {
-    width: $icon-size;
-    height: $icon-size;
+  // Input
+  &__input {
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+    height: $dp-input-height;
+    padding: 0.5rem 0.875rem;
+
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 400;
+
+    color: var(--text);
+    background: var(--background);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    outline: none;
+
+    transition:
+      border-color $dp-transition,
+      box-shadow $dp-transition,
+      background $dp-transition;
+
+    &::placeholder {
+      color: var(--secondary-text);
+    }
+
+    &:hover {
+      border-color: var(--primary);
+    }
+
+    &:focus {
+      border-color: var(--primary);
+
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 13%, transparent);
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+      background: var(--disabled-light);
+    }
   }
 }
 
-/* =========================
-    Icon positioning
-========================= */
+// ========================================
+// Calendar Popup
+// ========================================
 
-.btn [data-icon="inline-start"],
-.btn-size-xs [data-icon="inline-start"],
-.btn-size-sm [data-icon="inline-start"] {
-  margin-inline-start: -0.125rem;
+.rmdp-wrapper {
+  width: $dp-width !important;
+  padding: $dp-padding !important;
+
+  direction: rtl;
+
+  font-family: inherit;
+  color: var(--text) !important;
+
+  background: var(--background) !important;
+
+  border: 1px solid var(--border) !important;
+  border-radius: $dp-popup-radius !important;
+
+  box-shadow: $dp-shadow !important;
+
+  .rmdp-calendar {
+    width: 100%;
+    padding: 0;
+  }
+
+  // Header
+  .rmdp-header {
+    margin: 0 0 12px;
+    padding: 4px 0;
+
+    box-shadow: none;
+  }
+
+  .rmdp-header-values {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+
+    color: var(--title-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    span {
+      transition: color $dp-transition;
+
+      &:hover {
+        color: var(--text-hover);
+      }
+    }
+  }
+
+  // Navigation
+  .rmdp-arrow-container {
+    width: 30px;
+    height: 30px;
+
+    border-radius: 8px;
+
+    transition: background $dp-transition;
+
+    &:hover {
+      background: var(--secondary-light);
+      box-shadow: none;
+
+      .rmdp-arrow {
+        border-color: var(--primary);
+      }
+    }
+  }
+
+  .rmdp-arrow {
+    width: 7px;
+    height: 7px;
+
+    border-width: 0 2px 2px 0;
+    border-color: var(--secondary-text);
+  }
+
+  // Week Days
+  .rmdp-week {
+    margin-bottom: 5px;
+  }
+
+  .rmdp-week-day {
+    width: $dp-day-size;
+    height: $dp-week-day-height;
+
+    color: var(--secondary-text);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  // Days
+  .rmdp-day {
+    width: $dp-day-size;
+    height: $dp-day-size;
+
+    span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      width: $dp-day-inner-size;
+      height: $dp-day-inner-size;
+
+      color: var(--text);
+      font-size: 0.8125rem;
+      font-weight: 400;
+
+      border-radius: $dp-radius;
+
+      transition:
+        color $dp-day-transition,
+        background-color $dp-day-transition,
+        transform $dp-day-transition;
+
+      &:hover {
+        background-color: var(--primary-light);
+        color: var(--primary);
+      }
+    }
+
+    // Selected
+    &.rmdp-selected {
+      span {
+        color: var(--on-primary) !important;
+        background: var(--primary) !important;
+
+        font-weight: 600;
+
+        box-shadow: 0 2px 6px color-mix(in srgb, var(--primary) 25%, transparent);
+
+        &:hover {
+          background: var(--primary) !important;
+          color: var(--on-primary) !important;
+        }
+      }
+    }
+
+    // Today
+    &.rmdp-today:not(.rmdp-selected) {
+      span {
+        position: relative;
+
+        color: var(--primary);
+
+        background: var(--primary-light);
+        font-weight: 600;
+
+        &::after {
+          position: absolute;
+          bottom: 3px;
+          left: 50%;
+
+          width: 4px;
+          height: 4px;
+
+          content: "";
+
+          background: var(--primary);
+          border-radius: 50%;
+
+          transform: translateX(-50%);
+        }
+      }
+    }
+
+    // Disabled
+    &.rmdp-disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+
+      span {
+        cursor: not-allowed;
+
+        &:hover {
+          background: transparent;
+          color: var(--text);
+        }
+      }
+    }
+
+    // Weekend
+    &.rmdp-deactive {
+      span {
+        color: var(--secondary-text);
+      }
+    }
+  }
+
+  // Month & Year
+  .rmdp-ym {
+    color: var(--title-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+  }
+
+  .rmdp-month-picker,
+  .rmdp-year-picker {
+    padding: 8px;
+
+    background: var(--background);
+    border-radius: 10px;
+
+    .rmdp-day {
+      margin-inline: $dp-month-gap;
+      height: 48px;
+
+      span {
+        width: 100%;
+        height: 38px;
+
+        &:hover {
+          background: var(--primary-light);
+          color: var(--primary);
+        }
+      }
+
+      &.rmdp-selected span {
+        color: var(--on-primary);
+        background: var(--primary);
+      }
+    }
+  }
+
+  // Footer
+  .rmdp-day-picker {
+    padding: 0;
+  }
+
+  // Shadows
+  .rmdp-shadow {
+    box-shadow: none;
+  }
 }
 
-.btn [data-icon="inline-end"],
-.btn-size-xs [data-icon="inline-end"],
-.btn-size-sm [data-icon="inline-end"] {
-  margin-inline-end: -0.125rem;
+// ========================================
+// Hover
+// ========================================
+
+@media (hover: hover) {
+  .rmdp-wrapper {
+    .rmdp-day:not(.rmdp-disabled, .rmdp-day-hidden) span:hover {
+      background-color: var(--primary) !important;
+      color: var(--on-primary) !important;
+    }
+
+    .rmdp-day.rmdp-selected span:hover {
+      background-color: var(--primary) !important;
+      color: var(--on-primary) !important;
+    }
+  }
 }
 
-/* =========================
-    Button groups
-========================= */
+// ========================================
+// Responsive
+// ========================================
 
-[data-slot="button-group"] .btn-size-xs,
-[data-slot="button-group"] .btn-size-sm {
-  @extend .radius-all-normal;
+@media (max-width: 360px) {
+  .rmdp-wrapper {
+    width: $dp-width-mobile !important;
+    padding: $dp-padding-mobile !important;
+
+    .rmdp-day,
+    .rmdp-week-day {
+      width: 34px;
+    }
+  }
 }
-
-// /* =========================
-//     Dark mode
-// ========================= */
-
-// .dark .btn-outline {
-//     border-color: var(--border-fields);
-//     background-color: color-mix(in srgb, var(--fields) 30%, transparent);
-// }
-
-// .dark .btn-outline:hover,
-// .dark .btn-outline[aria-expanded="true"] {
-//     background-color: color-mix(in srgb, var(--fields) 50%, transparent);
-// }
-
-// .dark .btn-ghost:hover,
-// .dark .btn-ghost[aria-expanded="true"] {
-//     background-color: color-mix(in srgb, var(--secondary-light) 50%, transparent);
-// }
-
-// .dark .btn-destructive {
-//     background-color: color-mix(in srgb, var(--danger-regular) 20%, transparent);
-// }
-
-// .dark .btn-destructive:hover {
-//     background-color: color-mix(in srgb, var(--danger-regular) 30%, transparent);
-// }
-
-// .dark .btn-destructive:focus-visible {
-//     box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 40%, transparent);
-// }
-
-// .dark .btn[aria-invalid="true"] {
-//     border-color: color-mix(in srgb, var(--danger-regular) 50%, transparent);
-//     box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 40%, transparent);
-// }

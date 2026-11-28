@@ -1,39 +1,157 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use "sass:map";
 
-.progress-root {
-  @extend .d-flex, .flex-wrap, .gap-3, .w-100;
+// Sizes
+$progress-sizes: (
+  sm: 4px,
+  default: 8px,
+  lg: 12px,
+);
+
+$progress-variants: (
+  default: var(--primary),
+  secondary: var(--secondary),
+  destructive: var(--danger-regular),
+);
+
+// Progress Root
+.progress {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 12px;
+  row-gap: 8px;
+
+  width: 100%;
+  min-width: 0;
+
+  color: var(--text);
 }
 
-/* Track */
-.progress-track {
-  height: 8px;
-
-  @extend .position-relative,
-    .d-flex,
-    .align-items-center,
-    .w-100,
-    .overflow-hidden,
-    .bg-divider-color,
-    .radius-all-full;
-}
-
-/* Indicator */
-.progress-indicator {
-  transition: width 0.3s ease;
-
-  @extend .h-100, .bg-primary-color;
-}
-
-/* Label */
+// Label
 .progress-label {
-  @extend .title-text-color, .font-weight-medium;
+  grid-column: 1;
+  min-width: 0;
+
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
-/* Value */
+// Value
 .progress-value {
-  @extend .title-text-color;
+  grid-column: 2;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+
+// Track
+.progress-track {
+  position: relative;
+  grid-column: 1 / -1;
+
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+
+  border-radius: 999px;
+  background: var(--disabled-light);
+}
+
+// Indicator
+.progress-indicator {
+  display: block;
+  flex-shrink: 0;
+
+  width: 0;
+  height: 100%;
+
+  border-radius: inherit;
+  background: var(--primary);
+
+  transition: width 400ms ease;
+
+  @each $name, $color in $progress-variants {
+    .progress[data-variant="#{$name}"] & {
+      background: $color;
+    }
+  }
+}
+
+// Size Variants
+@each $name, $height in $progress-sizes {
+  .progress[data-size="#{$name}"] {
+    .progress-track {
+      height: $height;
+    }
+  }
+}
+
+// Indeterminate
+.progress[data-indeterminate] {
+  .progress-track {
+    position: relative;
+  }
+
+  .progress-indicator {
+    width: 40%;
+    height: 100%;
+    animation: progress-indeterminate 1.5s ease-in-out infinite;
+  }
+}
+
+@keyframes progress-indeterminate {
+  0% {
+    transform: translateX(-110%);
+  }
+
+  100% {
+    transform: translateX(280%);
+  }
+}
+
+// Complete
+.progress[data-complete] {
+  .progress-indicator {
+    transition: none;
+  }
+}
+
+// RTL
+[dir="rtl"] {
+  .progress[data-indeterminate] {
+    .progress-indicator {
+      animation-name: progress-indeterminate-rtl;
+    }
+  }
+}
+
+@keyframes progress-indeterminate-rtl {
+  0% {
+    transform: translateX(110%);
+  }
+
+  100% {
+    transform: translateX(-280%);
+  }
+}
+
+// Reduced Motion
+@media (prefers-reduced-motion: reduce) {
+  .progress-indicator {
+    transition: none;
+  }
+
+  .progress[data-indeterminate] {
+    .progress-indicator {
+      animation-duration: 3s;
+    }
+  }
 }

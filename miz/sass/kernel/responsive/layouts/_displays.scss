@@ -3,7 +3,7 @@
 @use "../functions/responsive" as *;
 @use "../../../config/responsive" as *;
 
-$display-value-list: (block, none, flex, grid, inline-block);
+$display-value-list: (block, none, flex, grid, inline-block, inline-flex);
 $display-list: ();
 @function generate-responsive-display-classes($prefix) {
   $list: ();

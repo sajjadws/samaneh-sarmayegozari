@@ -1,67 +1,144 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
 
+// ----------------------------------------
+// Table Container
+// ----------------------------------------
+
 .table-container {
+  position: relative;
+  width: 100%;
   overflow-x: auto;
-  @extend .position-relative, .w-100;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
 
-.miz-table {
+// ----------------------------------------
+// Table
+// ----------------------------------------
+
+.table {
+  width: 100%;
   border-collapse: collapse;
-  border-spacing: 0;
   caption-side: bottom;
-  @extend .w-100, .txt-size-normal, .lh-5;
+  font-size: 0.875rem;
+  text-align: start;
+
+  th,
+  td {
+    padding: 0.875rem 1rem;
+    text-align: start;
+    vertical-align: middle;
+    white-space: nowrap;
+  }
 }
 
-.table-header tr {
-  border-bottom-width: 1px;
-  @extend .bb-style-solid, .border-color;
-}
+// ----------------------------------------
+// Header
+// ----------------------------------------
 
-.table-body tr:last-child {
-  @extend .border-b-none;
-}
+.table-header {
+  background: var(--on-primary);
 
-.table-footer {
-  border-top-width: 1px;
-  @extend .bt-style-solid, .border-color, .bg-secondary-light-color, .font-weight-medium;
-}
+  .table-row {
+    border-bottom: 1px solid var(--border);
 
-.table-footer > tr:last-child {
-  @extend .border-b-none;
-}
-
-.table-row {
-  border-bottom-width: 1px;
-  transition: background-color 150ms ease;
-  @extend .bb-style-solid, .border-color;
-}
-
-.table-row:hover,
-.table-row:has([aria-expanded="true"]),
-.table-row[data-state="selected"] {
-  @extend .bg-secondary-light-color;
+    &:hover {
+      background: transparent;
+    }
+  }
 }
 
 .table-head {
-  height: 2.5rem;
-  vertical-align: middle;
-  @extend .p-1, .txt-align-start, .font-weight-medium, .txt-white-space-nowrap;
+  height: 2.875rem;
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.015em;
+}
+
+// ----------------------------------------
+// Body
+// ----------------------------------------
+
+.table-body {
+  .table-row {
+    border-bottom: 1px solid var(--border);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+}
+
+.table-row {
+  transition: background-color 150ms ease;
+
+  &:hover {
+    background: color-mix(in srgb, var(--background) 100%, transparent);
+  }
+
+  &[data-state="selected"] {
+    background: color-mix(in srgb, var(--background) 94%, black);
+  }
 }
 
 .table-cell {
-  vertical-align: middle;
-  @extend .p-1, .txt-white-space-nowrap;
+  color: var(--text);
+  font-size: 0.875rem;
 }
 
-.table-head:has([role="checkbox"]),
-.table-cell:has([role="checkbox"]) {
-  @extend .pie-0;
+// ----------------------------------------
+// Footer
+// ----------------------------------------
+
+.table-footer {
+  background: var(--background);
+  border-top: 1px solid var(--border);
+  font-weight: 500;
+
+  .table-row {
+    &:hover {
+      background: transparent;
+    }
+  }
+
+  .table-cell {
+    color: var(--text);
+  }
 }
+
+// ----------------------------------------
+// Caption
+// ----------------------------------------
 
 .table-caption {
-  color: var(--secondary-text);
-  @extend .mt-2, .txt-size-normal;
+  padding: 1rem;
+  color: var(--text);
+  font-size: 0.8125rem;
+  text-align: start;
+}
+
+// ----------------------------------------
+// Responsive
+// ----------------------------------------
+
+@media (max-width: 640px) {
+  .table {
+    th,
+    td {
+      padding: 0.75rem;
+    }
+
+    font-size: 0.8125rem;
+  }
+
+  .table-head {
+    font-size: 0.7rem;
+  }
 }

@@ -1,63 +1,109 @@
-@use "../../../../sass/config/_dims" as *;
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
+@use "sass:list";
 @use "sass:map";
 
-/* ظرف اصلی صفحه */
-.badge-page {
-  @extend .d-flex,
-    .flex-column,
-    .justify-content-center,
-    .align-items-center,
-    .w-100,
-    .h-100,
-    .gap-18,
-    .bg-primary-light-color;
+$badge-transition: 150ms ease;
+$badge-icon-size: 12px;
+
+$badge: (
+  default: (background: var(--primary),
+    color: var(--on-primary),
+    background-hover: color-mix(in srgb, var(--primary) 90%, transparent),
+  ),
+  secondary: (background: var(--secondary),
+    color: var(--on-secondary),
+    background-hover: color-mix(in srgb, var(--secondary) 85%, transparent),
+  ),
+  destructive: (background: var(--danger-regular),
+    color: var(--white),
+    background-hover: color-mix(in srgb, var(--danger-regular) 90%, transparent),
+  ),
+  outline: (background: transparent,
+    color: var(--text),
+    border: var(--border),
+    background-hover: var(--background),
+  ),
+  ghost: (background: transparent,
+    color: var(--text),
+    background-hover: var(--background),
+  ),
+  link: (background: transparent,
+    color: var(--primary),
+    background-hover: transparent,
+  ),
+);
+
+.badge {
+  flex-shrink: 0;
+  transition: color $badge-transition, background-color $badge-transition, border-color $badge-transition, box-shadow $badge-transition;
+
+  @extend .font-weight-medium,
+  .txt-size-small,
+  .radius-all-small,
+  .bw-1,
+  .border-transparent-color,
+  .border-style-solid,
+  .txt-white-space-nowrap,
+  .overflow-hidden,
+  .gap-1,
+  .w-fit-content,
+  .d-inline-flex,
+  .align-items-center,
+  .justify-content-center,
+  .py-1,
+  .px-2,
+  .lh-3;
+
+
+  &>svg,
+  &>i {
+    width: $badge-icon-size;
+    height: $badge-icon-size;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 25%, transparent);
+  }
+
+  &[aria-invalid="true"] {
+    border-color: var(--danger-regular);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 20%, transparent);
+  }
 }
 
-/* ظرف اصلی دکمه */
-.badge-wrapper {
-  @extend .d-flex, .justify-content-center, .align-items-center, .gap-1, .position-relative;
+@each $variant, $properties in $badge {
+  $background: map.get($properties, background);
+  $color: map.get($properties, color);
+  $border: map.get($properties, border);
+  $background-hover: map.get($properties, background-hover);
+
+  .badge-#{$variant} {
+    background-color: $background;
+    color: $color;
+
+    @if $border {
+      border-color: $border;
+    }
+
+    &:where(a):hover {
+      @if $background-hover {
+        background-color: $background-hover;
+      }
+    }
+  }
 }
 
-/* استایل دکمه */
-.badge-button {
-  @extend .py-1, .px-2, .bg-primary-color, .secondary-color, .cursor-pointer, .radius-all-small;
-}
+.badge-link {
+  text-underline-offset: 4px;
+  @extend .pis-0,
+  .pie-0;
 
-/* حذف فاصله پیش‌فرض پاراگراف */
-.badge-button p {
-  @extend .m-0;
-}
-
-/* بج قرارگرفته روی گوشه دکمه */
-.badge-top {
-  width: 22px;
-  @extend .position-absolute,
-    .top-0,
-    .left-0,
-    .d-flex,
-    .justify-content-center,
-    .align-items-center,
-    .aspect-ratio-1x1,
-    .bg-danger-regular-color,
-    .radius-all-extra-large;
-}
-
-/* بج قرارگرفته داخل دکمه */
-.badge-inside {
-  width: 22px;
-  @extend .radius-all-extra-large,
-    .d-flex,
-    .justify-content-center,
-    .align-items-center,
-    .aspect-ratio-1x1,
-    .bg-danger-regular-color,
-    .radius-all-extra-large;
-}
-
-/* آیکون داخل بج */
-.badge-icon {
-  @extend .danger-regular-color;
+  &:where(a):hover {
+    @extend .#{$conf-font-prefix}-decoration-underline;
+  }
 }

@@ -1,131 +1,161 @@
 $break-points: (
-  xxl: 1920px,
-  xl: 1280px,
-  lg: 1024px,
-  md: 767px,
-  sm: 478px,
+  xxl:1920px,
+  xl:1280px,
+  lg:1024px,
+  md:767px,
+  sm:478px
 );
 // number of boxed space around should be equal with break points
-$header-space-horizontally: (20px, 20px, 17px, 14px, 14px);
-$header-space-vertically: (20px, 20px, 19px, 18px, 18px);
-$boxed-space-horizontally: (60px, 50px, 40px, 20px, 15px);
-$boxed-space-vertically: (5rem, 4.5rem, 4rem, 3rem, 3rem);
-$conf-font-size-responsive: (1rem, 1rem, 0.8rem, 0.7rem, 0.7rem);
+$header-space-horizontally: (
+  20px,
+  20px,
+  17px,
+  14px,
+  14px
+);
+$header-space-vertically: (
+  20px,
+  20px,
+  19px,
+  18px,
+  18px
+);
+$boxed-space-horizontally: (
+  60px,
+  50px,
+  40px,
+  20px,
+  15px
+);
+$boxed-space-vertically: (
+  5rem,
+  4.5rem,
+  4rem,
+  3rem,
+  3rem
+);
+$conf-font-size-responsive: (
+  1rem,
+  1rem,
+  0.8rem,
+  0.7rem,
+  0.7rem
+);
 
 $conf-cols: (
-  count: 12,
-  responsive: true,
+  count:12,
+  responsive:true
 );
 $conf-width: (
-  count: 100,
-  responsive: true,
+  count:100,
+  responsive:true
 );
 $conf-height: (
-  count: 50,
-  responsive: true,
+  count:50,
+  responsive:true
 );
 $conf-inset-inline-start: (
-  count: 50,
-  responsive: true,
+  count:50,
+  responsive:true
 );
 $conf-inset-inline-end: (
-  count: 50,
-  responsive: true,
+  count:50,
+  responsive:true
 );
 $conf-top: (
-  count: 50,
-  responsive: true,
+  count:50,
+  responsive:true
 );
 $conf-bottom: (
-  count: 50,
-  responsive: true,
+  count:50,
+  responsive:true
 );
 $conf-left: (
-  count: 4,
-  responsive: true,
+  count:4,
+  responsive:true
 );
 $conf-right: (
-  count: 4,
-  responsive: true,
+  count:4,
+  responsive:true
 );
 $conf-line-height: (
-  count: 25,
-  unit: rem,
-  factor: 0.25,
-  responsive: true,
+  count:25,
+  unit:rem,
+  factor:0.25,
+  responsive:true
 );
 $conf-grids: (
-  count: 14,
-  responsive: true,
+  count:14,
+  responsive:true
 );
 $conf-gaps: (
-  count: 50,
-  unit: rem,
-  factor: 0.25,
-  responsive: true,
+  count:50,
+  unit:rem,
+  factor:0.25,
+  responsive:true
 );
 $conf-paddings: (
-  count: 50,
-  unit: rem,
-  factor: 0.25,
-  responsive: true,
+  count:50,
+  unit:rem,
+  factor:0.25,
+  responsive:true
 );
 $conf-margins: (
-  count: 50,
-  unit: rem,
-  factor: 0.25,
-  responsive: true,
+  count:50,
+  unit:rem,
+  factor:0.25,
+  responsive:true
 );
 $conf-letter-spacing: (
-  count: 25,
-  unit: rem,
-  factor: 0.25,
-  responsive: true,
+  count:25,
+  unit:rem,
+  factor:0.25,
+  responsive:true
 );
 $conf-orders: (
-  count: 10,
-  responsive: true,
+  count:10,
+  responsive:true
 );
 $conf-display: (
-  responsive: true,
+  responsive:true
 );
 $conf-grows: (
-  count: 5,
-  responsive: true,
+  count:5,
+  responsive:true
 );
 $conf-wrap: (
-  responsive: true,
+  responsive:true
 );
 $conf-flex-direction: (
-  responsive: true,
+  responsive:true
 );
 $conf-justify-content: (
-  responsive: true,
+  responsive:true
 );
 $conf-justify-self: (
-  responsive: true,
+  responsive:true
 );
 $conf-justify-items: (
-  responsive: true,
+  responsive:true
 );
 $conf-align-content: (
-  responsive: true,
+  responsive:true
 );
 $conf-align-self: (
-  responsive: true,
+  responsive:true
 );
 $conf-align-items: (
-  responsive: true,
+  responsive:true
 );
 $conf-text-align: (
-  responsive: true,
+  responsive:true
 );
 $conf-text-transform: (
-  responsive: true,
+  responsive:true
 );
 $conf-text-decoration: (
-  responsive: true,
+  responsive:true
 );
 $conf-font-style: (
-  responsive: true,
+  responsive:true
 );

@@ -1,119 +1,298 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
-@use "sass:map";
 
-/* ==============================
-   Select Component
-============================== */
+// ----------------------------------------
+// Select Trigger
+// ----------------------------------------
 
 .select-trigger {
-  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  width: 100%;
+  min-width: 9rem;
+  height: 2.625rem;
+  padding-inline: 0.875rem;
+
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+
+  background: var(--background);
+  color: var(--text);
+
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  cursor: pointer;
   outline: none;
+
   transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    background 180ms ease;
 
-  @extend .cursor-pointer,
-    .text-color,
-    .d-flex,
-    .bg-on-primary-color,
-    .bw-1,
-    .border-style-solid,
-    .border-color,
-    .w-100,
-    .gap-8,
-    .align-items-center,
-    .justify-content-space-between,
-    .py-0,
-    .px-4,
-    .radius-all-small,
-    .txt-align-start;
-}
+  &:hover:not([data-disabled]) {
+    border-color: var(--primary);
+  }
 
-.select-trigger:hover {
-  background: #f9fafb;
-  border-color: #9ca3af;
-}
+  &:focus-visible {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  }
 
-.select-trigger:focus-visible,
-.select-trigger[data-popup-open] {
-  border-color: #9ca3af;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-}
+  &[data-popup-open] {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 
-.select-trigger:disabled {
-  @extend .opacity-5, .cursor-not-allowed;
-}
+    .select-icon {
+      transform: rotate(180deg);
+      color: var(--primary);
+    }
+  }
 
-.select-trigger[data-size="sm"] {
-  min-height: 34px;
-}
+  &[data-disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--secondary);
+  }
 
-.select-trigger[data-size="default"] {
-  min-height: 42px;
-}
+  &[data-placeholder] {
+    color: var(--text-secondary);
+  }
 
-.select-trigger[data-size="lg"] {
-  min-height: 50px;
+  &[aria-invalid="true"] {
+    border-color: var(--danger-regular);
+  }
+
+  &[data-size="sm"] {
+    height: 2.125rem;
+    padding-inline: 0.7rem;
+    font-size: 0.8125rem;
+    border-radius: 0.5rem;
+  }
+
+  &[data-size="lg"] {
+    height: 3rem;
+    padding-inline: 1rem;
+    font-size: 0.9375rem;
+    border-radius: 0.75rem;
+  }
 }
 
 .select-value {
   flex: 1;
+  min-width: 0;
+  overflow: hidden;
+
+  text-align: start;
   text-overflow: ellipsis;
-
-  @extend .overflow-hidden, .txt-white-space-nowrap;
+  white-space: nowrap;
 }
 
-.select-value:empty::before {
-  content: "";
-}
-
-/* Trigger Icon */
-
-.select-trigger-icon {
-  width: 17px;
+.select-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
-  color: #6b7280;
 
-  @extend .aspect-ratio-1x1;
+  color: var(--text-secondary);
+
+  transition:
+    transform 180ms ease,
+    color 180ms ease;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 1.8;
+  }
 }
 
-/* ==============================
-   Select Positioner
-============================== */
+// ----------------------------------------
+// Select Popup
+// ----------------------------------------
 
 .select-positioner {
+  z-index: 1000;
+  width: var(--anchor-width);
+  max-width: var(--available-width);
   outline: none;
-
-  @extend .z-index-5;
 }
-
-/* ==============================
-   Select Content
-============================== */
 
 .select-content {
-  min-width: var(--anchor-width);
-  max-height: min(300px, var(--available-height));
-  overflow-y: auto;
+  position: relative;
+  width: 100%;
+  max-height: min(20rem, var(--available-height));
+
+  overflow: hidden;
+
+  padding: 0.35rem;
+
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+
+  background: var(--background);
+  color: var(--text);
+
   box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.08),
-    0 2px 6px rgba(0, 0, 0, 0.04);
+    0 2px 5px rgb(0 0 0 / 4%),
+    0 8px 20px rgb(0 0 0 / 7%),
+    0 20px 40px rgb(0 0 0 / 5%);
 
-  outline: none;
   transform-origin: var(--transform-origin);
-  animation: select-open 0.15s ease-out;
 
-  @extend .p-2, .overflow-x-hidden, .radius-all-normal, .bw-1, .border-style-solid, .border-color, .bg-on-primary-color;
+  &[data-open] {
+    animation: select-open 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  &[data-closed] {
+    animation: select-close 120ms ease-in;
+  }
 }
+
+.select-list {
+  max-height: inherit;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+// ----------------------------------------
+// Select Groups
+// ----------------------------------------
+
+.select-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.select-label {
+  padding: 0.625rem 0.7rem 0.4rem;
+
+  color: var(--text-secondary);
+
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+}
+
+// ----------------------------------------
+// Select Items
+// ----------------------------------------
+
+.select-item {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+
+  min-height: 2.4rem;
+  padding: 0.5rem 0.7rem;
+
+  border-radius: 0.5rem;
+
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 400;
+
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+
+  transition:
+    background 140ms ease,
+    color 140ms ease;
+
+  &[data-highlighted] {
+    background: var(--secondary);
+    color: var(--text);
+  }
+
+  &[data-selected] {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  &[data-selected][data-highlighted] {
+    background: color-mix(in srgb, var(--primary) 10%, var(--background));
+  }
+
+  &[data-disabled] {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.select-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.select-item-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+
+  color: var(--primary);
+
+  svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    stroke-width: 2.5;
+  }
+}
+
+// ----------------------------------------
+// Separator
+// ----------------------------------------
+
+.select-separator {
+  height: 1px;
+  margin: 0.3rem 0.45rem;
+
+  background: var(--border);
+}
+
+// ----------------------------------------
+// Scroll Arrows
+// ----------------------------------------
+
+.select-scroll-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 1.5rem;
+
+  background: var(--background);
+  color: var(--text-secondary);
+
+  svg {
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+}
+
+// ----------------------------------------
+// Animations
+// ----------------------------------------
 
 @keyframes select-open {
   from {
     opacity: 0;
-    transform: translateY(-4px) scale(0.98);
+    transform: translateY(-5px) scale(0.98);
   }
 
   to {
@@ -122,174 +301,14 @@
   }
 }
 
-/* ==============================
-   Select List
-============================== */
+@keyframes select-close {
+  from {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 
-.select-group {
-  @extend .py-12, .px-0;
-}
-
-/* ==============================
-   Select Label
-============================== */
-
-.select-label {
-  color: #9ca3af;
-
-  @extend .p-20, .font-weight-semi-bold, .txt-align-start;
-}
-
-/* ==============================
-   Select Item
-============================== */
-
-.select-item {
-  outline: none;
-  transition:
-    background 0.15s ease,
-    color 0.15s ease;
-
-  @extend .position-relative,
-    .d-flex,
-    .align-items-center,
-    .justify-content-space-between,
-    .gap-3,
-    .p-2,
-    .radius-all-small,
-    .txt-align-start;
-}
-
-.select-item:hover,
-.select-item[data-highlighted] {
-  background: #f3f4f6;
-  color: #9ca3af;
-}
-
-.select-item[data-selected] {
-  background: #eef2ff;
-  color: #9ca3af;
-
-  @extend .font-weight-medium;
-}
-
-.select-item[data-disabled] {
-  @extend .opacity-5, .cursor-not-allowed;
-}
-
-.select-item-text {
-  flex: 1;
-  text-overflow: ellipsis;
-
-  @extend .overflow-hidden, .txt-white-space-nowrap;
-}
-
-/* ==============================
-   Select Item Indicator
-============================== */
-
-.select-item-indicator {
-  flex-shrink: 0;
-
-  @extend .d-flex, .align-items-center, .justify-content-center;
-}
-
-.select-item-indicator-icon {
-  width: 15px;
-  color: #9ca3af;
-
-  @extend .aspect-ratio-1x1;
-}
-
-/* ==============================
-   Select Separator
-============================== */
-
-.select-separator {
-  height: 1px;
-  background: #e5e7eb;
-
-  @extend .m-1;
-}
-
-/* ==============================
-   Scroll Buttons
-============================== */
-
-.select-scroll-up-button,
-.select-scroll-down-button {
-  height: 24px;
-  color: #6b7280;
-
-  @extend .d-flex, .align-items-center, .justify-content-center, .w-100, .cursor-pointer;
-}
-
-.select-scroll-up-button svg,
-.select-scroll-down-button svg {
-  width: 16px;
-
-  @extend .aspect-ratio-1x1;
-}
-
-/* ==============================
-   Scrollbar
-============================== */
-
-.select-content::-webkit-scrollbar {
-  width: 5px;
-}
-
-.select-content::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.select-content::-webkit-scrollbar-thumb {
-  background: #d1d5db;
-
-  @extend .radius-all-small;
-}
-
-.select-content::-webkit-scrollbar-thumb:hover {
-  background: #9ca3af;
-}
-
-/* ==============================
-   Dark Mode
-============================== */
-
-.dark .select-trigger {
-  background: #9ca3af;
-  border-color: #374151;
-  color: #f9fafb;
-}
-
-.dark .select-trigger:hover {
-  background: #9ca3af;
-}
-
-.dark .select-content {
-  background: #9ca3af;
-  border-color: #374151;
-}
-
-.dark .select-item {
-  color: #e5e7eb;
-}
-
-.dark .select-item:hover,
-.dark .select-item[data-highlighted] {
-  background: #9ca3af;
-}
-
-.dark .select-item[data-selected] {
-  background: #374151;
-  color: #c7d2fe;
-}
-
-.dark .select-label {
-  color: #9ca3af;
-}
-
-.dark .select-separator {
-  background: #374151;
+  to {
+    opacity: 0;
+    transform: translateY(-3px) scale(0.98);
+  }
 }

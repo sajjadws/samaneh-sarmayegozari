@@ -1,187 +1,289 @@
-@use "../../../../sass/config/_dims" as *;
+
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
 @use "sass:map";
 
-/* =====================================
-   INPUT GROUP
-===================================== */
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+$input-group-button-sizes: (
+  xs: (
+    height: 24px,
+    padding: 6px,
+    font-size: 11px,
+  ),
+  sm: (
+    height: 28px,
+    padding: 8px,
+    font-size: 12px,
+  ),
+  icon-xs: (
+    height: 24px,
+    width: 24px,
+  ),
+  icon-sm: (
+    height: 28px,
+    width: 28px,
+  ),
+);
+
+// --------------------------------------------------
+// Input Group
+// --------------------------------------------------
 
 .input-group {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  gap: 0;
+
+  width: 100%;
+  min-width: 0;
+  height: 38px;
+
+  color: var(--text);
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  outline: none;
   transition:
-    border-color 0.2s,
-    box-shadow 0.2s;
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    background-color 150ms ease;
 
-  @extend .d-flex,
-    .align-items-center,
-    .position-relative,
-    .w-100,
-    .bw-1,
-    .border-style-solid,
-    .border-color,
-    .radius-all-normal,
-    .bg-on-primary-color;
+  &:focus-within {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 15%, transparent);
+  }
+
+  &:has([aria-invalid="true"]),
+  &[data-invalid] {
+    border-color: var(--danger-regular);
+
+    &:focus-within {
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--danger-regular) 15%, transparent);
+    }
+  }
+
+  &:has(:disabled),
+  &[data-disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &:has(textarea) {
+    height: auto;
+    min-height: 100px;
+    flex-wrap: wrap;
+  }
 }
 
-/* Focus State */
-
-.input-group:focus-within {
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-
-/* Textarea Layout */
-
-.input-group:has(textarea) {
-  @extend .flex-wrap, .align-items-stretch;
-}
-
-/* =====================================
-   INPUT GROUP ADDON
-===================================== */
-
-.input-group-addon {
-  @extend .d-flex,
-    .user-select-none,
-    .align-items-center,
-    .justify-content-center,
-    .gap-2,
-    .py-0,
-    .px-3,
-    .text-color,
-    .bg-on-primary-color,
-    .cursor-text,
-    .px-md-2;
-}
-
-/* Inline Start */
-
-.input-group-addon-inline-start {
-  order: -1;
-
-  @extend .bw-1, .border-style-solid, .border-color;
-}
-
-/* Inline End */
-
-.input-group-addon-inline-end {
-  @extend .order-1, .bw-1, .border-style-solid, .border-color;
-}
-
-/* Block Start */
-
-.input-group-addon-block-start {
-  @extend .w-100, .justify-content-start, .p-3, .bw-1, .border-color, .border-style-solid;
-}
-
-/* Block End */
-
-.input-group-addon-block-end {
-  @extend .w-100, .justify-content-start, .p-3, .bw-1, .border-color, .border-style-solid;
-}
-
-/* =====================================
-   INPUT GROUP BUTTON
-===================================== */
-
-.input-group-button {
-  border: none;
-  box-shadow: none;
-
-  @extend .align-items-center, .justify-content-center, .gap-1, .cursor-pointer;
-}
-
-/* Button Sizes */
-
-.input-group-button-xs {
-  min-height: 26px;
-
-  @extend .py-1, .px-2;
-}
-
-.input-group-button-sm {
-  min-height: 32px;
-
-  @extend .py-2, .px-3;
-}
-
-.input-group-button-icon-xs {
-  width: 26px;
-
-  @extend .aspect-ratio-1x1, .p-1;
-}
-
-.input-group-button-icon-sm {
-  width: 32px;
-
-  @extend .aspect-ratio-1x1, .p-2;
-}
-
-/* =====================================
-   INPUT GROUP TEXT
-===================================== */
-
-.input-group-text {
-  display: inline-flex;
-  color: #6b7280;
-
-  @extend .align-items-center, .gap-2, .txt-white-space-nowrap;
-}
-
-.input-group-text svg {
-  width: 16px;
-  flex-shrink: 0;
-  pointer-events: none;
-
-  @extend .aspect-ratio-1x1;
-}
-
-/* =====================================
-   INPUT GROUP INPUT
-===================================== */
+// --------------------------------------------------
+// Input
+// --------------------------------------------------
 
 .input-group-input {
   flex: 1;
-  min-width: 0;
+  order: 0;
+
   width: 100%;
-  border: none;
-  outline: none;
-  box-shadow: none;
+  min-width: 0;
+  height: 100%;
+
+  padding-inline: 12px;
+
+  color: inherit;
   background: transparent;
-}
-
-.input-group-input:focus {
-  outline: none;
+  border: 0;
+  border-radius: 0;
   box-shadow: none;
+
+  font: inherit;
+  outline: none;
+
+  &:focus,
+  &:focus-visible {
+    border: 0;
+    box-shadow: none;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.75;
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+
+  &[aria-invalid="true"] {
+    border: 0;
+    box-shadow: none;
+  }
 }
 
-/* =====================================
-   INPUT GROUP TEXTAREA
-===================================== */
+// --------------------------------------------------
+// Textarea
+// --------------------------------------------------
 
 .input-group-textarea {
   flex: 1;
+  order: 0;
+
+  width: 100%;
   min-width: 0;
   min-height: 100px;
-  resize: none;
-  border: none;
-  outline: none;
-  box-shadow: none;
+
+  padding: 12px;
+
+  color: inherit;
   background: transparent;
+  border: 0;
+  border-radius: 0;
 
-  @extend .w-100, .p-3;
-}
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.7;
 
-.input-group-textarea:focus {
+  resize: vertical;
   outline: none;
-  box-shadow: none;
+
+  &:focus {
+    border: 0;
+    box-shadow: none;
+    outline: none;
+  }
+
+  &::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.75;
+  }
 }
 
-/* =====================================
-   DISABLED STATE
-===================================== */
+// --------------------------------------------------
+// Addon
+// --------------------------------------------------
 
-.input-group:has(input:disabled),
-.input-group:has(textarea:disabled) {
-  @extend .opacity-5, .cursor-not-allowed;
+.input-group-addon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+
+  flex-shrink: 0;
+  min-width: 0;
+  padding-inline: 10px;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+
+  cursor: text;
+  user-select: none;
+
+  svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    pointer-events: none;
+  }
+}
+
+.input-group-addon-inline-start {
+  order: -1;
+}
+
+.input-group-addon-inline-end {
+  order: 1;
+}
+
+.input-group-addon-block-start {
+  order: -1;
+  justify-content: flex-start;
+
+  width: 100%;
+  padding: 10px 12px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.input-group-addon-block-end {
+  order: 1;
+  justify-content: flex-start;
+
+  width: 100%;
+  padding: 10px 12px;
+
+  border-top: 1px solid var(--border);
+}
+
+// --------------------------------------------------
+// Text
+// --------------------------------------------------
+
+.input-group-text {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  color: var(--text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+// --------------------------------------------------
+// Button
+// --------------------------------------------------
+
+.input-group-button {
+  flex-shrink: 0;
+  box-shadow: none !important;
+
+  &[data-size="xs"] {
+    min-height: map.get(map.get($input-group-button-sizes, xs), height);
+    height: map.get(map.get($input-group-button-sizes, xs), height);
+    padding-inline: map.get(map.get($input-group-button-sizes, xs), padding);
+    font-size: map.get(map.get($input-group-button-sizes, xs), font-size);
+  }
+
+  &[data-size="sm"] {
+    min-height: map.get(map.get($input-group-button-sizes, sm), height);
+    height: map.get(map.get($input-group-button-sizes, sm), height);
+    padding-inline: map.get(map.get($input-group-button-sizes, sm), padding);
+    font-size: map.get(map.get($input-group-button-sizes, sm), font-size);
+  }
+
+  &[data-size="icon-xs"] {
+    width: map.get(map.get($input-group-button-sizes, icon-xs), width);
+    min-width: map.get(map.get($input-group-button-sizes, icon-xs), width);
+    height: map.get(map.get($input-group-button-sizes, icon-xs), height);
+    padding: 0;
+  }
+
+  &[data-size="icon-sm"] {
+    width: map.get(map.get($input-group-button-sizes, icon-sm), width);
+    min-width: map.get(map.get($input-group-button-sizes, icon-sm), width);
+    height: map.get(map.get($input-group-button-sizes, icon-sm), height);
+    padding: 0;
+  }
+}
+
+// --------------------------------------------------
+// RTL / LTR
+// --------------------------------------------------
+
+.input-group {
+  direction: inherit;
+}
+
+.input-group-addon,
+.input-group-text,
+.input-group-button {
+  direction: inherit;
 }

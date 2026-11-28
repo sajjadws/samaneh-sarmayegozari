@@ -1,37 +1,120 @@
-@use "../../../../sass/config/_dims" as *;
+@use "../../../../sass/config/_responsive" as *;
 @use "../../../../sass/config/_typography" as *;
 @use "../../../../sass/kernel" as *;
 @use "../../config" as *;
+@use "sass:map";
+
+$card-spacing: calc(map.get($conf-gaps, "factor") * 4) + "#{map.get($conf-gaps, "unit")}";
+
+$card-sizes: (
+  default: (
+    spacing: calc(map.get($conf-gaps, "factor") * 4) + "#{map.get($conf-gaps, "unit")}",
+  ),
+  sm: (
+    spacing: calc(map.get($conf-gaps, "factor") * 3) + "#{map.get($conf-gaps, "unit")}",
+  ),
+);
 
 .card {
+  --card-spacing: #{$card-spacing};
+  gap: var(--card-spacing);
+  padding-block: var(--card-spacing);
+
   @extend .d-flex,
-    .flex-column,
-    .overflow-hidden,
-    .bg-card-color,
-    .text-color,
-    .txt-size-subtitle,
-    .radius-all-normal,
-    .p-6;
+  .flex-column,
+  .overflow-hidden,
+  .bg-color,
+  .text-color,
+  .border-style-solid,
+  .bw-1,
+  .border-color,
+  .radius-all-normal,
+  .txt-size-subtitle;
+
+  &:has(> img:first-child) {
+    @extend .pt-0;
+  }
+
+  & > img:first-child {
+    border-start-start-radius: inherit;
+    border-start-end-radius: inherit;
+  }
+
+  & > img:last-child {
+    border-end-start-radius: inherit;
+    border-end-end-radius: inherit;
+  }
+
+  &:has(> .card-footer) {
+    @extend .pb-0;
+  }
+}
+
+@each $size, $properties in $card-sizes {
+  .card-size-#{$size} {
+    --card-spacing: #{map.get($properties, spacing)};
+  }
 }
 
 .card-header {
-  @extend .d-grid, .align-items-start, .gap-1, .radius-tl-normal, .radius-tr-normal;
+  grid-auto-rows: min-content;
+  padding-inline: var(--card-spacing);
+
+  @extend .d-grid,
+  .align-items-start,
+  .gap-1;
+
+  &:has(> .card-action) {
+    grid-template-columns: 1fr auto;
+  }
+
+  &:has(> .card-description) {
+    grid-template-rows: auto auto;
+  }
+
+  &:has(> .card-action) > .card-action {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+
+    @extend .justify-content-end,
+    .align-self-start;
+  }
+
+  &:has(> .border-b) {
+    padding-block-end: var(--card-spacing);
+  }
 }
 
 .card-title {
-  line-height: 1.375;
-  @extend .txt-size-normal;
-}
-
-.card[data-size="sm"] .card-title {
-  @extend .txt-size-subtitle;
+  @extend .font-weight-semi-bold,
+  .lh-6;
 }
 
 .card-description {
-  color: var(--secondary-text);
-  @extend .txt-size-subtitle;
+  @extend .txt-size-subtitle,
+  .lh-6,
+  .text-color;
+}
+
+.card-action {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+
+  @extend .justify-content-end,
+  .align-self-start;
+}
+
+.card-content {
+  padding-inline: var(--card-spacing);
 }
 
 .card-footer {
-  @extend .d-flex, .align-items-center, .radius-bl-normal, .radius-br-normal;
+  padding: var(--card-spacing);
+
+  @extend .d-flex,
+  .align-items-center,
+  .bw-1,
+  .border-color,
+  .bt-style-solid,
+  .bg-color;
 }

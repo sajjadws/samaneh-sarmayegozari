@@ -1,31 +1,31 @@
 @use "../../../sass/config/_typography" as *;
 @use "sass:map";
 
-$conf-fonts-mizoon: (
-  "primary": (
-    "defaults": "sans-serif, 'Courier New', Courier, vazirmatn",
-    "folder": "vazirmatn",
-    "font-types": (
-      "black": ("Vazirmatn-Black.woff2",),
-      "bold": ("Vazirmatn-Bold.woff2",),
-      "light": ("Vazirmatn-Light.woff2",),
-      "medium": ("Vazirmatn-Medium.woff2",),
-      "regular": ("Vazirmatn-Regular.woff2",),
-      "thin": ("Vazirmatn-Thin.woff2",),
+$conf-fonts-react: (
+    "primary": (
+        "defaults":"sans-serif, 'Courier New', Courier, monospace",
+        "folder": "vazirmatn",
+        "font-types": (
+            "black": (
+                "Vazirmatn-Black.woff2",
+            ),
+            "bold": (
+                "Vazirmatn-Bold.woff2",
+            ),
+            "light": (
+                "Vazirmatn-Light.woff2",
+            ),
+            "medium": (
+                "Vazirmatn-Medium.woff2",
+            ),
+            "regular": (
+                "Vazirmatn-Regular.woff2",
+            ),
+            "thin": (
+                "Vazirmatn-Thin.woff2",
+            )
+        )
     ),
-  ),
-  "secondary": (
-    "defaults": "sans-serif, 'Courier New', Courier, monospace",
-    "folder": "product-sans",
-    "font-types": (
-      // "bold": (
-      //     "PTSans-Bold.ttf"
-      // ),
-      // "regular": (
-      //     "PTSans-Regular.ttf"
-       // ),
-    ),
-  ),
 );
 
-$conf-fonts: map.merge($conf-fonts, $conf-fonts-mizoon);
+$conf-fonts:map.merge($conf-fonts , $conf-fonts-react);
