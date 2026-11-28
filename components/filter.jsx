@@ -3,7 +3,6 @@
 import qs from"query-string";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/miz/themes/react";
-import { useState } from "react";
 
 export default function FilterTable({ item, queryTitle, options }) {
   const searchParams = useSearchParams();
@@ -28,7 +27,7 @@ export default function FilterTable({ item, queryTitle, options }) {
     router.push(url);
   }
 
-  const isValue = item?.options.some((option) => option.title === searchParams.get(queryTitle));
+  const isValue = options.some((option) => option.title === searchParams.get(queryTitle));
 
   return (
     <Select item={item} value={isValue ? (searchParams.get(queryTitle)) : ""} onValueChange={(filterQuery) => pushQuery(filterQuery)}>

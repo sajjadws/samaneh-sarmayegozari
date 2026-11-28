@@ -1,283 +1,193 @@
-// "use client";
-
-// import { useTable } from "@tanstack/react-table";
-// import { cn } from "cn";
-// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table/page";
-
-// import { features } from "./data-table-features";
-
-// export function DataTable({
-// 	className,
-// 	columns ,
-// 	data,
-// 	singleName = "سطر",
-// 	collectionName = "اطلاعات",
-// 	rowNumberOffset = 0,
-// 	total,
-// 	emptyMessage = "موردی پیدا نشد.",
-// }) {
-// 	const table = useTable({
-// 		features,
-// 		data,
-// 		columns,
-// 	});
-// 	const rows = table.getRowModel().rows;
-// 	const rowCount = total ?? table.getRowCount();
-
-// 	return (
-// 		<div className={cn("data-table", className)}>
-// 			<Table className="data-table-content">
-// 				<TableHeader>
-// 					{table.getHeaderGroups().map((headerGroup) => (
-// 						<TableRow key={headerGroup.id}>
-// 							<TableHead key={headerGroup.id} className="data-table-number">#</TableHead>
-// 							{headerGroup.headers.map((header) => (
-// 								<TableHead key={header.id}>
-// 									{header.isPlaceholder ? null : <table.FlexRender header={header} />}
-// 								</TableHead>
-// 							))}
-// 						</TableRow>
-// 					))}
-// 				</TableHeader>
-// 				<TableBody>
-// 					{rows.length ? (
-// 						rows.map((row, index) => (
-// 							<TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
-// 								<TableCell key={row.id} className="data-table-number">{(rowNumberOffset + index + 1).toLocaleString("fa-IR")}</TableCell>
-// 								{row.getVisibleCells().map((cell) => (
-// 									<TableCell key={cell.id}>
-// 										<table.FlexRender cell={cell} />
-// 									</TableCell>
-// 								))}
-// 							</TableRow>
-// 						))
-// 					) : (
-// 						<TableRow>
-// 							<TableCell colSpan={table.getVisibleLeafColumns().length + 1} className="data-table-empty">
-// 								{emptyMessage}
-// 							</TableCell>
-// 						</TableRow>
-// 					)}
-// 				</TableBody>
-// 			</Table>
-// 		</div>
-// 	);
-// }
-
 "use client";
 
-import { useTable } from "@tanstack/react-table";
-import { cn } from "cn";
+import { useEffect, useMemo, useState, useCallback } from "react";
+import {
+  useTable,
+  tableFeatures,
+  rowSortingFeature,
+  createSortedRowModel,
+  flexRender,
+  rowSelectionFeature,
+  columnVisibilityFeature,
+} from "@tanstack/react-table";
 
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../table/page";
+import { useSearchParams } from "next/navigation";
+import RowNumber from "@/components/row-number";
+import PaginationTable from "@/components/pagination";
+import FilterTable from "@/components/filter";
+import SearchTable from "@/components/search-table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/miz/themes/react";
 
-import { features } from "./data-table-features";
-import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationPrevious, PaginationNext } from "../pagination/page";
-import React from "react";
+import { cn } from "@/lib/utils";
+import EmptyAlert from "@/components/empty-alert";
 
-function getPaginationRange(currentPage, pageCount) {
-	if (pageCount <= 7) {
-		return Array.from({ length: pageCount }, (_, index) => index);
-	}
+function checkIsArray(items, options = {}) {
+  const { checkLength = false, minLength = 1, maxLength } = options;
 
-	const pages = new Set([0, pageCount - 1, currentPage - 1, currentPage, currentPage + 1]);
+  if (!Array.isArray(items)) return false;
 
-	return [...pages].filter((page) => page >= 0 && page < pageCount).sort((a, b) => a - b);
+  if (checkLength) {
+    if (items.length < minLength) return false;
+
+    if (maxLength !== undefined && items.length > maxLength) return false;
+  }
+
+  return true;
 }
 
-export function DataTable({
-	className,
-	columns,
-	data,
-	filters,
-	singleName = "سطر",
-	collectionName = "اطلاعات",
-	rowNumberOffset = 0,
-	total,
-	emptyMessage = "موردی پیدا نشد.",
-	searchValue = "",
-	onSearchChange,
-	searchPlaceholder = "جستجو...",
-	showSearch = true,
-	showPagination = true,
-}) {
-	const table = useTable({
-		features,
-		data,
-		columns,
-		initialState: {
-			pagination: {
-				pageIndex: 0,
-				pageSize: 10,
-			},
-		},
-	});
+export const DataTable = ({
+  data: initialData = [],
+  columns = [],
+  loading = false,
+  selectors = [],
+  showPagination = true,
+  showSearchBox = true,
+  showPerPage = true,
+  showRowNumber = true,
+  rowIdAccessor = "id",
+  emptyState,
+  rowId,
+  className,
+}) => {
+  const sp = useSearchParams();
+  const pageParam = Number(sp.get("page")) || 1;
+  const perPageParam = Number(sp.get("perPage")) || 10;
+  const queryParam = sp.get("search") || "";
 
-	const rows = table.getRowModel().rows;
-	const rowCount = total ?? table.getRowCount();
+  const page = pageParam;
+  const perPage = perPageParam;
 
-	const pageCount = table.getPageCount();
-	const currentPage = table.state.pagination.pageIndex;
-	const pageSize = table.state.pagination.pageSize;
-	const paginationRange = getPaginationRange(currentPage, pageCount);
+  const [data, setData] = useState(initialData);
 
-	const startRow = rowCount === 0 ? 0 : currentPage * pageSize + 1;
+  useEffect(() => {
+    JSON.stringify(initialData) !== JSON.stringify(data) && setData(initialData);
+  }, [initialData]);
 
-	const endRow = Math.min((currentPage + 1) * pageSize, rowCount);
+  const features = tableFeatures({
+    rowSortingFeature,
+    rowSelectionFeature,
+    columnVisibilityFeature,
+    sortedRowModel: createSortedRowModel(),
+  });
 
-	return (
-		<div className={cn("data-table", className)}>
-			{/* Toolbar */}
-			{(filters || showSearch) && (
-				<div className="data-table-toolbar">
-					<div className="data-table-filters">{filters}</div>
+  const table = useTable({
+    features,
+    data,
+    columns,
+  });
 
-					{showSearch && (
-						<div className="data-table-search">
-							<input
-								type="search"
-								value={searchValue}
-								onChange={(event) => onSearchChange?.(event.target.value)}
-								placeholder={searchPlaceholder}
-								className="data-table-search-input"
-							/>
+  const allRows = table.getRowModel().rows;
 
-							<span className="data-table-search-icon">
-								{/* <IconPlaceholder
-									lucide="SearchIcon"
-									tabler="IconSearch"
-									hugeicons="Search01Icon"
-									phosphor="MagnifyingGlassIcon"
-									remixicon="RiSearchLine"
-								/> */}
-							</span>
-						</div>
-					)}
-				</div>
-			)}
+  const paginatedRows = useMemo(() => allRows.slice((page - 1) * perPage, page * perPage), [allRows, page, perPage]);
 
-			{/* Table */}
-			<div className="data-table-wrapper">
-				<Table className="data-table-content">
-					<TableHeader>
-						{table.getHeaderGroups().map((headerGroup) => (
-							<TableRow key={headerGroup.id}>
-								<TableHead className="data-table-number">#</TableHead>
+  const totalCount = useMemo(() => allRows.length, [allRows.length]);
 
-								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
-										{header.isPlaceholder ? null : <table.FlexRender header={header} />}
-									</TableHead>
-								))}
-							</TableRow>
-						))}
-					</TableHeader>
+  const getRowId = useCallback((row) => row?.original?.[rowIdAccessor] ?? row?.id, [rowIdAccessor]);
 
-					<TableBody>
-						{rows.length ? (
-							rows.map((row, index) => (
-								<TableRow key={row.id} data-state={row.getIsSelected() ? "selected" : undefined}>
-									<TableCell className="data-table-number">
-										{(rowNumberOffset + index + 1).toLocaleString("fa-IR")}
-									</TableCell>
+  return (
+    <div className={cn("d-flex flex-column gap-4 overflow-x-scroll p-4", className)}>
+      {selectors.length > 4 && showSearchBox !== false && (
+        <SearchTable className="mis-2 min-w-44" query={queryParam} queryTitle="search" />
+      )}
+      <div
+        className={cn(
+          "d-flex align-items-start justify-content-space-between w-100 flex-row gap-3",
+          selectors.length < 1 && "flex-row flex-wrap",
+        )}
+      >
+        {selectors.length <= 4 && showSearchBox !== false && (
+          <SearchTable className="min-w-44" query={queryParam} queryTitle="search" />
+        )}
+        <div
+          className={cn(
+            selectors.length <= 4 &&
+              "d-flex align-items-end flex-row-md-reverse flex-md-wrap max-w-lg-fit-content justify-content-lg-end max-w-42 grow-1 flex-row gap-2",
+            selectors.length > 4 && "d-grid grid-1 grid-md-3 grid-xl-5 gap-2",
+          )}
+        >
+          {showPerPage !== false && (
+            <FilterTable
+              item={{
+                title: "تعداد",
+              }}
+              queryTitle={"perPage"}
+              options={[
+                { title: "10", value: 10 },
+                { title: "20", value: 20 },
+                { title: "50", value: 50 },
+                { title: "100", value: 100 },
+              ]}
+              initialData={initialData}
+              setData={setData}
+            />
+          )}
 
-									{row.getVisibleCells().map((cell) => (
-										<TableCell key={cell.id}>
-											<table.FlexRender cell={cell} />
-										</TableCell>
-									))}
-								</TableRow>
-							))
-						) : (
-							<TableRow>
-								<TableCell
-									colSpan={table.getVisibleLeafColumns().length + 1}
-									className="data-table-empty"
-								>
-									{emptyMessage}
-								</TableCell>
-							</TableRow>
-						)}
-					</TableBody>
-				</Table>
-			</div>
+          {checkIsArray(selectors) &&
+            selectors.map((item, idx) => (
+              <FilterTable
+                key={idx}
+                item={item}
+                queryTitle={item?.queryTitle}
+                options={item?.options}
+                initialData={initialData}
+                setData={setData}
+              />
+            ))}
+        </div>
+      </div>
 
-			{/* Pagination */}
-			{showPagination && pageCount > 0 && (
-				<div className="data-table-pagination">
-					<div className="data-table-pagination-info">
-						نمایش {startRow.toLocaleString("fa-IR")} تا {endRow.toLocaleString("fa-IR")} از{" "}
-						{rowCount.toLocaleString("fa-IR")} {collectionName}
-					</div>
+      {loading ? (
+        <p>loding ...</p>
+      ) : (data?.length ?? 0) > 0 ? (
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((hg) => (
+              <TableRow key={hg.id} className={cn("primary-color")}>
+                {showRowNumber !== false && <TableHead>#</TableHead>}
+                {hg.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
 
-					<div className="data-table-pagination-controls">
-						<Pagination>
-							<PaginationContent>
-								<PaginationItem>
-									<PaginationPrevious
-										href="#"
-										text="قبلی"
-										aria-disabled={!table.getCanPreviousPage()}
-										tabIndex={!table.getCanPreviousPage() ? -1 : undefined}
-										onClick={(event) => {
-											event.preventDefault();
+          <TableBody>
+            {paginatedRows.map((row, idx) => {
+              const rid = rowId ? row.original[rowId] : getRowId(row);
+              return (
+                <TableRow
+                  key={rid}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  {showRowNumber !== false && (
+                    <TableCell>
+                      <RowNumber number={idx} />
+                    </TableCell>
+                  )}
 
-											if (table.getCanPreviousPage()) {
-												table.previousPage();
-											}
-										}}
-									/>
-								</PaginationItem>
+                  {row.getVisibleCells().map((cell) => {
+                    return (
+                      <TableCell key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      ) : emptyState ? (
+        emptyState
+      ) : (
+        <EmptyAlert/>
+      )}
 
-								{paginationRange.map((page, index) => {
-									const previousPage = paginationRange[index - 1];
-									const hasGap = previousPage !== undefined && page - previousPage > 1;
-
-									return (
-										<React.Fragment key={page}>
-											{hasGap && (
-												<PaginationItem>
-													<PaginationEllipsis />
-												</PaginationItem>
-											)}
-
-											<PaginationItem>
-												<PaginationLink
-													href="#"
-													size="icon"
-													isActive={currentPage === page}
-													onClick={(event) => {
-														event.preventDefault();
-														table.setPageIndex(page);
-													}}
-												>
-													{(page + 1).toLocaleString("fa-IR")}
-												</PaginationLink>
-											</PaginationItem>
-										</React.Fragment>
-									);
-								})}
-
-								<PaginationItem>
-									<PaginationNext
-										href="#"
-										text="بعدی"
-										aria-disabled={!table.getCanNextPage()}
-										tabIndex={!table.getCanNextPage() ? -1 : undefined}
-										onClick={(event) => {
-											event.preventDefault();
-
-											if (table.getCanNextPage()) {
-												table.nextPage();
-											}
-										}}
-									/>
-								</PaginationItem>
-							</PaginationContent>
-						</Pagination>
-					</div>
-				</div>
-			)}
-		</div>
-	);
-}
+      {showPagination !== false && (data?.length ?? 0) > 0 && (
+        <PaginationTable className={"justify-content-end"} page={page} total={totalCount} perPage={perPage} />
+      )}
+    </div>
+  );
+};
