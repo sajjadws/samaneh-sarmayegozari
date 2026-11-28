@@ -16,7 +16,6 @@ const projectRoot = process.cwd();
 const packageJson = JSON.parse(readFileSync(join(projectRoot, "package.json"), "utf-8"));
 const cleanScript = packageJson.scripts?.["build-miz"] ?? "";
 const lastArg = cleanScript.trim().split(/\s+/).pop();
-console.log("lastArg", lastArg);
 
 let assetsRoot, mizRoot;
 

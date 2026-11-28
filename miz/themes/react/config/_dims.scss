@@ -1,15 +1,15 @@
 @use "../../../sass/config/_dims" as *;
 @use "sass:map";
 
-$border-radius: map.merge($border-radius, (
-  extra-small: 2px,
-  small: 8px,
-  normal: 10px,
-  medium: 16px,
-  large: 20px,
-  extra-large: 1000px,
-  full: 5000px,
-  none: 0px,
+$border-radius:map.merge($border-radius ,(
+  extra-small:2px,
+  small:8px,
+  normal:10px,
+  medium:16px,
+  large:20px,
+  extra-large:1000px,
+  full:5000px,
+  none:0px,
 ));
 
 $conf-ellipsis:map.merge($conf-ellipsis ,(
