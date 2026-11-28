@@ -7,7 +7,7 @@ export default function PageHeader({ title, description }) {
   const router = useRouter();
 
   return (
-    <div className="d-flex justify-content-space-between align-items-end w-100">
+    <section className="section flex-row justify-content-space-between align-items-end">
       <div>
         <h1 className="txt-size-mid-title font-weight-bold text-color">{title}</h1>
         <p className="txt-size-title secondary-text-color">{description}</p>
@@ -20,6 +20,6 @@ export default function PageHeader({ title, description }) {
         <span className="txt-size-normal user-select-none">بازگشت</span>
         <IconArrowLeft />
       </div>
-    </div>
+    </section>
   );
 }
