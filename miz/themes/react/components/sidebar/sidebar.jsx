@@ -3,7 +3,7 @@
 import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getSidebarItems } from "@/components/config/admin-layout/sidebar";
+import { getSidebarItems } from "@/components/config/main-layout/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/miz/components/react/collapsible/page";
 import { cn } from "cn";
 import { IconMenu2, IconChevronLeft } from "@tabler/icons-react";
